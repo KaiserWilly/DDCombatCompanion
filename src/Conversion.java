@@ -8,15 +8,9 @@ import java.util.HashMap;
  */
 public class Conversion {
     static HashMap<String, HashMap> saveData = null;
-    static int saveVersion = 3;
 
-    public static HashMap checkVersion(HashMap<String, HashMap> incomingSaveData) {
+    public static HashMap checkSaveMap(HashMap<String, HashMap> incomingSaveData) {
         saveData = incomingSaveData;
-
-        if (!saveData.containsKey("File")) {
-            saveData.put("File", new HashMap());
-            saveData.get("File").put("Version", saveVersion);
-        }
         checkPlayers();
         checkParty();
         checkLoot();

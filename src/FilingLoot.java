@@ -24,7 +24,7 @@ public class FilingLoot {
         } catch (Exception i) {
             i.printStackTrace();
         }
-        Conversion.checkVersion(incomingSaveData);
+        Conversion.checkSaveMap(incomingSaveData);
         return incomingSaveData;
     }
 

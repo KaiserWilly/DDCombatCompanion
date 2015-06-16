@@ -3,7 +3,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by J.D. Isenhart on 6/6/2015
@@ -29,16 +30,11 @@ public class GUICombat implements ActionListener {
 
     public JMenuBar getTheMenuBar() {
         theMenuBar = new JMenuBar();
-        menuFile = new JMenu("File");
         aboutMenu = new JMenu("About");
         aboutMenu.addActionListener(this);
         about = new JMenuItem("About the Program");
         about.addActionListener(this);
         aboutMenu.add(about);
-        removeKill = new JMenuItem("Remove Kill");
-        removeKill.addActionListener(this);
-        menuFile.add(removeKill);
-        theMenuBar.add(menuFile);
         theMenuBar.add(aboutMenu);
         return theMenuBar;
     }
@@ -243,13 +239,6 @@ public class GUICombat implements ActionListener {
         if (e.getSource() == about){
             JOptionPane.showMessageDialog(CStats, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
-        if (e.getSource() == removeKill) {
-            String name = (String) JOptionPane.showInputDialog(CStats, "Enter the name of the Player:", "Remove a Kill", JOptionPane.PLAIN_MESSAGE, null, FilingCombat.playerArray, null);
-            if (name.length() != 0) {
-                FilingCombat.removeKill(name);
-            }
-        }
-        updateStats();
     }
 
     public void updateStats() {

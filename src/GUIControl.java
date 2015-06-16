@@ -3,6 +3,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 
 /**
  * Created by J.D. Isenhart on 6/10/2015
@@ -18,8 +19,8 @@ public class GUIControl implements ActionListener, ItemListener {
     public static JCheckBox KillQ;
     public static JLabel newDam, newHeal, HealthChange, Cstats, Pstats;
     public static JMenuBar statsMenuB;
-    public static JMenu statsFile,aboutMenu;
-    public static JMenuItem addPlayer, removePlayer, changeName, setStat, about;
+    public static JMenu statsFile, aboutMenu;
+    public static JMenuItem addPlayer, removePlayer, changeName, removeKill, setStat, about;
     public static GroupLayout layStats;
     public static DefaultTableModel modelDC, psMain;
     public static JTable dataDC, dataPsMain;
@@ -42,11 +43,14 @@ public class GUIControl implements ActionListener, ItemListener {
         removePlayer.addActionListener(this);
         changeName = new JMenuItem("Rename Player");
         changeName.addActionListener(this);
+        removeKill = new JMenuItem("Remove Kill");
+        removeKill.addActionListener(this);
         setStat = new JMenuItem("Set Party Stat");
         setStat.addActionListener(this);
         statsFile.add(addPlayer);
         statsFile.add(removePlayer);
         statsFile.add(changeName);
+        statsFile.add(removeKill);
         statsFile.add(setStat);
         statsMenuB.add(statsFile);
         statsMenuB.add(aboutMenu);
@@ -295,8 +299,14 @@ public class GUIControl implements ActionListener, ItemListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == aboutMenu){
+        if (e.getSource() == aboutMenu) {
             JOptionPane.showMessageDialog(about, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
+        }
+        if (e.getSource() == removeKill) {
+            String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Kill", JOptionPane.PLAIN_MESSAGE, null, FilingCombat.playerArray, null);
+            if (name.length() != 0) {
+                FilingCombat.removeKill(name);
+            }
         }
         if (e.getSource() == setStat) {
             String[] statsToSet = new String[]{"Dice Rolled", "Weapons Swung", "Arrows Shot", "Spells Cast", "Enemies Hit", "XP Gained"};
@@ -364,10 +374,13 @@ public class GUIControl implements ActionListener, ItemListener {
                 boolean check = true;
                 while (check) {
                     String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Add a Player", JOptionPane.PLAIN_MESSAGE, null, null, null);
+                    String[] nameArray = FilingCombat.playerArray;
                     if (name.length() == 0) {
                         JOptionPane.showMessageDialog(Stats, "Names can not be blank", "Name Error", JOptionPane.WARNING_MESSAGE);
                     } else if (name.length() > 8) {
                         JOptionPane.showMessageDialog(Stats, "Names can not be more than 8 Characters", "Name Error", JOptionPane.WARNING_MESSAGE);
+                    } else if (Arrays.asList(nameArray).contains(name)) {
+                        JOptionPane.showMessageDialog(Stats, "Names can not be duplicate of an already present name", "Name Error", JOptionPane.WARNING_MESSAGE);
                     } else {
                         check = false;
                         FilingCombat.addPlayer(name);

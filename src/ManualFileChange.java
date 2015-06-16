@@ -11,15 +11,15 @@ import java.util.HashMap;
  * Created by J.D. Isenhart on 6/10/2015
  * 10:44 PM
  */
-public class TestFile {
+public class ManualFileChange { //Used to analyze and rewrite save file if corrupted while making changes. Used while making modifications only.
     static JFileChooser newSave;
     static JPanel base;
     static Path saveLocat;
     static HashMap<String,HashMap> incomingSaveData;
 
     public static void main(String[] args) throws IOException {
-        newSave = new JFileChooser(Start.saveFilePath.toString());
-        int returnVal = newSave.showDialog(base, "Create new Save");
+        newSave = new JFileChooser();
+        int returnVal = newSave.showDialog(base, "Load Save");
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             saveLocat = Paths.get(String.valueOf(newSave.getSelectedFile()));
         }
@@ -34,9 +34,10 @@ public class TestFile {
         } catch (Exception i) {
             i.printStackTrace();
         }
-        incomingSaveData.get("Loot").remove("Notes");
-        incomingSaveData.get("Loot").put("Notes",new String(""));
         System.out.println(mapper.writeValueAsString(incomingSaveData));
+        /*
+        Insert code to modify and correct changes in the save file.
+         */
         try {
             FileOutputStream fileOut = new FileOutputStream(String.valueOf(saveLocat));
             ObjectOutputStream out = new ObjectOutputStream(fileOut);

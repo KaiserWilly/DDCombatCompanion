@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
  */
 public class GUILoot implements ActionListener, DocumentListener {
     public static int dimX = 1366, dimY = 700;
+    public static Font lootCellContent = new Font("Franklin Gothic Medium", Font.BOLD, 20);
     public JPanel lootNote;
     public DefaultTableModel dataLoot;
     public JTable lootTable;
@@ -24,9 +25,8 @@ public class GUILoot implements ActionListener, DocumentListener {
     public JLabel lootTab, lItem, lValue, lQty, noteF;
     public GroupLayout layLoot;
     public JMenuBar lootMenuBar;
-    public JMenu lootFile,aboutMenu;
-    public JMenuItem lootRemoveI, lootChangeV, noteRemove, lootChangeQ,about;
-    public static Font lootCellContent = new Font("Franklin Gothic Medium", Font.BOLD, 20);
+    public JMenu lootFile, aboutMenu;
+    public JMenuItem lootRemoveI, lootChangeV, noteRemove, lootChangeQ, about;
 
     public JMenuBar lootMenuBar() {
         lootMenuBar = new JMenuBar();
@@ -189,7 +189,7 @@ public class GUILoot implements ActionListener, DocumentListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == about){
+        if (e.getSource() == about) {
             JOptionPane.showMessageDialog(lootNote, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
         if (e.getSource() == lootRemoveI) {
@@ -244,7 +244,7 @@ public class GUILoot implements ActionListener, DocumentListener {
                 int quantity = 0;
                 try {
                     quantity = Integer.parseInt(qty);
-                    FilingLoot.updateLootItemQuantity(item,quantity);
+                    FilingLoot.updateLootItemQuantity(item, quantity);
                 } catch (NumberFormatException e2) {
                     JOptionPane.showMessageDialog(lootNote, "The Quantity must be an Integer", "Quantity Error", JOptionPane.WARNING_MESSAGE);
                 }
@@ -283,7 +283,11 @@ public class GUILoot implements ActionListener, DocumentListener {
                 }
             }
         };
-        lootTable = new JTable(dataLoot);
+        lootTable = new JTable(dataLoot) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         DefaultTableCellRenderer CenterRenderer = new DefaultTableCellRenderer();
         CenterRenderer.setHorizontalAlignment(JLabel.CENTER);
         lootTable.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);

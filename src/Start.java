@@ -9,13 +9,13 @@ import java.nio.file.Paths;
  */
 public class Start {
 
-    static Path saveFilePath = Paths.get("C:\\Users\\" + System.getProperty("user.name") + "\\Documents\\Dropbox\\Projects\\Current Projects\\Java Projects\\Artifacts\\Final\\DDDC");//Example
+    static Path saveFilePath = Paths.get(System.getProperty("user.home"));//Example
     static String version = "1.4";
     static String aboutText = "Dungeons & Dragons Combat Companion"+"\n"+"Created by JD Isenhart"+"\n"+"Larkspur, Colorado"+"\n"+"Version "+version;
 
     public static void main(String[] args) {
         System.out.println("Isenhart D&D Combat Companion v" + version);
-        System.out.println("Done");
+        System.out.println(saveFilePath);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {

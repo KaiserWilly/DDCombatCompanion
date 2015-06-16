@@ -47,7 +47,7 @@ public class FilingCombat {
         } catch (Exception i) {
             i.printStackTrace();
         }
-        incomingSaveData = Conversion.checkVersion(incomingSaveData);
+        incomingSaveData = Conversion.checkSaveMap(incomingSaveData);
         playerArray = new String[incomingSaveData.get("Players").size()];
         playerArrayNE = new String[(incomingSaveData.get("Players").size())];
         for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {
@@ -197,32 +197,6 @@ public class FilingCombat {
         }
         return Champs;
     }
-
-    public static class AcceptFile extends javax.swing.filechooser.FileFilter {
-
-        @Override
-        public boolean accept(File f) {
-            if (f.isDirectory()) {
-                return true;
-            }
-            String extension = FilenameUtils.getExtension(f.getAbsolutePath());
-            if (extension != null) {
-                if (extension.equals("ADDCC")) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            return false;
-        }
-
-        @Override
-        public String getDescription() {
-            return null;
-        }
-    }
-
 
     public static void addPlayer(String player) {
         List<String> PlayerOrder = new ArrayList<String>() {
@@ -404,6 +378,31 @@ public class FilingCombat {
         sorter.setSortable(0, false);
         sorter.setSortKeys(sortKeys);
         return sorter;
+    }
+
+    public static class AcceptFile extends javax.swing.filechooser.FileFilter {
+
+        @Override
+        public boolean accept(File f) {
+            if (f.isDirectory()) {
+                return true;
+            }
+            String extension = FilenameUtils.getExtension(f.getAbsolutePath());
+            if (extension != null) {
+                if (extension.equals("ADDCC")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        @Override
+        public String getDescription() {
+            return null;
+        }
     }
 }
 
