@@ -1,11 +1,14 @@
 import javax.imageio.ImageIO;
-        import javax.swing.*;
-        import java.awt.*;
-        import java.awt.event.*;
-        import java.awt.image.BufferedImage;
-        import java.io.IOException;
-        import java.nio.file.Path;
-        import java.nio.file.Paths;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by J.D. Isenhart on 6/2/2015
@@ -18,6 +21,27 @@ public class GUIMenu extends Component {
     public static JButton openNew, openExisting;
     public static JLabel panelIcon;
     public static JFileChooser openSave, newSave;
+
+    protected static ImageIcon createImageIcon(String path) {
+        java.net.URL imgURL = GUIMenu.class.getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
+
+    public Image getFrameIcon() {
+        BufferedImage fIcon;
+        try {
+            fIcon = ImageIO.read(getClass().getResource("rsc/Icon1616.png"));
+        } catch (Exception e) {
+            System.err.println("Can't load Frame Icon");
+            return null;
+        }
+        return fIcon;
+    }
 
     public static class PaneFrameMain implements ActionListener, ItemListener {
 
@@ -45,7 +69,7 @@ public class GUIMenu extends Component {
 
             BufferedImage pb = null;
             try {
-                pb = ImageIO.read(getClass().getResource("rsc\\IsenhartCC.png"));
+                pb = ImageIO.read(getClass().getResource("rsc/IsenhartCC.png"));
                 panelIcon = new JLabel(new ImageIcon(pb));
                 panelIcon.setLocation(100, 50);
                 panelIcon.setSize(200, 150);
@@ -127,26 +151,5 @@ public class GUIMenu extends Component {
         public void itemStateChanged(ItemEvent e) {
 
         }
-    }
-
-    protected static ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = GUIMenu.class.getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
-        }
-    }
-
-    public Image getFrameIcon() {
-        BufferedImage fIcon;
-        try {
-            fIcon = ImageIO.read(getClass().getResource("rsc/Icon1616.png"));
-        } catch (Exception e) {
-            System.err.println("Can't load Frame Icon");
-            return null;
-        }
-        return fIcon;
     }
 }
