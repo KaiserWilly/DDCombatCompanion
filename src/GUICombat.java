@@ -364,17 +364,17 @@ public class GUICombat implements ActionListener {
 
         DamChamp = new JLabel("     Damage Champion: " + FilingCombat.comStatsDamChamp());
         DamChamp.setFont(CSChampContent);
-        DamChamp.setMaximumSize(new Dimension(25, 200));
+        DamChamp.setMaximumSize(new Dimension(200, 25));
         CStats.add(DamChamp);
 
         KillChamp = new JLabel("     Kill Champion: " + FilingCombat.comStatsKillChamp());
         KillChamp.setFont(CSChampContent);
-        KillChamp.setMaximumSize(new Dimension(25, 200));
+        KillChamp.setMaximumSize(new Dimension(200, 25));
         CStats.add(KillChamp);
 
         HealChamp = new JLabel("     Healing Champion: " + FilingCombat.comStatsHealingChamp());
         HealChamp.setFont(CSChampContent);
-        HealChamp.setMaximumSize(new Dimension(25, 200));
+        HealChamp.setMaximumSize(new Dimension(200, 25));
         CStats.add(HealChamp);
         layCS = new GroupLayout(CStats);
         CStats.setLayout(layCS);
