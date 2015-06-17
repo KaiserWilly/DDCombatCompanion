@@ -204,14 +204,18 @@ public class GUILoot implements ActionListener, DocumentListener {
             int quantity;
             try {
                 quantity = Integer.parseInt(lootQuantity.getText());
+                if (quantity <= 0) {
+                    JOptionPane.showMessageDialog(lootNote, "Quantity must be a positive number", "Value Error", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    lootItem.setText("");
+                    lootValue.setText("");
+                    lootQuantity.setText("");
+                }
             } catch (NumberFormatException e1) {
                 JOptionPane.showMessageDialog(lootNote, "The Quantity must be an Integer", "Quantity Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            lootItem.setText("");
-            lootValue.setText("");
-            lootQuantity.setText("");
-            if (item.length() != 0 && value.length() != 0) {
+            if (item.length() != 0 && value.length() != 0 && quantity > 0) {
                 FilingLoot.updateLootTable(item, value, quantity);
             } else if (item.length() != 0 && value.length() == 0) {
                 JOptionPane.showMessageDialog(lootNote, "All Objects must have a Value (Can be ?)", "Value Error", JOptionPane.WARNING_MESSAGE);
@@ -241,10 +245,14 @@ public class GUILoot implements ActionListener, DocumentListener {
             String item = (String) JOptionPane.showInputDialog(lootNote, "Select an Item to Change:", "Change a Quantity", JOptionPane.PLAIN_MESSAGE, null, FilingLoot.getLootItemArray(), null);
             if (item.length() != 0) {
                 String qty = (String) JOptionPane.showInputDialog(lootNote, "Select a Quantity:", "Change a Quantity", JOptionPane.PLAIN_MESSAGE, null, null, null);
-                int quantity = 0;
+                int quantity;
                 try {
                     quantity = Integer.parseInt(qty);
-                    FilingLoot.updateLootItemQuantity(item, quantity);
+                    if (quantity > 0) {
+                        FilingLoot.updateLootItemQuantity(item, quantity);
+                    } else {
+                        JOptionPane.showMessageDialog(lootNote, "Quantity must be a positive number", "Value Error", JOptionPane.WARNING_MESSAGE);
+                    }
                 } catch (NumberFormatException e2) {
                     JOptionPane.showMessageDialog(lootNote, "The Quantity must be an Integer", "Quantity Error", JOptionPane.WARNING_MESSAGE);
                 }

@@ -35,7 +35,7 @@ public class GUIMenu extends Component {
     public Image getFrameIcon() {
         BufferedImage fIcon;
         try {
-            fIcon = ImageIO.read(getClass().getResource("rsc/Icon1616.png"));
+            fIcon = ImageIO.read(getClass().getResource("rsc/FIcon.png"));
         } catch (Exception e) {
             System.err.println("Can't load Frame Icon");
             return null;

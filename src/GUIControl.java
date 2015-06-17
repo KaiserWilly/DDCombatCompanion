@@ -335,8 +335,16 @@ public class GUIControl implements ActionListener, ItemListener {
             }
             if (name != null) {
                 String nameInt = (String) JOptionPane.showInputDialog(Stats, "Enter the value of the Statistic:", "Set a Statistic", JOptionPane.PLAIN_MESSAGE, null, null, null);
-                int value = Integer.parseInt(nameInt);
-                if (nameInt.length() != 0) {
+                int value = -1;
+                try {
+                    value = Integer.parseInt(nameInt);
+                    if (value <= -1) {
+                        JOptionPane.showMessageDialog(Stats, "Statistic must be 0 or greater", "Value Error", JOptionPane.WARNING_MESSAGE);
+                    }
+                } catch (NumberFormatException e1) {
+                    JOptionPane.showMessageDialog(Stats, "Statistic must be an Integer (Whole Number)", "Value Error", JOptionPane.WARNING_MESSAGE);
+                }
+                if (nameInt.length() != 0 && value > -1) {
                     FilingParty.SetPartyStat(name, value);
                 }
             }

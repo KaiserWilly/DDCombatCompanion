@@ -13,6 +13,7 @@ public class Conversion {
         saveData = incomingSaveData;
         checkPlayers();
         checkParty();
+        checkLoot();
         try {
             FileOutputStream fileOut = new FileOutputStream(String.valueOf(Start.saveFilePath));
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -59,6 +60,15 @@ public class Conversion {
             saveData.put("Party", partyStats);
         } else if (!saveData.get("Party").containsKey("Hits")) {
             saveData.get("Party").put("Hits", 130);
+        }
+    }
+
+    public static void checkLoot() {
+        if (!saveData.containsKey("Loot")) {
+            HashMap lootStats = new HashMap();
+            lootStats.put("Data", new Object[][]{});
+            lootStats.put("Notes", new String());
+            saveData.put("Loot", lootStats);
         }
     }
 }
