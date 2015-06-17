@@ -1,6 +1,12 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -8,8 +14,38 @@ import java.util.List;
  * 12:54 AM
  */
 public class FilingInit {
+    public static HashMap readSave() {
+        HashMap incomingSaveData = null;
+        try {
+            FileInputStream fileIn = new FileInputStream(String.valueOf(Start.saveFilePath));
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            incomingSaveData = (HashMap<String, HashMap>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (Exception i) {
+            i.printStackTrace();
+        }
+        return incomingSaveData;
+    }
+
+    public static void writeFile(HashMap saveData) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(String.valueOf(Start.saveFilePath));
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(saveData);
+            out.close();
+            fileOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static Object[][] InitRowData() {
+        HashMap<String, HashMap> saveData = readSave();
+        if (saveData.get("Party").containsKey("Init")) {
+            Object[][] rowdata = (Object[][]) saveData.get("Party").get("Init");
+            return rowdata;
+        }
         Object[][] rowData = new Object[FilingCombat.playerArray.length][2];
         for (int i = 0; i < FilingCombat.playerArray.length; i++) {
             rowData[i][0] = FilingCombat.playerArray[i];
@@ -30,5 +66,44 @@ public class FilingInit {
         sorter.setSortable(0, false);
         sorter.setSortKeys(sortKeys);
         return sorter;
+    }
+
+    public static void genInit(JTable table) {
+        HashMap<String, HashMap> saveData = readSave();
+        Object[][] tableData = getTableData(table);
+        if (saveData.get("Party").containsKey("Init")) {
+            saveData.get("Party").remove("Init");
+            saveData.get("Party").put("Init", tableData);
+        } else {
+            saveData.get("Party").put("Init", tableData);
+        }
+        writeFile(saveData);
+
+    }
+
+    public static void resetInit() {
+        HashMap<String, HashMap> saveData = readSave();
+        if (saveData.get("Party").containsKey("Init")) {
+            saveData.get("Party").remove("Init");
+        }
+        writeFile(saveData);
+    }
+
+    public static Object[][] getTableData(JTable table) {
+        DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+        int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
+        Object[][] tableData = new Object[nRow][nCol];
+        for (int i = 0; i < nRow; i++)
+            for (int j = 0; j < nCol; j++)
+                tableData[i][j] = dtm.getValueAt(i, j);
+        return tableData;
+    }
+
+    public static boolean checkInitExist() {
+        HashMap<String, HashMap> saveData = readSave();
+        if (saveData.get("Party").containsKey("Init")) {
+            return true;
+        }
+        return false;
     }
 }

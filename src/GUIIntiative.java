@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +10,7 @@ import java.awt.event.ActionListener;
  * 12:48 AM
  */
 public class GUIIntiative implements ActionListener {
+    public static Font initCellContent = new Font("Franklin Gothic Medium", Font.BOLD, 30);
     public int dimX = 1366, dimY = 700;
     public JPanel base;
     public JButton genInitiative, resetTable;
@@ -21,8 +21,8 @@ public class GUIIntiative implements ActionListener {
     public JMenuItem about;
     public JMenuBar initMenu;
     public JMenu aboutMenu;
-    public static Font initCellContent = new Font("Franklin Gothic Medium", Font.BOLD, 30);
-    public JMenuBar initMenuBar(){
+
+    public JMenuBar initMenuBar() {
 
         initMenu = new JMenuBar();
         aboutMenu = new JMenu("About");
@@ -107,17 +107,18 @@ public class GUIIntiative implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == about){
+        if (e.getSource() == about) {
             JOptionPane.showMessageDialog(base, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
         if (e.getSource() == genInitiative) {
+            FilingInit.genInit(initTable);
             Object[][] tableData = new Object[initData.getRowCount()][2];
             for (int count = 0; count < initData.getRowCount(); count++) {
                 tableData[count][1] = Integer.parseInt(initData.getValueAt(count, 1).toString());
                 tableData[count][0] = initData.getValueAt(count, 0).toString();
             }
             base.remove(initPane);
-            initData = new DefaultTableModel(tableData, FilingInit.InitColumnHeaders()) {
+            initData = new DefaultTableModel(FilingInit.InitRowData(), FilingInit.InitColumnHeaders()) {
                 @Override
                 public Class getColumnClass(int column) {
                     switch (column) {
@@ -179,6 +180,7 @@ public class GUIIntiative implements ActionListener {
 
         }
         if (e.getSource() == resetTable) {
+            FilingInit.resetInit();
             base.remove(initPane);
             initData = new DefaultTableModel(FilingInit.InitRowData(), FilingInit.InitColumnHeaders()) {
                 @Override
@@ -237,7 +239,8 @@ public class GUIIntiative implements ActionListener {
         }
         System.out.println("Done updating Init Tab!");
     }
-    public void loadInitTable(){
+
+    public void loadInitTable() {
         base.remove(initPane);
         initData = new DefaultTableModel(FilingInit.InitRowData(), FilingInit.InitColumnHeaders()) {
             @Override
@@ -252,7 +255,17 @@ public class GUIIntiative implements ActionListener {
                 }
             }
         };
-        initTable = new JTable(initData);
+        if (FilingInit.checkInitExist()) {
+            initTable = new JTable(initData) {
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+            initTable.setRowSorter(FilingInit.RowSorter(initTable));
+        } else {
+            initTable = new JTable(initData);
+            initTable.setAutoCreateRowSorter(true);
+        }
         DefaultTableCellRenderer CenterRenderer = new DefaultTableCellRenderer();
         CenterRenderer.setHorizontalAlignment(JLabel.CENTER);
         initTable.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
@@ -260,7 +273,6 @@ public class GUIIntiative implements ActionListener {
         initTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
         initTable.setFont(initCellContent);
         initTable.setMinimumSize(new Dimension(dimX, 50));
-        initTable.setAutoCreateRowSorter(true);
         initTable.setRowHeight(30);
         initPane = new JScrollPane(initTable);
         initPane.setMaximumSize(new Dimension(dimX, 500));

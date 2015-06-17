@@ -192,7 +192,7 @@ public class GUIControl implements ActionListener, ItemListener {
         goDice.addActionListener(this);
         Stats.add(goDice);
 
-        goSword = new JButton("Add Sword Swing");
+        goSword = new JButton("Add Weapon Swing");
         goSword.addActionListener(this);
         Stats.add(goSword);
 
@@ -371,20 +371,16 @@ public class GUIControl implements ActionListener, ItemListener {
         }
         if (e.getSource() == addPlayer || e.getSource() == removePlayer || e.getSource() == changeName) {
             if (e.getSource() == addPlayer) {
-                boolean check = true;
-                while (check) {
-                    String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Add a Player", JOptionPane.PLAIN_MESSAGE, null, null, null);
-                    String[] nameArray = FilingCombat.playerArray;
-                    if (name.length() == 0) {
-                        JOptionPane.showMessageDialog(Stats, "Names can not be blank", "Name Error", JOptionPane.WARNING_MESSAGE);
-                    } else if (name.length() > 8) {
-                        JOptionPane.showMessageDialog(Stats, "Names can not be more than 8 Characters", "Name Error", JOptionPane.WARNING_MESSAGE);
-                    } else if (Arrays.asList(nameArray).contains(name)) {
-                        JOptionPane.showMessageDialog(Stats, "Names can not be duplicate of an already present name", "Name Error", JOptionPane.WARNING_MESSAGE);
-                    } else {
-                        check = false;
-                        FilingCombat.addPlayer(name);
-                    }
+                String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Add a Player", JOptionPane.PLAIN_MESSAGE, null, null, null);
+                String[] nameArray = FilingCombat.playerArray;
+                if (name.length() == 0) {
+                    JOptionPane.showMessageDialog(Stats, "Names can not be blank", "Name Error", JOptionPane.WARNING_MESSAGE);
+                } else if (name.length() > 8) {
+                    JOptionPane.showMessageDialog(Stats, "Names can not be more than 8 Characters", "Name Error", JOptionPane.WARNING_MESSAGE);
+                } else if (Arrays.asList(nameArray).contains(name)) {
+                    JOptionPane.showMessageDialog(Stats, "Names can not be duplicate of an already present name", "Name Error", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    FilingCombat.addPlayer(name);
                 }
             }
             if (e.getSource() == removePlayer) {
@@ -397,7 +393,13 @@ public class GUIControl implements ActionListener, ItemListener {
                 String namePre = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player you want to rename:", "Rename a Player", JOptionPane.PLAIN_MESSAGE, null, FilingCombat.playerArrayNE, null);
                 if (namePre.length() != 0) {
                     String namePro = (String) JOptionPane.showInputDialog(Stats, "Enter the new name of the player:", "Rename a Player", JOptionPane.PLAIN_MESSAGE, null, null, null);
-                    if (namePro.length() != 0) {
+                    if (namePro.length() == 0) {
+                        JOptionPane.showMessageDialog(Stats, "Names can not be blank", "Name Error", JOptionPane.WARNING_MESSAGE);
+                    } else if (namePro.length() > 8) {
+                        JOptionPane.showMessageDialog(Stats, "Names can not be more than 8 Characters", "Name Error", JOptionPane.WARNING_MESSAGE);
+                    } else if (Arrays.asList(FilingCombat.playerArray).contains(namePro)) {
+                        JOptionPane.showMessageDialog(Stats, "Names can not be duplicate of an already present name", "Name Error", JOptionPane.WARNING_MESSAGE);
+                    } else {
                         FilingCombat.renamePlayer(namePre, namePro);
                     }
                 }
