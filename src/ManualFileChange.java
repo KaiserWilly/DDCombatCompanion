@@ -15,7 +15,7 @@ public class ManualFileChange { //Used to analyze and rewrite save file if corru
     static JFileChooser newSave;
     static JPanel base;
     static Path saveLocat;
-    static HashMap<String,HashMap> incomingSaveData;
+    static HashMap<String, HashMap> incomingSaveData;
 
     public static void main(String[] args) throws IOException {
         newSave = new JFileChooser();
@@ -34,10 +34,15 @@ public class ManualFileChange { //Used to analyze and rewrite save file if corru
         } catch (Exception i) {
             i.printStackTrace();
         }
+        HashMap casters = (HashMap) incomingSaveData.get("Spells").get("Casters");
+        casters.remove("Annalisa");
+        casters.put("Annalisa", new Object[][]{
+                {"Magic Missile", 2},
+                {"Burning Hands", 2}
+        });
+        incomingSaveData.get("Spells").remove("Casters");
+        incomingSaveData.get("Spells").put("Casters", casters);
         System.out.println(mapper.writeValueAsString(incomingSaveData));
-        /*
-        Insert code to modify and correct changes in the save file.
-         */
         try {
             FileOutputStream fileOut = new FileOutputStream(String.valueOf(saveLocat));
             ObjectOutputStream out = new ObjectOutputStream(fileOut);

@@ -47,7 +47,6 @@ public class FilingCombat {
         } catch (Exception i) {
             i.printStackTrace();
         }
-        incomingSaveData = Conversion.checkSaveMap(incomingSaveData);
         playerArray = new String[incomingSaveData.get("Players").size()];
         playerArrayNE = new String[(incomingSaveData.get("Players").size())];
         for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {

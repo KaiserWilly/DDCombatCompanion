@@ -12,6 +12,21 @@ import java.util.Map;
  * 7:44 PM
  */
 public class FilingMain {
+    static String[] playerArray;
+    static String[] playerArrayNE;
+
+    public static void genPlayerArrays() {
+        HashMap<String, HashMap> incomingSaveData = FilingLoot.readSave();
+        playerArray = new String[incomingSaveData.get("Players").size()];
+        playerArrayNE = new String[(incomingSaveData.get("Players").size())];
+        for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {
+            playerArray[i] = String.valueOf(incomingSaveData.get("Players").get(i));
+            if (!String.valueOf(incomingSaveData.get("Players").get(i)).equals("Enemy")) {
+                playerArrayNE[i] = String.valueOf(incomingSaveData.get("Players").get(i));
+            }
+
+        }
+    }
     public static void createSave() {
         Map<String, HashMap> newMap = new HashMap<String, HashMap>();
         newMap.put("Players", new HashMap<Integer, String>());

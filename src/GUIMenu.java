@@ -108,7 +108,7 @@ public class GUIMenu extends Component {
         public void actionPerformed(ActionEvent e) {
             Path saveLocat = null;
             if (e.getSource() == openExisting) {
-                openSave = new JFileChooser(Start.saveFilePath.toString());
+                openSave = new JFileChooser();
                 openSave.addChoosableFileFilter(new FilingCombat.AcceptFile());
                 openSave.setAcceptAllFileFilterUsed(false);
                 int returnVal = openSave.showDialog(base, "Open Existing Save");
@@ -123,7 +123,7 @@ public class GUIMenu extends Component {
                 }
 
             } else {
-                newSave = new JFileChooser(Start.saveFilePath.toString());
+                newSave = new JFileChooser();
                 newSave.addChoosableFileFilter(new FilingCombat.AcceptFile());
                 newSave.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 newSave.setAcceptAllFileFilterUsed(false);

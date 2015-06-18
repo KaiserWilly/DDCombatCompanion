@@ -100,7 +100,7 @@ public class GUIFrame {
                     break;
                 case 5:
                     System.out.println(" (Spells)");
-                    mainFrame.setJMenuBar(loot.lootMenuBar());
+                    mainFrame.setJMenuBar(spell.getTheMenuBar());
                     mainFrame.revalidate();
                     mainFrame.repaint();
                     spell.updateStats();
