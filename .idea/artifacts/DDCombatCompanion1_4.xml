@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="DDCombatCompanion1.4">
-    <output-path>$PROJECT_DIR$/Releases</output-path>
+    <output-path>$PROJECT_DIR$/Artifacts</output-path>
     <root id="archive" name="DDCombatCompanion1.4.jar">
       <element id="module-output" name="DDCombatCounter" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/commons-io-2.4/commons-io-2.4.jar" path-in-jar="/" />

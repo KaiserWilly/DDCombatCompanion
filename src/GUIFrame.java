@@ -18,6 +18,7 @@ public class GUIFrame {
     static GUIControl modStats = new GUIControl();
     static GUIIntiative init = new GUIIntiative();
     static GUILoot loot = new GUILoot();
+    static GUISpell spell = new GUISpell();
 
     public static class PaneFrameMain implements ChangeListener {
 
@@ -51,6 +52,7 @@ public class GUIFrame {
             tPane.addTab("Initiative", null, init.InitiativePanel(), "Generate your Initiative lists!");
             tPane.addTab("Party Statistics", null, pStatistics, "Party Statistics");
             tPane.addTab("Loot", null, loot.lootPanel(), "Track your loot!");
+            tPane.addTab("Spells", null, spell.SpellDisplay(), "Track your Spells!");
             tPane.setSize(1366, 700);
             tPane.addChangeListener(this);
             base.add(tPane);
@@ -96,6 +98,14 @@ public class GUIFrame {
                     mainFrame.repaint();
                     loot.updateStats();
                     break;
+                case 5:
+                    System.out.println(" (Spells)");
+                    mainFrame.setJMenuBar(loot.lootMenuBar());
+                    mainFrame.revalidate();
+                    mainFrame.repaint();
+                    spell.updateStats();
+                    break;
+
             }
         }
     }

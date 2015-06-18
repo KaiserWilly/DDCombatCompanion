@@ -343,6 +343,7 @@ public class GUIControl implements ActionListener, ItemListener {
                     }
                 } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(Stats, "Statistic must be an Integer (Whole Number)", "Value Error", JOptionPane.WARNING_MESSAGE);
+                    return;
                 }
                 if (nameInt.length() != 0 && value > -1) {
                     FilingParty.SetPartyStat(name, value);
@@ -388,13 +389,13 @@ public class GUIControl implements ActionListener, ItemListener {
                 } else if (Arrays.asList(nameArray).contains(name)) {
                     JOptionPane.showMessageDialog(Stats, "Names can not be duplicate of an already present name", "Name Error", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    FilingCombat.addPlayer(name);
+                    FilingMain.addPlayer(name);
                 }
             }
             if (e.getSource() == removePlayer) {
                 String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Player", JOptionPane.PLAIN_MESSAGE, null, FilingCombat.playerArray, null);
                 if (name.length() != 0) {
-                    FilingCombat.removePlayer(name);
+                    FilingMain.removePlayer(name);
                 }
             }
             if (e.getSource() == changeName) {

@@ -1,5 +1,6 @@
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -14,6 +15,7 @@ public class Conversion {
         checkPlayers();
         checkParty();
         checkLoot();
+        checkSpells();
         try {
             FileOutputStream fileOut = new FileOutputStream(String.valueOf(Start.saveFilePath));
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -69,6 +71,15 @@ public class Conversion {
             lootStats.put("Data", new Object[][]{});
             lootStats.put("Notes", new String());
             saveData.put("Loot", lootStats);
+        }
+    }
+
+    public static void checkSpells() {
+        if (!saveData.containsKey("Spells")) {
+            HashMap spellHash = new HashMap();
+            spellHash.put("SpellList", new ArrayList<String>());
+            spellHash.put("Casters", new HashMap<>());
+            saveData.put("Spells", spellHash);
         }
     }
 }

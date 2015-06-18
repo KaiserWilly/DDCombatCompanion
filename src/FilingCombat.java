@@ -198,102 +198,6 @@ public class FilingCombat {
         return Champs;
     }
 
-    public static void addPlayer(String player) {
-        List<String> PlayerOrder = new ArrayList<String>() {
-        };
-        HashMap<String, HashMap> playerData = null;
-        try {
-            FileInputStream fileIn = new FileInputStream(String.valueOf(Start.saveFilePath));
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            playerData = (HashMap<String, HashMap>) in.readObject();
-            in.close();
-            fileIn.close();
-
-        } catch (Exception e) {
-            System.out.println("Error in File Reading; Filing.addPlayer");
-            e.printStackTrace();
-        }
-        for (int i = 0; i < playerData.get("Players").size(); i++) {
-            assert PlayerOrder != null;
-            PlayerOrder.add(String.valueOf(playerData.get("Players").get(i)));
-
-        }
-        PlayerOrder.add(player);
-        PlayerOrder.remove("Enemy");
-        java.util.Collections.sort(PlayerOrder);
-        PlayerOrder.add(PlayerOrder.size(), "Enemy");
-        playerData.remove("Players");
-        playerData.put("Players", newPlayerMap(PlayerOrder));
-        playerData.put(player, new HashMap());
-        playerData.get(player).put("Damage", 0);
-        playerData.get(player).put("Kills", 0);
-        playerData.get(player).put("Healing", 0);
-        playerData.get(player).put("Health", 0);
-        try {
-            FileOutputStream fileOut = new FileOutputStream(String.valueOf(Start.saveFilePath));
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(playerData);
-            out.close();
-            fileOut.close();
-        } catch (Exception e) {
-            System.out.println("Error in File Creation; New Save; Filing.addPlayer");
-            e.printStackTrace();
-        }
-        System.out.println("Done adding player to the Game!");
-    }
-
-    public static void removePlayer(String player) {
-        List<String> PlayerOrder = new ArrayList<String>() {
-        };
-        HashMap<String, HashMap> playerData = null;
-        try {
-            FileInputStream fileIn = new FileInputStream(String.valueOf(Start.saveFilePath));
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            playerData = (HashMap<String, HashMap>) in.readObject();
-            in.close();
-            fileIn.close();
-
-        } catch (Exception e) {
-            System.out.println("Error in File Reading; Filing.addPlayer");
-            e.printStackTrace();
-        }
-        System.out.println(playerData.get("Players").size());
-        for (int i = 0; i < playerData.get("Players").size(); i++) {
-            //  System.out.println("264" + String.valueOf(playerData.get("Players").get(i)));
-            assert PlayerOrder != null;
-            //  System.out.println("266" + String.valueOf(playerData.get("Players").get(i)));
-            PlayerOrder.add(String.valueOf(playerData.get("Players").get(i)));
-
-        }
-        PlayerOrder.remove(player);
-        PlayerOrder.remove("Enemy");
-        java.util.Collections.sort(PlayerOrder);
-        PlayerOrder.add(PlayerOrder.size(), "Enemy");
-        playerData.remove("Players");
-        playerData.put("Players", newPlayerMap(PlayerOrder));
-        playerData.remove(player);
-        try {
-            System.out.println("Save Path: " + String.valueOf(Start.saveFilePath));
-            FileOutputStream fileOut = new FileOutputStream(String.valueOf(Start.saveFilePath));
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(playerData);
-            out.close();
-            fileOut.close();
-        } catch (Exception e) {
-            System.out.println("Error in File Creation; New Save; Filing.removeSave");
-            e.printStackTrace();
-        }
-        System.out.println("Done removing player from the Game!");
-    }
-
-    public static HashMap newPlayerMap(List<String> names) {
-        HashMap<Integer, String> blankMap = new HashMap<>();
-        for (int i = 0; i < names.size(); i++) {
-            blankMap.put(i, names.get(i));
-        }
-        return blankMap;
-    }
-
     public static void renamePlayer(String playerPre, String playerPro) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
@@ -343,6 +247,14 @@ public class FilingCombat {
             e.printStackTrace();
         }
         System.out.println("Done renaming player!");
+    }
+
+    public static HashMap newPlayerMap(List<String> names) {
+        HashMap<Integer, String> blankMap = new HashMap<>();
+        for (int i = 0; i < names.size(); i++) {
+            blankMap.put(i, names.get(i));
+        }
+        return blankMap;
     }
 
     public static void removeKill(String name) {
