@@ -363,18 +363,20 @@ public class GUIControl implements ActionListener, ItemListener {
                     KillQ.setSelected(false);
                     KillV = 0;
                     per = playerHeal.getSelectedIndex();
+
+                    FilingParty.writePartyUpdate(1, 0, 0, 0, 0, 0);
                 } else if (e.getSource() == updateHealth) {
                     per = playerHealth.getSelectedIndex();
                     health = Integer.parseInt(healthDC.getText());
                     healthy = true;
                 } else {
                     damage = Integer.parseInt(damDC.getText());
+                    FilingParty.writePartyUpdate(1, 0, 0, 0, 0, 0);
                     per = playerDam.getSelectedIndex();
                 }
 
                 FilingCombat.changeCS(per, damage, KillV, healing, health, healthy);
-            } catch (
-                    NumberFormatException e1) {
+            } catch (NumberFormatException e1) {
                 System.out.println("Invalid Input data");
             }
         }
@@ -428,10 +430,13 @@ public class GUIControl implements ActionListener, ItemListener {
             } else if (e.getSource() == goDice) {
                 dice = 1;
             } else if (e.getSource() == goSword) {
+                dice = 1;
                 sword = 1;
             } else if (e.getSource() == goArrow) {
+                dice = 1;
                 arrow = 1;
             } else if (e.getSource() == goSpell) {
+                dice = 1;
                 spell = 1;
             } else if (e.getSource() == goHit) {
                 hit = 1;

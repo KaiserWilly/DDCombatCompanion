@@ -26,7 +26,7 @@ public class GUICombat implements ActionListener {
     static Font CSPSHeading = new Font("Verdana", Font.ITALIC, 20);
     static Font CSChampContent = new Font("Trebuchet MS", Font.PLAIN, 20);
     static Font CSStatsHeading = new Font("SansSerif", Font.PLAIN, 16);
-    static int RowHeight = 44;
+    static int RowHeight = 35;
 
     public JMenuBar getTheMenuBar() {
         theMenuBar = new JMenuBar();

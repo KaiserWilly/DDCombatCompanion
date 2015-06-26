@@ -52,7 +52,7 @@ public class GUIFrame {
             tPane.addTab("Initiative", null, init.InitiativePanel(), "Generate your Initiative lists!");
             tPane.addTab("Party Statistics", null, pStatistics, "Party Statistics");
             tPane.addTab("Loot", null, loot.lootPanel(), "Track your loot!");
-            tPane.addTab("Spells", null, spell.SpellDisplay(), "Track your Spells!");
+//            tPane.addTab("Spells", null, spell.SpellDisplay(), "Track your Spells!");
             tPane.setSize(1366, 700);
             tPane.addChangeListener(this);
             base.add(tPane);

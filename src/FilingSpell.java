@@ -16,6 +16,7 @@ import java.util.HashMap;
  */
 public class FilingSpell {
     public static int dimX = 1366, dimY = 700;
+    int panelPlace = 0;
 
     public static HashMap readSave() {
         HashMap incomingSaveData = null;
@@ -254,6 +255,17 @@ public class FilingSpell {
         return playerA;
     }
 
+    public static boolean needsPrepare(String pClass) {
+        switch (pClass) {
+            case "Bard":
+            case "Sorecerer":
+                return false;
+            default:
+                return true;
+        }
+
+    }
+
     public JPanel spellWidget() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
@@ -269,7 +281,7 @@ public class FilingSpell {
         JPanel base = new JPanel();
         base.setBackground(Color.GREEN);
         base.setLayout(null);
-        int panelIndex = 0;
+        panelPlace = 0;
         base.setSize(dimX, dimY);
         base.setBackground(Color.WHITE);
         for (int playerIndex = 0; playerIndex < playerArray.length; playerIndex++) {
@@ -279,17 +291,18 @@ public class FilingSpell {
                     JPanel namePanel = new JPanel();
                     namePanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
                     namePanel.setLayout(null);
-                    namePanel.setSize(dimX, 30);
+                    namePanel.setSize(dimX, 40);
                     JLabel name = new JLabel(playerArray[playerIndex]);
                     name.setSize(dimX, 20);
-                    name.setLocation(5, 5);
+                    name.setLocation(5, 1);
                     namePanel.add(name);
-                    namePanel.setLocation(0, 30 * panelIndex);
+                    namePanel.setLocation(0, panelPlace);
                     base.add(namePanel);
-                    panelIndex++;
+                    panelPlace = panelPlace + 40;
                     for (int i = 0; i < spellData.length; i++) {
                         JPanel spellPanel = new JPanel();
-                        spellPanel.setBorder(BorderFactory.createMatteBorder(1, 10, 1, 1, Color.black));
+                        if (true) // Change when time ia avaliable!
+                            spellPanel.setBorder(BorderFactory.createMatteBorder(1, 10, 1, 1, Color.black));
                         spellPanel.setLayout(null);
                         spellPanel.setSize(dimX, 30);
                         JLabel spellName = new JLabel(String.valueOf(spellData[i][0]));
@@ -301,12 +314,12 @@ public class FilingSpell {
                         spellPanel.add(spellName);
                         spellPanel.add(spellQty);
                         JButton use = new JButton("Cast");
-                        use.addActionListener(new buttonClass(playerArray[playerIndex], spellData[i][0].toString()));
+                        use.addActionListener(new prepareButton(playerArray[playerIndex], spellData[i][0].toString()));
                         use.setSize(75, 20);
                         use.setLocation(dimX - 160, 5);
                         spellPanel.add(use);
-                        spellPanel.setLocation(0, panelIndex * 30);
-                        panelIndex++;
+                        spellPanel.setLocation(0, panelPlace * 30);
+                        panelPlace++;
                         base.add(spellPanel);
                     }
                 }
@@ -317,10 +330,33 @@ public class FilingSpell {
         return base;
     }
 
-    public class buttonClass implements ActionListener {
+    public JPanel mustPrepareSpells(String player, String spellN, String spellQty) {
+        JPanel spellPanel = new JPanel();
+        spellPanel.setBorder(BorderFactory.createMatteBorder(1, 10, 1, 1, Color.black));
+        spellPanel.setLayout(null);
+        spellPanel.setSize(dimX, 30);
+        JLabel spellName = new JLabel(spellN);
+        spellName.setSize(100, 20);
+        JLabel spellUse = new JLabel("Uses: " + spellQty);
+        spellUse.setSize(100, 20);
+        spellName.setLocation(25, 5);
+        spellUse.setLocation(130, 5);
+        spellPanel.add(spellName);
+        spellPanel.add(spellUse);
+        JButton use = new JButton("Cast");
+        use.addActionListener(new prepareButton(player, spellN));
+        use.setSize(75, 20);
+        use.setLocation(dimX - 160, 5);
+        spellPanel.add(use);
+        spellPanel.setLocation(0, panelPlace);
+        panelPlace = panelPlace + 30;
+        return spellPanel;
+    }
+
+    public class prepareButton implements ActionListener {
         String player, spell;
 
-        buttonClass(String player, String spell) {
+        prepareButton(String player, String spell) {
             this.player = player;
             this.spell = spell;
         }
