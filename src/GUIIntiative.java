@@ -131,11 +131,7 @@ public class GUIIntiative implements ActionListener {
                     }
                 }
             };
-            initTable = new JTable(initData) {
-                public boolean isCellEditable(int row, int column) {
-                    return false;
-                }
-            };
+            initTable = new JTable(initData);
             DefaultTableCellRenderer CenterRenderer = new DefaultTableCellRenderer();
             CenterRenderer.setHorizontalAlignment(JLabel.CENTER);
             initTable.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
@@ -256,11 +252,7 @@ public class GUIIntiative implements ActionListener {
             }
         };
         if (FilingInit.checkInitExist()) {
-            initTable = new JTable(initData) {
-                public boolean isCellEditable(int row, int column) {
-                    return false;
-                }
-            };
+            initTable = new JTable(initData);
             initTable.setRowSorter(FilingInit.RowSorter(initTable));
         } else {
             initTable = new JTable(initData);

@@ -11,7 +11,7 @@ public class Start {
 
     static Path saveFilePath = Paths.get(System.getProperty("user.home"));//Example
     static String version = "1.4";
-    static String aboutText = "Dungeons & Dragons Combat Companion"+"\n"+"Created by JD Isenhart"+"\n"+"Larkspur, Colorado"+"\n"+"Version "+version;
+    static String aboutText = "Dungeons & Dragons Combat Companion" + "\n" + "Created by JD Isenhart" + "\n" + "Larkspur, Colorado" + "\n" + "Version " + version;
 
     public static void main(String[] args) {
         System.out.println("Isenhart D&D Combat Companion v" + version);
@@ -31,6 +31,16 @@ public class Start {
         System.out.println(String.valueOf(saveFilePath));
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
+                try {
+                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                        if ("Windows Vista".equals(info.getName())) {
+                            UIManager.setLookAndFeel(info.getClassName());
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    // If Nimbus is not available, you can set the GUI to another look and feel.
+                }
                 try {
                     GUIFrame.PaneFrameMain.createGUI();
                 } catch (IOException e) {
