@@ -18,7 +18,7 @@ public class GUIFrame {
     static GUIControl modStats = new GUIControl();
     static GUIIntiative init = new GUIIntiative();
     static GUILoot loot = new GUILoot();
-    static GUISpell spell = new GUISpell();
+//    static GUISpell spell = new GUISpell();
 
     public static class PaneFrameMain implements ChangeListener {
 
@@ -98,13 +98,13 @@ public class GUIFrame {
                     mainFrame.repaint();
                     loot.updateStats();
                     break;
-                case 5:
-                    System.out.println(" (Spells)");
-                    mainFrame.setJMenuBar(spell.getTheMenuBar());
-                    mainFrame.revalidate();
-                    mainFrame.repaint();
-                    spell.updateStats();
-                    break;
+//                case 5:
+//                    System.out.println(" (Spells)");
+//                    mainFrame.setJMenuBar(spell.getTheMenuBar());
+//                    mainFrame.revalidate();
+//                    mainFrame.repaint();
+//                    spell.updateStats();
+//                    break;
 
             }
         }

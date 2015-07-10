@@ -87,6 +87,7 @@ public class FilingMain {
         playerData.get(player).put("Kills", 0);
         playerData.get(player).put("Healing", 0);
         playerData.get(player).put("Health", 0);
+        playerData.get(player).put("BR", 0);
         HashMap casters = (HashMap) playerData.get("Spells").get("Casters");
         casters.put(player, new Object[][]{});
         playerData.get("Spells").remove("Casters");

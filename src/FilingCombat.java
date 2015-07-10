@@ -23,6 +23,32 @@ public class FilingCombat {
     static HashMap<String, HashMap> incomingSaveData = null;
     static Object[][] columnData;
 
+    public static HashMap readSave() {
+        HashMap incomingSaveData = null;
+        try {
+            FileInputStream fileIn = new FileInputStream(String.valueOf(Start.saveFilePath));
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            incomingSaveData = (HashMap<String, HashMap>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (Exception i) {
+            i.printStackTrace();
+        }
+        return incomingSaveData;
+    }
+
+    public static void writeFile(HashMap saveData) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(String.valueOf(Start.saveFilePath));
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(saveData);
+            out.close();
+            fileOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static Object[] columnHeadersAS() {
         return new Object[]{"Player", "BR", "Damage Done", "Kills", "Healing Done", "Health"};
     }
@@ -82,29 +108,31 @@ public class FilingCombat {
     }
 
     public static void changeCS(int Person, int Dam, int Kill, int Healing, int health, boolean healthy) { //Append new damage to file
+        HashMap<String, HashMap> saveData = readSave();
         int totalDam;
         int totalKill;
         int totalHealing, totalBR;
+        System.out.println(String.valueOf(saveData.get("Players").get(Person)));
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
             System.out.println("Person Mapping: (Combat Statistics)");
-            System.out.println(mapper.writeValueAsString(incomingSaveData.get(incomingSaveData.get("Players").get(Person))));
+            System.out.println(mapper.writeValueAsString(incomingSaveData.get(saveData.get("Players").get(Person))));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        totalDam = Integer.parseInt(String.valueOf(incomingSaveData.get(incomingSaveData.get("Players").get(Person)).get("Damage"))) + Dam;
-        totalKill = Integer.parseInt(String.valueOf(incomingSaveData.get(incomingSaveData.get("Players").get(Person)).get("Kills"))) + Kill;
-        totalHealing = Integer.parseInt(String.valueOf(incomingSaveData.get(incomingSaveData.get("Players").get(Person)).get("Healing"))) + Healing;
-        totalBR = (int) (Integer.parseInt(String.valueOf(incomingSaveData.get(incomingSaveData.get("Players").get(Person)).get("BR"))) + (Dam * 2) + ((double) Healing * 2.1) + (Kill * 6));
-        incomingSaveData.get(incomingSaveData.get("Players").get(Person)).remove("Damage");
-        incomingSaveData.get(incomingSaveData.get("Players").get(Person)).put("Damage", totalDam);
-        incomingSaveData.get(incomingSaveData.get("Players").get(Person)).remove("Kills");
-        incomingSaveData.get(incomingSaveData.get("Players").get(Person)).put("Kills", totalKill);
-        incomingSaveData.get(incomingSaveData.get("Players").get(Person)).remove("Healing");
-        incomingSaveData.get(incomingSaveData.get("Players").get(Person)).put("Healing", totalHealing);
-        incomingSaveData.get(incomingSaveData.get("Players").get(Person)).remove("BR");
-        incomingSaveData.get(incomingSaveData.get("Players").get(Person)).put("BR", totalBR);
+        totalDam = Integer.parseInt(String.valueOf(incomingSaveData.get(saveData.get("Players").get(Person)).get("Damage"))) + Dam;
+        totalKill = Integer.parseInt(String.valueOf(incomingSaveData.get(saveData.get("Players").get(Person)).get("Kills"))) + Kill;
+        totalHealing = Integer.parseInt(String.valueOf(incomingSaveData.get(saveData.get("Players").get(Person)).get("Healing"))) + Healing;
+        totalBR = (int) (Integer.parseInt(String.valueOf(incomingSaveData.get(saveData.get("Players").get(Person)).get("BR"))) + (Dam * 2) + ((double) Healing * 2.1) + (Kill * 6)) + 0;
+        incomingSaveData.get(saveData.get("Players").get(Person)).remove("Damage");
+        incomingSaveData.get(saveData.get("Players").get(Person)).put("Damage", totalDam);
+        incomingSaveData.get(saveData.get("Players").get(Person)).remove("Kills");
+        incomingSaveData.get(saveData.get("Players").get(Person)).put("Kills", totalKill);
+        incomingSaveData.get(saveData.get("Players").get(Person)).remove("Healing");
+        incomingSaveData.get(saveData.get("Players").get(Person)).put("Healing", totalHealing);
+        incomingSaveData.get(saveData.get("Players").get(Person)).remove("BR");
+        incomingSaveData.get(saveData.get("Players").get(Person)).put("BR", totalBR);
 
         if (healthy) {
             incomingSaveData.get(incomingSaveData.get("Players").get(Person)).remove("Health");
