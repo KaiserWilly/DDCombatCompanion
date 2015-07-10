@@ -100,7 +100,7 @@ public class GUIControl implements ActionListener, ItemListener {
         dataDC.setRowHeight(15);
         dataDC.setRowSorter(FilingCombat.BRSorter(dataDC));
         dataPaneDC = new JScrollPane(dataDC);
-        dataPaneDC.setMaximumSize(new Dimension(dimX, 150));
+        dataPaneDC.setMaximumSize(new Dimension(dimX, 175));
         dataPaneDC.setLocation(25, 25);
         Stats.add(dataPaneDC);
 
@@ -506,7 +506,7 @@ public class GUIControl implements ActionListener, ItemListener {
         dataDC.setRowHeight(15);
         dataDC.setRowSorter(FilingCombat.BRSorter(dataDC));
         dataPaneDC = new JScrollPane(dataDC);
-        dataPaneDC.setMaximumSize(new Dimension(dimX, 150));
+        dataPaneDC.setMaximumSize(new Dimension(dimX, 175));
         dataPaneDC.setLocation(25, 25);
         Stats.add(dataPaneDC);
 

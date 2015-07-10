@@ -91,7 +91,7 @@ public class GUICombat implements ActionListener {
             }
         }
         dataPaneDC = new JScrollPane(dataDC);
-        dataPaneDC.setMaximumSize(new Dimension(dimX, 335));
+        dataPaneDC.setMaximumSize(new Dimension(dimX, 350));
 
         dataPaneDC.setLocation(25, 25);
         CStats.add(dataPaneDC);
@@ -298,7 +298,7 @@ public class GUICombat implements ActionListener {
             }
         }
         dataPaneDC = new JScrollPane(dataDC);
-        dataPaneDC.setMaximumSize(new Dimension(dimX, 335));
+        dataPaneDC.setMaximumSize(new Dimension(dimX, 350));
 
         dataPaneDC.setLocation(25, 25);
 

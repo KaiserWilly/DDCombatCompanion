@@ -97,7 +97,7 @@ public class GUISpell implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == aboutMenu) {
+        if (e.getSource() == about) {
             JOptionPane.showMessageDialog(about, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
         if (e.getSource() == addSpell) {

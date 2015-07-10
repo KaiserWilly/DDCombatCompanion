@@ -1,3 +1,7 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -11,9 +15,12 @@ import java.util.Map;
  * Created by J.D. Isenhart on 6/10/2015
  * 7:44 PM
  */
-public class FilingMain {
+public class FilingMain implements ActionListener {
     static String[] playerArray;
     static String[] playerArrayNE;
+    public JMenuItem about;
+    public JMenuBar initMenu;
+    public JMenu aboutMenu;
 
     public static void genPlayerArrays() {
         HashMap<String, HashMap> incomingSaveData = FilingLoot.readSave();
@@ -27,6 +34,7 @@ public class FilingMain {
 
         }
     }
+
     public static void createSave() {
         Map<String, HashMap> newMap = new HashMap<String, HashMap>();
         newMap.put("Players", new HashMap<Integer, String>());
@@ -160,5 +168,32 @@ public class FilingMain {
             blankMap.put(i, names.get(i));
         }
         return blankMap;
+    }
+
+    public JPanel showBlankPane() {
+        int dimX = 1366, dimY = 700;
+        JPanel base = new JPanel();
+        base.setBackground(Color.WHITE);
+        base.setSize(dimX, dimY);
+
+        return base;
+    }
+
+    public JMenuBar defaultMenuBar() {
+        initMenu = new JMenuBar();
+        aboutMenu = new JMenu("About");
+        aboutMenu.addActionListener(this);
+        about = new JMenuItem("About the Program");
+        about.addActionListener(this);
+        aboutMenu.add(about);
+        initMenu.add(aboutMenu);
+        return initMenu;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == about) {
+            JOptionPane.showMessageDialog(about, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
+        }
     }
 }

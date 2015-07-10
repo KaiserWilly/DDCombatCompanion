@@ -18,7 +18,8 @@ public class GUIFrame {
     static GUIControl modStats = new GUIControl();
     static GUIIntiative init = new GUIIntiative();
     static GUILoot loot = new GUILoot();
-//    static GUISpell spell = new GUISpell();
+    static FilingMain fMain = new FilingMain();
+    static GUISpell spell = new GUISpell();
 
     public static class PaneFrameMain implements ChangeListener {
 
@@ -49,10 +50,11 @@ public class GUIFrame {
             tPane = new JTabbedPane();
             tPane.addTab("Combat Control", null, modStats.ModStatistics(), "Use this table to control stats during Combat");
             tPane.addTab("Combat Statistics", null, cStatistics, "Combat Statistics");
-            tPane.addTab("Initiative", null, init.InitiativePanel(), "Generate your Initiative lists!");
             tPane.addTab("Party Statistics", null, pStatistics, "Party Statistics");
+            tPane.addTab("Initiative", null, init.InitiativePanel(), "Generate your Initiative lists!");
             tPane.addTab("Loot", null, loot.lootPanel(), "Track your loot!");
-//            tPane.addTab("Spells", null, spell.SpellDisplay(), "Track your Spells!");
+            tPane.addTab("Spells", null, fMain.showBlankPane()/*spell.SpellDisplay()*/, "Track your Spells!");
+            tPane.addTab("XP", null, fMain.showBlankPane(), "XP and Leveling");
             tPane.setSize(1366, 700);
             tPane.addChangeListener(this);
             base.add(tPane);
@@ -79,18 +81,19 @@ public class GUIFrame {
                     comStats.updateStats();
                     break;
                 case 2:
-                    System.out.println(" (Initiative)");
-                    mainFrame.setJMenuBar(init.initMenuBar());
-                    mainFrame.revalidate();
-                    mainFrame.repaint();
-                    init.loadInitTable();
-                case 3:
                     System.out.println(" (Party Statistics)");
                     mainFrame.setJMenuBar(partyStats.pMenuBar());
                     mainFrame.revalidate();
                     mainFrame.repaint();
                     partyStats.UpdateStats();
                     break;
+                case 3:
+                    System.out.println(" (Initiative)");
+                    mainFrame.setJMenuBar(init.initMenuBar());
+                    mainFrame.revalidate();
+                    mainFrame.repaint();
+                    init.loadInitTable();
+
                 case 4:
                     System.out.println(" (Loot)");
                     mainFrame.setJMenuBar(loot.lootMenuBar());
@@ -98,14 +101,17 @@ public class GUIFrame {
                     mainFrame.repaint();
                     loot.updateStats();
                     break;
-//                case 5:
-//                    System.out.println(" (Spells)");
-//                    mainFrame.setJMenuBar(spell.getTheMenuBar());
-//                    mainFrame.revalidate();
-//                    mainFrame.repaint();
-//                    spell.updateStats();
-//                    break;
-
+                case 5:
+                    System.out.println(" (Spells)");
+                    mainFrame.setJMenuBar(spell.getTheMenuBar());
+                    mainFrame.revalidate();
+                    mainFrame.repaint();
+                    spell.updateStats();
+                    break;
+                default:
+                    mainFrame.setJMenuBar(fMain.defaultMenuBar());
+                    mainFrame.revalidate();
+                    mainFrame.repaint();
             }
         }
     }
