@@ -1,6 +1,5 @@
 import org.apache.commons.io.FilenameUtils;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
@@ -17,24 +16,24 @@ import java.util.List;
 public class FilingCombat {
     static Object[][] FriendComStats;
     static Object[][] EnemyComStats;
-    static List<String> playerList;
     static String[] playerArray;
     static String[] playerArrayNE;
     static HashMap<String, HashMap> incomingSaveData = null;
     static Object[][] columnData;
+    ObjectMapper mapper = new ObjectMapper();
 
     public static HashMap readSave() {
-        HashMap incomingSaveData = null;
+        HashMap SaveData = null;
         try {
             FileInputStream fileIn = new FileInputStream(String.valueOf(Start.saveFilePath));
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            incomingSaveData = (HashMap<String, HashMap>) in.readObject();
+            SaveData = (HashMap<String, HashMap>) in.readObject();
             in.close();
             fileIn.close();
         } catch (Exception i) {
             i.printStackTrace();
         }
-        return incomingSaveData;
+        return SaveData;
     }
 
     public static void writeFile(HashMap saveData) {
@@ -60,19 +59,7 @@ public class FilingCombat {
         FriendComStats = new Object[][]{
                 {0, 0, 0}
         };
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            FileInputStream fileIn = new FileInputStream(String.valueOf(Start.saveFilePath));
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            incomingSaveData = (HashMap<String, HashMap>) in.readObject();
-            in.close();
-            fileIn.close();
-
-
-            mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
-        } catch (Exception i) {
-            i.printStackTrace();
-        }
+        incomingSaveData = readSave();
         playerArray = new String[incomingSaveData.get("Players").size()];
         playerArrayNE = new String[(incomingSaveData.get("Players").size())];
         for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {
@@ -103,51 +90,7 @@ public class FilingCombat {
             FriendComStats[0][2] = Integer.parseInt("0" + String.valueOf(FriendComStats[0][2])) + Integer.parseInt("0" + String.valueOf(columnData[i][4]));
         }
         FilingParty.Dam = Integer.parseInt("0" + String.valueOf(FriendComStats[0][0]));
-        System.out.println("Done loading Combat Statistics Table!");
         return columnData;
-    }
-
-    public static void changeCS(int Person, int Dam, int Kill, int Healing, int health, boolean healthy) { //Append new damage to file
-        HashMap<String, HashMap> saveData = readSave();
-        int totalDam;
-        int totalKill;
-        int totalHealing, totalBR;
-        System.out.println(String.valueOf(saveData.get("Players").get(Person)));
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
-            System.out.println("Person Mapping: (Combat Statistics)");
-            System.out.println(mapper.writeValueAsString(incomingSaveData.get(saveData.get("Players").get(Person))));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        totalDam = Integer.parseInt(String.valueOf(incomingSaveData.get(saveData.get("Players").get(Person)).get("Damage"))) + Dam;
-        totalKill = Integer.parseInt(String.valueOf(incomingSaveData.get(saveData.get("Players").get(Person)).get("Kills"))) + Kill;
-        totalHealing = Integer.parseInt(String.valueOf(incomingSaveData.get(saveData.get("Players").get(Person)).get("Healing"))) + Healing;
-        totalBR = (int) (Integer.parseInt(String.valueOf(incomingSaveData.get(saveData.get("Players").get(Person)).get("BR"))) + (Dam * 2) + ((double) Healing * 2.1) + (Kill * 6)) + 0;
-        incomingSaveData.get(saveData.get("Players").get(Person)).remove("Damage");
-        incomingSaveData.get(saveData.get("Players").get(Person)).put("Damage", totalDam);
-        incomingSaveData.get(saveData.get("Players").get(Person)).remove("Kills");
-        incomingSaveData.get(saveData.get("Players").get(Person)).put("Kills", totalKill);
-        incomingSaveData.get(saveData.get("Players").get(Person)).remove("Healing");
-        incomingSaveData.get(saveData.get("Players").get(Person)).put("Healing", totalHealing);
-        incomingSaveData.get(saveData.get("Players").get(Person)).remove("BR");
-        incomingSaveData.get(saveData.get("Players").get(Person)).put("BR", totalBR);
-
-        if (healthy) {
-            incomingSaveData.get(incomingSaveData.get("Players").get(Person)).remove("Health");
-            incomingSaveData.get(incomingSaveData.get("Players").get(Person)).put("Health", health);
-        }
-        try {
-            FileOutputStream fileOut = new FileOutputStream(String.valueOf(Start.saveFilePath));
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(incomingSaveData);
-            out.close();
-            fileOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("Done updating Combat Statistics table!");
     }
 
     public static Object[] totalStatsRowData() {
@@ -168,7 +111,6 @@ public class FilingCombat {
                         Champs = Champs + " & " + columnData[i][0].toString();
                     }
                 }
-                System.out.println("Done loading Damage Champion!");
                 if (Champs.length() > 20) {
                     return "Many";
                 }
@@ -193,7 +135,6 @@ public class FilingCombat {
                     Champs = Champs + " & " + columnData[i][0].toString();
                 }
             }
-            System.out.println("Done loading healing champion!");
             if (Champs.length() > 20) {
                 return "Many";
             }
@@ -215,7 +156,6 @@ public class FilingCombat {
                     Champs = Champs + " & " + columnData[i][0].toString();
                 }
             }
-            System.out.println("Done loading Kill champion!");
             if (Champs.length() > 20) {
                 return "Many";
             }
@@ -223,82 +163,6 @@ public class FilingCombat {
             return "Error: Kill Champ";
         }
         return Champs;
-    }
-
-    public static void renamePlayer(String playerPre, String playerPro) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
-        List<String> PlayerOrder = new ArrayList<String>() {
-        };
-        HashMap<String, HashMap> playerData = null;
-        try {
-            FileInputStream fileIn = new FileInputStream(String.valueOf(Start.saveFilePath));
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            playerData = (HashMap<String, HashMap>) in.readObject();
-            in.close();
-            fileIn.close();
-
-        } catch (Exception e) {
-            System.out.println("Error in File Reading; Filing.renamePlayer");
-            e.printStackTrace();
-        }
-        List<String> playerOrder = new ArrayList<String>();
-        HashMap data = playerData.get(playerPre);
-        for (int i = 0; i < playerData.get("Players").size(); i++) {
-            playerOrder.add(String.valueOf(playerData.get("Players").get(i)));
-
-        }
-        playerOrder.remove(playerPre);
-        playerOrder.remove("Enemy");
-        playerOrder.add(playerPro);
-        java.util.Collections.sort(playerOrder);
-        playerOrder.add(playerOrder.size(), "Enemy");
-        playerData.remove("Players");
-        playerData.put("Players", newPlayerMap(playerOrder));
-        try {
-            System.out.println(mapper.writeValueAsString(playerData.get("Players")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        playerData.remove(playerPre);
-        playerData.put(playerPro, data);
-        try {
-            System.out.println("Save Path: " + String.valueOf(Start.saveFilePath));
-            FileOutputStream fileOut = new FileOutputStream(String.valueOf(Start.saveFilePath));
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(playerData);
-            out.close();
-            fileOut.close();
-        } catch (Exception e) {
-            System.out.println("Error in File Creation; New Save; Filing.renamePlayer");
-            e.printStackTrace();
-        }
-        System.out.println("Done renaming player!");
-    }
-
-    public static HashMap newPlayerMap(List<String> names) {
-        HashMap<Integer, String> blankMap = new HashMap<>();
-        for (int i = 0; i < names.size(); i++) {
-            blankMap.put(i, names.get(i));
-        }
-        return blankMap;
-    }
-
-    public static void removeKill(String name) {
-        int totalKill;
-        totalKill = Integer.parseInt(String.valueOf(incomingSaveData.get(name).get("Kills"))) - 1;
-        incomingSaveData.get(name).remove("Kills");
-        incomingSaveData.get(name).put("Kills", totalKill);
-        try {
-            FileOutputStream fileOut = new FileOutputStream(String.valueOf(Start.saveFilePath));
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(incomingSaveData);
-            out.close();
-            fileOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("Done removing a kill from the player " + name + "!");
     }
 
     public static TableRowSorter BRSorter(JTable Table) {

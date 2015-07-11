@@ -20,6 +20,7 @@ public class GUIFrame {
     static GUILoot loot = new GUILoot();
     static FilingMain fMain = new FilingMain();
     static GUISpell spell = new GUISpell();
+    static GUIXP xp = new GUIXP();
 
     public static class PaneFrameMain implements ChangeListener {
 
@@ -54,7 +55,7 @@ public class GUIFrame {
             tPane.addTab("Initiative", null, init.InitiativePanel(), "Generate your Initiative lists!");
             tPane.addTab("Loot", null, loot.lootPanel(), "Track your loot!");
             tPane.addTab("Spells", null, fMain.showBlankPane()/*spell.SpellDisplay()*/, "Track your Spells!");
-            tPane.addTab("XP", null, fMain.showBlankPane(), "XP and Leveling");
+            tPane.addTab("XP", null, xp.XPpanel(), "XP and Leveling");
             tPane.setSize(1366, 700);
             tPane.addChangeListener(this);
             base.add(tPane);
@@ -106,7 +107,14 @@ public class GUIFrame {
                     mainFrame.setJMenuBar(spell.getTheMenuBar());
                     mainFrame.revalidate();
                     mainFrame.repaint();
-                    spell.updateStats();
+//                    spell.updateStats();
+                    break;
+                case 6:
+                    System.out.println(" (XP)");
+                    mainFrame.setJMenuBar(xp.XPMenuBar());
+                    mainFrame.revalidate();
+                    mainFrame.repaint();
+                    xp.updateStats();
                     break;
                 default:
                     mainFrame.setJMenuBar(fMain.defaultMenuBar());

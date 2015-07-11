@@ -305,7 +305,7 @@ public class GUIControl implements ActionListener, ItemListener {
         if (e.getSource() == removeKill) {
             String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Kill", JOptionPane.PLAIN_MESSAGE, null, FilingCombat.playerArray, null);
             if (name.length() != 0) {
-                FilingCombat.removeKill(name);
+                FilingControl.removeKill(name);
             }
         }
         if (e.getSource() == setStat) {
@@ -346,7 +346,7 @@ public class GUIControl implements ActionListener, ItemListener {
                     return;
                 }
                 if (nameInt.length() != 0 && value > -1) {
-                    FilingParty.SetPartyStat(name, value);
+                    FilingControl.SetPartyStat(name, value);
                 }
             }
         }
@@ -364,18 +364,18 @@ public class GUIControl implements ActionListener, ItemListener {
                     KillV = 0;
                     per = playerHeal.getSelectedIndex();
 
-                    FilingParty.writePartyUpdate(1, 0, 0, 0, 0, 0);
+                    FilingControl.writePartyUpdate(1, 0, 0, 0, 0, 0);
                 } else if (e.getSource() == updateHealth) {
                     per = playerHealth.getSelectedIndex();
                     health = Integer.parseInt(healthDC.getText());
                     healthy = true;
                 } else {
                     damage = Integer.parseInt(damDC.getText());
-                    FilingParty.writePartyUpdate(1, 0, 0, 0, 0, 0);
+                    FilingControl.writePartyUpdate(1, 0, 0, 0, 0, 0);
                     per = playerDam.getSelectedIndex();
                 }
 
-                FilingCombat.changeCS(per, damage, KillV, healing, health, healthy);
+                FilingControl.changeCS(per, damage, KillV, healing, health, healthy);
             } catch (NumberFormatException e1) {
                 System.out.println("Invalid Input data");
             }
@@ -411,7 +411,7 @@ public class GUIControl implements ActionListener, ItemListener {
                     } else if (Arrays.asList(FilingCombat.playerArray).contains(namePro)) {
                         JOptionPane.showMessageDialog(Stats, "Names can not be duplicate of an already present name", "Name Error", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        FilingCombat.renamePlayer(namePre, namePro);
+                        FilingControl.renamePlayer(namePre, namePro);
                     }
                 }
             }
@@ -423,25 +423,28 @@ public class GUIControl implements ActionListener, ItemListener {
                 if (name.length() != 0) {
                     try {
                         xp = Integer.parseInt(name);
+                        FilingXP.addXPAll(xp);
                     } catch (Exception e1) {
                         JOptionPane.showMessageDialog(Stats, "Invalid XP Amount", "XP Error", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             } else if (e.getSource() == goDice) {
                 dice = 1;
+                FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
             } else if (e.getSource() == goSword) {
                 dice = 1;
                 sword = 1;
+                FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
             } else if (e.getSource() == goArrow) {
                 dice = 1;
                 arrow = 1;
             } else if (e.getSource() == goSpell) {
-                dice = 1;
                 spell = 1;
+                FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
             } else if (e.getSource() == goHit) {
                 hit = 1;
+                FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
             }
-            FilingParty.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
         }
         updateStats();
 

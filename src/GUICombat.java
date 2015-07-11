@@ -20,7 +20,7 @@ public class GUICombat implements ActionListener {
     public static JLabel FCS, ECS, DamChamp, KillChamp, HealChamp;
     public static DefaultTableModel modelDC, modelFCS, modelECS;
     public static JMenuBar theMenuBar;
-    public static JMenu menuFile,aboutMenu;
+    public static JMenu menuFile, aboutMenu;
     public static JMenuItem removeKill, about;
     public static Font CSCellContent = new Font("Franklin Gothic Medium", Font.BOLD, 30);
     static Font CSPSHeading = new Font("Verdana", Font.ITALIC, 20);
@@ -82,7 +82,7 @@ public class GUICombat implements ActionListener {
         dataDC.setRowHeight(RowHeight);
         dataDC.setRowSorter(FilingCombat.BRSorter(dataDC));
         TableColumn column;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < dataDC.getColumnCount(); i++) {
             column = dataDC.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(300); //third column is bigger
@@ -236,7 +236,7 @@ public class GUICombat implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == about){
+        if (e.getSource() == about) {
             JOptionPane.showMessageDialog(CStats, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
     }
@@ -416,7 +416,7 @@ public class GUICombat implements ActionListener {
         CStats.add(dataPaneDC);
         CStats.revalidate();
         CStats.repaint();
-         System.out.println("Done updating Combat Statistics tab!");
+        System.out.println("Done updating Combat Statistics tab!");
     }
 
 }

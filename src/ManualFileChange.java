@@ -1,8 +1,7 @@
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 
 import javax.swing.*;
-import java.io.*;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -16,45 +15,56 @@ public class ManualFileChange { //Used to analyze and rewrite save file if corru
     static JPanel base;
     static Path saveLocat;
     static HashMap<String, HashMap> incomingSaveData;
+    static ObjectMapper mapper = new ObjectMapper();
 
     public static void main(String[] args) throws IOException {
         newSave = new JFileChooser();
         int returnVal = newSave.showDialog(base, "Load Save");
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            saveLocat = Paths.get(String.valueOf(newSave.getSelectedFile()));
+            Start.saveFilePath = Paths.get(String.valueOf(newSave.getSelectedFile()));
         }
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            FileInputStream fileIn = new FileInputStream(String.valueOf(saveLocat));
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            incomingSaveData = (HashMap<String, HashMap>) in.readObject();
-            in.close();
-            fileIn.close();
-            mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
-        } catch (Exception i) {
-            i.printStackTrace();
-        }
-        HashMap lootData = incomingSaveData.get("Loot");
-        Object[][] lootTable = (Object[][]) lootData.get("Data");
-        Object[][]newLootTable = new Object[lootTable.length][3];
-        for (int i = 0;i<lootTable.length;i++){
-            newLootTable[i][0] = lootTable[i][0];
-            newLootTable[i][1] = lootTable[i][1];
-            newLootTable[i][2] = 1;
-        }
-        lootData.remove("Data");
-        lootData.put("Data",newLootTable);
-        incomingSaveData.remove("Loot");
-        incomingSaveData.put("Loot", lootData);
+        incomingSaveData = FilingMain.readSave();
+        //End Loading File
+
+//        HashMap XPdata = new HashMap();
+//        Object[][] playerData = new Object[][]{
+//                {"Brody", 2575, 2},
+//                {"Chris", 2275, 2},
+//                {"Daniel", 2575, 2},
+//                {"Jared", 2500, 2},
+//                {"JD", 2575, 2},
+//                {"Ryan", 2575, 2},
+//                {"Walker", 0, 1}
+//
+//        };
+//        Object[][] levels = new Object[][]{
+//                {"2", 1000},
+//                {"3", 3000},
+//                {"4", 6000},
+//                {"5", 10000},
+//                {"6", 15000},
+//                {"7", 21000},
+//                {"8", 28000},
+//                {"9", 36000},
+//                {"10", 45000},
+//                {"11", 55000},
+//                {"12", 66000},
+//                {"13", 78000},
+//                {"14", 91000},
+//                {"15", 105000},
+//                {"16", 120000},
+//                {"17", 136000},
+//                {"18", 153000},
+//                {"19", 171000},
+//                {"20", 190000},
+//        };
+//        XPdata.put("XP", playerData);
+//        XPdata.put("Levels", levels);
+//        incomingSaveData.put("XP",XPdata);
         System.out.println(mapper.writeValueAsString(incomingSaveData));
-        try {
-            FileOutputStream fileOut = new FileOutputStream(String.valueOf(saveLocat));
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(incomingSaveData);
-            out.close();
-            fileOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+
+        //Write File
+        FilingMain.writeFile(incomingSaveData);
     }
 }
