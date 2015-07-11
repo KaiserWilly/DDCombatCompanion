@@ -34,11 +34,18 @@ public class ManualFileChange { //Used to analyze and rewrite save file if corru
         } catch (Exception i) {
             i.printStackTrace();
         }
-        HashMap walker = (HashMap) incomingSaveData.get("Walker");
-        walker.remove("BR");
-        walker.put("BR",0);
-        incomingSaveData.remove("Walker");
-        incomingSaveData.put("Walker",walker);
+        HashMap lootData = incomingSaveData.get("Loot");
+        Object[][] lootTable = (Object[][]) lootData.get("Data");
+        Object[][]newLootTable = new Object[lootTable.length][3];
+        for (int i = 0;i<lootTable.length;i++){
+            newLootTable[i][0] = lootTable[i][0];
+            newLootTable[i][1] = lootTable[i][1];
+            newLootTable[i][2] = 1;
+        }
+        lootData.remove("Data");
+        lootData.put("Data",newLootTable);
+        incomingSaveData.remove("Loot");
+        incomingSaveData.put("Loot", lootData);
         System.out.println(mapper.writeValueAsString(incomingSaveData));
         try {
             FileOutputStream fileOut = new FileOutputStream(String.valueOf(saveLocat));

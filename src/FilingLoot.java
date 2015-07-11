@@ -118,7 +118,7 @@ public class FilingLoot {
         if (savedTable.length == 0) {
             return;
         }
-        Object[][] newTable = new Object[savedTable.length - 1][2];
+        Object[][] newTable = new Object[savedTable.length - 1][3];
         int rowModifier = 0;
         for (int i = 0; i < savedTable.length; i++) {
             if (i == itemRowIndex) {
@@ -126,6 +126,7 @@ public class FilingLoot {
             } else {
                 newTable[i + rowModifier][0] = savedTable[i][0];
                 newTable[i + rowModifier][1] = savedTable[i][1];
+                newTable[i + rowModifier][2] = savedTable[i][2];
             }
         }
         saveData.get("Loot").remove("Data");
