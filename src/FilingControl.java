@@ -95,7 +95,6 @@ public class FilingControl {
         totalArrows = Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Arrows"))) + arrow;
         totalSpells = Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Spells"))) + spell;
         totalHits = Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Hits"))) + hit;
-        totalXP = Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("XP"))) + XP;
         incomingSaveData.get("Party").remove("Dice");
         incomingSaveData.get("Party").put("Dice", totalDice);
         incomingSaveData.get("Party").remove("Swords");
@@ -106,8 +105,9 @@ public class FilingControl {
         incomingSaveData.get("Party").put("Spells", totalSpells);
         incomingSaveData.get("Party").remove("Hits");
         incomingSaveData.get("Party").put("Hits", totalHits);
-        incomingSaveData.get("Party").remove("XP");
-        incomingSaveData.get("Party").put("XP", totalXP);
+        if (incomingSaveData.get("Party").containsKey("XP")) {
+            incomingSaveData.get("Party").remove("XP");
+        }
 
         writeFile(incomingSaveData);
         System.out.println("Done updating party Statistics!");

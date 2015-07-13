@@ -101,17 +101,21 @@ public class FilingMain implements ActionListener {
         partyStats.put("Swords", 0);
         partyStats.put("Arrows", 0);
         partyStats.put("Spells", 0);
-        partyStats.put("XP", 0);
         partyStats.put("Hits", 0);
         newMap.put("Party", partyStats);
         HashMap loot = new HashMap();
         loot.put("Data", new Object[][]{});
         loot.put("Notes", new String());
         newMap.put("Loot", loot);
+        HashMap xp = new HashMap();
+        xp.put("XP", new Object[][]{});
+        xp.put("Levels", new Values().getDefaultXPLevels());
+        newMap.put("XP", xp);
         writeFile(newMap);
     }
 
     public static void addPlayer(String player) {
+        FilingXP.addPlayer(player);
         List<String> PlayerOrder = new ArrayList<String>() {
         };
         incomingSaveData = readSave();
@@ -136,13 +140,14 @@ public class FilingMain implements ActionListener {
         casters.put(player, new Object[][]{});
         incomingSaveData.get("Spells").remove("Casters");
         incomingSaveData.get("Spells").put("Casters", casters);
-        FilingXP.addPlayer(player);
+
         writeFile(incomingSaveData);
 
         System.out.println("Done adding player to the Game!");
     }
 
     public static void removePlayer(String player) {
+        FilingXP.removePlayer(player);
         List<String> PlayerOrder = new ArrayList<String>() {
         };
         incomingSaveData = readSave();
@@ -163,7 +168,7 @@ public class FilingMain implements ActionListener {
         casters.remove(player);
         incomingSaveData.get("Spells").remove("Casters");
         incomingSaveData.get("Spells").put("Casters", casters);
-        FilingXP.removePlayer(player);
+
         writeFile(incomingSaveData);
         System.out.println("Done removing player from the Game!");
     }

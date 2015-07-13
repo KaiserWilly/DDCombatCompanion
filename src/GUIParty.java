@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
  * 12:41 AM
  */
 public class GUIParty implements ActionListener {
+    public static int dimX = 1366, dimY = 700;
+    static Font PSPartyContent = new Font("Trebuchet MS", Font.PLAIN, 20);
     public JPanel PStats;
     public JMenuBar pStatsMenuBar;
     public JMenu aboutMenu;
@@ -20,8 +22,6 @@ public class GUIParty implements ActionListener {
     public GroupLayout layPS;
     public JLabel hitPercentage, avgDam;
     public Font PSCellContent = new Font("Franklin Gothic Medium", Font.BOLD, 30);
-    static Font PSPartyContent = new Font("Trebuchet MS", Font.PLAIN, 20);
-    public static int dimX = 1366, dimY = 700;
 
     public JMenuBar pMenuBar() {
         pStatsMenuBar = new JMenuBar();
@@ -126,7 +126,7 @@ public class GUIParty implements ActionListener {
                                 .addComponent(avgDam)
                                 .addComponent(psAvgPane))
         );
-        System.out.println("Done loading party Statistics Tab!");
+        System.out.println("Done loading Party Statistics Tab!");
         return PStats;
     }
 
@@ -217,7 +217,7 @@ public class GUIParty implements ActionListener {
         );
         PStats.revalidate();
         PStats.repaint();
-        System.out.println("Done updating party Statistics Tab!");
+        System.out.println("Done updating Party Statistics Tab!");
     }
 
     @Override

@@ -12,12 +12,12 @@ import java.util.Arrays;
 public class GUIControl implements ActionListener, ItemListener {
     public static int dimX = 1366, dimY = 700;
     public static int KillV = 0;
-    public static JPanel Stats;
+    public static JPanel Stats, initiative;
     public static JTextField damDC, healDC, healthDC;
     public static JComboBox playerDam, playerHeal, playerHealth;
     public static JButton goDC, goHeal, updateHealth, goDice, goSword, goArrow, goSpell, goHit, goXP;
     public static JCheckBox KillQ;
-    public static JLabel newDam, newHeal, HealthChange, Cstats, Pstats;
+    public static JLabel newDam, newHeal, HealthChange, Cstats, Pstats, init;
     public static JMenuBar statsMenuB;
     public static JMenu statsFile, aboutMenu;
     public static JMenuItem addPlayer, removePlayer, changeName, removeKill, setStat, about;
@@ -33,7 +33,6 @@ public class GUIControl implements ActionListener, ItemListener {
         statsMenuB = new JMenuBar();
         statsFile = new JMenu("File");
         aboutMenu = new JMenu("About");
-        aboutMenu.addActionListener(this);
         about = new JMenuItem("About the Program");
         about.addActionListener(this);
         aboutMenu.add(about);
@@ -60,7 +59,7 @@ public class GUIControl implements ActionListener, ItemListener {
     public JPanel ModStatistics() {
         Stats = new JPanel();
         Stats.setBackground(Color.WHITE);
-        Stats.setSize(dimX, dimY);
+        Stats.setSize(dimX, 900);
 
 
         modelDC = new DefaultTableModel(FilingCombat.rowDataAS(), FilingCombat.columnHeadersAS()) {
@@ -220,6 +219,13 @@ public class GUIControl implements ActionListener, ItemListener {
         Pstats.setFont(sHeading);
         Stats.add(Pstats);
 
+        initiative = new GUIIntiative().InitiativePanel();
+        Stats.add(initiative);
+
+        init = new JLabel("-Initiative-");
+        init.setFont(sHeading);
+        Stats.add(init);
+
         layStats = new GroupLayout(Stats);
         Stats.setLayout(layStats);
         layStats.setAutoCreateGaps(true);
@@ -260,46 +266,58 @@ public class GUIControl implements ActionListener, ItemListener {
                                                                 .addComponent(goXP))
                                         )
                         )
+                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(init)
+                                .addComponent(initiative))
+
         );
         layStats.setVerticalGroup(
                 layStats.createSequentialGroup()
-                        .addComponent(Cstats)
-                        .addComponent(dataPaneDC)
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(newDam)
-                                .addComponent(newHeal)
-                                .addComponent(HealthChange))
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(playerDam)
-                                .addComponent(playerHeal)
-                                .addComponent(playerHealth))
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(damDC)
-                                .addComponent(KillQ)
-                                .addComponent(healDC)
-                                .addComponent(healthDC))
+                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addComponent(Cstats)
+                                        .addComponent(init)
+                        )
+                        .addGroup(layStats.createParallelGroup()
+                                        .addGroup(layStats.createSequentialGroup()
+                                                        .addComponent(dataPaneDC)
+                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                .addComponent(newDam)
+                                                                .addComponent(newHeal)
+                                                                .addComponent(HealthChange))
+                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                .addComponent(playerDam)
+                                                                .addComponent(playerHeal)
+                                                                .addComponent(playerHealth))
+                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                .addComponent(damDC)
+                                                                .addComponent(KillQ)
+                                                                .addComponent(healDC)
+                                                                .addComponent(healthDC))
 
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(goDC)
-                                .addComponent(goHeal)
-                                .addComponent(updateHealth))
-                        .addComponent(Pstats)
-                        .addComponent(dataPSPane)
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(goDice)
-                                .addComponent(goSword)
-                                .addComponent(goArrow)
-                                .addComponent(goSpell)
-                                .addComponent(goHit)
-                                .addComponent(goXP))
+                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                .addComponent(goDC)
+                                                                .addComponent(goHeal)
+                                                                .addComponent(updateHealth))
+                                                        .addComponent(Pstats)
+                                                        .addComponent(dataPSPane)
+                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                .addComponent(goDice)
+                                                                .addComponent(goSword)
+                                                                .addComponent(goArrow)
+                                                                .addComponent(goSpell)
+                                                                .addComponent(goHit)
+                                                                .addComponent(goXP))
+                                        )
+                                        .addComponent(initiative)
+                        )
         );
-
+        System.out.println("Done loading Combat Control tab!");
         return Stats;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == aboutMenu) {
+        if (e.getSource() == about) {
             JOptionPane.showMessageDialog(about, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
         if (e.getSource() == removeKill) {
@@ -438,6 +456,7 @@ public class GUIControl implements ActionListener, ItemListener {
             } else if (e.getSource() == goArrow) {
                 dice = 1;
                 arrow = 1;
+                FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
             } else if (e.getSource() == goSpell) {
                 spell = 1;
                 FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
@@ -467,6 +486,7 @@ public class GUIControl implements ActionListener, ItemListener {
         Stats.remove(playerDam);
         Stats.remove(playerHeal);
         Stats.remove(playerHealth);
+        Stats.remove(initiative);
         damDC.setText("");
         healDC.setText("");
         healthDC.setText("");
@@ -551,6 +571,9 @@ public class GUIControl implements ActionListener, ItemListener {
         playerDam.setMaximumSize(new Dimension(200, 25));
         Stats.add(playerDam);
 
+        initiative = new GUIIntiative().InitiativePanel();
+        Stats.add(initiative);
+
         layStats = new GroupLayout(Stats);
         Stats.setLayout(layStats);
         layStats.setAutoCreateGaps(true);
@@ -591,38 +614,49 @@ public class GUIControl implements ActionListener, ItemListener {
                                                                 .addComponent(goXP))
                                         )
                         )
+                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(init)
+                                .addComponent(initiative))
+
         );
         layStats.setVerticalGroup(
                 layStats.createSequentialGroup()
-                        .addComponent(Cstats)
-                        .addComponent(dataPaneDC)
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(newDam)
-                                .addComponent(newHeal)
-                                .addComponent(HealthChange))
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(playerDam)
-                                .addComponent(playerHeal)
-                                .addComponent(playerHealth))
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(damDC)
-                                .addComponent(KillQ)
-                                .addComponent(healDC)
-                                .addComponent(healthDC))
+                        .addGroup(layStats.createParallelGroup()
+                                        .addGroup(layStats.createSequentialGroup()
+                                                        .addComponent(Cstats)
+                                                        .addComponent(dataPaneDC)
+                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                .addComponent(newDam)
+                                                                .addComponent(newHeal)
+                                                                .addComponent(HealthChange))
+                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                .addComponent(playerDam)
+                                                                .addComponent(playerHeal)
+                                                                .addComponent(playerHealth))
+                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                .addComponent(damDC)
+                                                                .addComponent(KillQ)
+                                                                .addComponent(healDC)
+                                                                .addComponent(healthDC))
 
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(goDC)
-                                .addComponent(goHeal)
-                                .addComponent(updateHealth))
-                        .addComponent(Pstats)
-                        .addComponent(dataPSPane)
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(goDice)
-                                .addComponent(goSword)
-                                .addComponent(goArrow)
-                                .addComponent(goSpell)
-                                .addComponent(goHit)
-                                .addComponent(goXP))
+                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                .addComponent(goDC)
+                                                                .addComponent(goHeal)
+                                                                .addComponent(updateHealth))
+                                                        .addComponent(Pstats)
+                                                        .addComponent(dataPSPane)
+                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                .addComponent(goDice)
+                                                                .addComponent(goSword)
+                                                                .addComponent(goArrow)
+                                                                .addComponent(goSpell)
+                                                                .addComponent(goHit)
+                                                                .addComponent(goXP))
+                                        )
+                                        .addGroup(layStats.createSequentialGroup()
+                                                .addComponent(init)
+                                                .addComponent(initiative))
+                        )
         );
 
         Stats.revalidate();

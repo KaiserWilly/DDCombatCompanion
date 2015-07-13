@@ -1,4 +1,5 @@
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class ManualFileChange { //Used to analyze and rewrite save file if corru
     static ObjectMapper mapper = new ObjectMapper();
 
     public static void main(String[] args) throws IOException {
+        mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
         newSave = new JFileChooser();
         int returnVal = newSave.showDialog(base, "Load Save");
         if (returnVal == JFileChooser.APPROVE_OPTION) {

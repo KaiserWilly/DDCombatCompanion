@@ -15,7 +15,7 @@ import java.util.Locale;
  */
 public class FilingXP {
     static HashMap<String, HashMap> incomingSaveData = null;
-    ObjectMapper mapper = new ObjectMapper();
+    static ObjectMapper mapper = new ObjectMapper();
 
     public static HashMap readSave() {
         HashMap SaveData = null;
@@ -65,15 +65,15 @@ public class FilingXP {
     public static Object[][] retXPTabData() {
         incomingSaveData = readSave();
         HashMap XPData = incomingSaveData.get("XP");
-        Object[][] levelTabDataRaw = (Object[][]) XPData.get("XP");
-        Object[][] levelTabData = new Object[levelTabDataRaw.length][3];
+        Object[][] xpTabDataRaw = (Object[][]) XPData.get("XP");
+        Object[][] xpTabData = new Object[xpTabDataRaw.length][3];
         DecimalFormat formatter = new DecimalFormat("#,###", DecimalFormatSymbols.getInstance(Locale.getDefault()));
-        for (int i = 0; i < levelTabDataRaw.length; i++) {
-            levelTabData[i][0] = levelTabDataRaw[i][0];
-            levelTabData[i][1] = formatter.format(Integer.parseInt(String.valueOf(levelTabDataRaw[i][1])));
-            levelTabData[i][2] = calcLevelFromXP(String.valueOf(levelTabData[i][0]), Integer.parseInt(String.valueOf(levelTabDataRaw[i][1])));
+        for (int i = 0; i < xpTabDataRaw.length; i++) {
+            xpTabData[i][0] = xpTabDataRaw[i][0];
+            xpTabData[i][1] = formatter.format(Integer.parseInt(String.valueOf(xpTabDataRaw[i][1])));
+            xpTabData[i][2] = calcLevelFromXP(String.valueOf(xpTabData[i][0]), Integer.parseInt(String.valueOf(xpTabDataRaw[i][1])));
         }
-        return levelTabData;
+        return xpTabData;
     }
 
     public static int calcLevelFromXP(String player, int XP) {
@@ -189,14 +189,14 @@ public class FilingXP {
         Object[][] oldPlayerXPdata = (Object[][]) XPData.get("XP");
         Object[][] nwPlayerXPdata = new Object[oldPlayerXPdata.length + 1][3];
         int nameConditioner = 0;
-        for (int i = 0; i < nwPlayerXPdata.length; i++) {
+        for (int i = 0; i < oldPlayerXPdata.length; i++) {
             nwPlayerXPdata[i + nameConditioner][0] = oldPlayerXPdata[i + nameConditioner][0];
             nwPlayerXPdata[i + nameConditioner][1] = oldPlayerXPdata[i + nameConditioner][1];
             nwPlayerXPdata[i + nameConditioner][2] = oldPlayerXPdata[i + nameConditioner][2];
         }
-        nwPlayerXPdata[oldPlayerXPdata.length][0] = oldPlayerXPdata[oldPlayerXPdata.length][0];
-        nwPlayerXPdata[oldPlayerXPdata.length][1] = oldPlayerXPdata[oldPlayerXPdata.length][1];
-        nwPlayerXPdata[oldPlayerXPdata.length][2] = oldPlayerXPdata[oldPlayerXPdata.length][2];
+        nwPlayerXPdata[oldPlayerXPdata.length][0] = player;
+        nwPlayerXPdata[oldPlayerXPdata.length][1] = 0;
+        nwPlayerXPdata[oldPlayerXPdata.length][2] = 1;
         XPData.remove("XP");
         XPData.put("XP", nwPlayerXPdata);
         incomingSaveData.remove("XP");

@@ -139,8 +139,8 @@ public class GUIXP implements ActionListener {
                                         .addComponent(levelTPane)
                         )
         );
-
         baseXP.add(XPTPane);
+        System.out.println("Done loading XP Tab!");
         return baseXP;
     }
 
@@ -241,6 +241,7 @@ public class GUIXP implements ActionListener {
         );
         baseXP.revalidate();
         baseXP.repaint();
+        System.out.println("Done updating XP tab!");
 
     }
 

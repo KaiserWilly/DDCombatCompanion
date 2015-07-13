@@ -13,7 +13,7 @@ import java.util.List;
  * Created by J.D. Isenhart on 6/11/2015
  * 12:54 AM
  */
-public class FilingInit {
+public class FilingInitiative {
     public static HashMap readSave() {
         HashMap incomingSaveData = null;
         try {
@@ -63,7 +63,7 @@ public class FilingInit {
         List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
         int rowColumn = 1;
         sortKeys.add(new RowSorter.SortKey(rowColumn, SortOrder.DESCENDING));
-        sorter.setSortable(0, false);
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
         sorter.setSortKeys(sortKeys);
         return sorter;
     }
@@ -97,13 +97,5 @@ public class FilingInit {
             for (int j = 0; j < nCol; j++)
                 tableData[i][j] = dtm.getValueAt(i, j);
         return tableData;
-    }
-
-    public static boolean checkInitExist() {
-        HashMap<String, HashMap> saveData = readSave();
-        if (saveData.get("Party").containsKey("Init")) {
-            return true;
-        }
-        return false;
     }
 }

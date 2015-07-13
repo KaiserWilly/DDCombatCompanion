@@ -40,7 +40,6 @@ public class FilingParty {
                 {"Arrows Shot", incomingSaveData.get("Party").get("Arrows")},
                 {"Spells Cast", incomingSaveData.get("Party").get("Spells")},
                 {"Enemies Hit", incomingSaveData.get("Party").get("Hits")},
-                {"XP Gained", incomingSaveData.get("Party").get("XP")}
         };
         return partyStatsRowData;
     }

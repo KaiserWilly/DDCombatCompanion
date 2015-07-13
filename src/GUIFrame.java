@@ -52,7 +52,6 @@ public class GUIFrame {
             tPane.addTab("Combat Control", null, modStats.ModStatistics(), "Use this table to control stats during Combat");
             tPane.addTab("Combat Statistics", null, cStatistics, "Combat Statistics");
             tPane.addTab("Party Statistics", null, pStatistics, "Party Statistics");
-            tPane.addTab("Initiative", null, init.InitiativePanel(), "Generate your Initiative lists!");
             tPane.addTab("Loot", null, loot.lootPanel(), "Track your loot!");
             tPane.addTab("Spells", null, fMain.showBlankPane()/*spell.SpellDisplay()*/, "Track your Spells!");
             tPane.addTab("XP", null, xp.XPpanel(), "XP and Leveling");
@@ -89,27 +88,20 @@ public class GUIFrame {
                     partyStats.UpdateStats();
                     break;
                 case 3:
-                    System.out.println(" (Initiative)");
-                    mainFrame.setJMenuBar(init.initMenuBar());
-                    mainFrame.revalidate();
-                    mainFrame.repaint();
-                    init.loadInitTable();
-
-                case 4:
                     System.out.println(" (Loot)");
                     mainFrame.setJMenuBar(loot.lootMenuBar());
                     mainFrame.revalidate();
                     mainFrame.repaint();
                     loot.updateStats();
                     break;
-                case 5:
+                case 4:
                     System.out.println(" (Spells)");
                     mainFrame.setJMenuBar(spell.getTheMenuBar());
                     mainFrame.revalidate();
                     mainFrame.repaint();
 //                    spell.updateStats();
                     break;
-                case 6:
+                case 5:
                     System.out.println(" (XP)");
                     mainFrame.setJMenuBar(xp.XPMenuBar());
                     mainFrame.revalidate();
