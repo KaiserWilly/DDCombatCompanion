@@ -53,7 +53,7 @@ public class GUIFrame {
             tPane.addTab("Combat Statistics", null, cStatistics, "Combat Statistics");
             tPane.addTab("Party Statistics", null, pStatistics, "Party Statistics");
             tPane.addTab("Loot", null, loot.lootPanel(), "Track your loot!");
-            tPane.addTab("Spells", null, fMain.showBlankPane()/*spell.SpellDisplay()*/, "Track your Spells!");
+//            tPane.addTab("Spells", null, fMain.showBlankPane()/*spell.SpellDisplay()*/, "Track your Spells!");
             tPane.addTab("XP", null, xp.XPpanel(), "XP and Leveling");
             tPane.setSize(1366, 700);
             tPane.addChangeListener(this);
@@ -94,14 +94,14 @@ public class GUIFrame {
                     mainFrame.repaint();
                     loot.updateStats();
                     break;
+//                case 4:
+//                    System.out.println(" (Spells)");
+//                    mainFrame.setJMenuBar(spell.getTheMenuBar());
+//                    mainFrame.revalidate();
+//                    mainFrame.repaint();
+////                    spell.updateStats();
+//                    break;
                 case 4:
-                    System.out.println(" (Spells)");
-                    mainFrame.setJMenuBar(spell.getTheMenuBar());
-                    mainFrame.revalidate();
-                    mainFrame.repaint();
-//                    spell.updateStats();
-                    break;
-                case 5:
                     System.out.println(" (XP)");
                     mainFrame.setJMenuBar(xp.XPMenuBar());
                     mainFrame.revalidate();
