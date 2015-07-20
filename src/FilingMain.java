@@ -96,6 +96,7 @@ public class FilingMain implements ActionListener {
         newMap.get("Enemy").put("Kills", 0);
         newMap.get("Enemy").put("Healing", 0);
         HashMap partyStats = new HashMap();
+        partyStats.put("FriendCom", new Object[][]{{0, 0, 0}});
         partyStats.put("Dice", 0);
         partyStats.put("Swords", 0);
         partyStats.put("Arrows", 0);
@@ -206,6 +207,7 @@ public class FilingMain implements ActionListener {
             JOptionPane.showMessageDialog(about, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
     }
+
     public static class AcceptFile extends javax.swing.filechooser.FileFilter {
 
         @Override

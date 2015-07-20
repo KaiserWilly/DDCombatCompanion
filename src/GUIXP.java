@@ -21,6 +21,8 @@ public class GUIXP implements ActionListener {
     public JMenuBar XPmenuB;
     public JMenu xpFile, xpAbout;
     public JMenuItem setXP, setLevel, about;
+    public JLabel xpCount, xpReq;
+    public Font heading = new Font("Trebuchet MS", Font.PLAIN, 20);
 
     public JMenuBar XPMenuBar() {
         XPmenuB = new JMenuBar();
@@ -123,17 +125,37 @@ public class GUIXP implements ActionListener {
         levelTPane.setMaximumSize(new Dimension(500, 500));
         baseXP.add(levelTPane);
 
+        xpCount = new JLabel("-XP Gained-");
+        xpCount.setFont(heading);
+        baseXP.add(xpCount);
+
+        xpReq = new JLabel("-XP Required-");
+        xpReq.setFont(heading);
+        baseXP.add(xpReq);
+
+
         layXP = new GroupLayout(baseXP);
         baseXP.setLayout(layXP);
         layXP.setAutoCreateGaps(true);
         layXP.setAutoCreateContainerGaps(true);
         layXP.setHorizontalGroup(
                 layXP.createSequentialGroup()
-                        .addComponent(XPTPane)
-                        .addComponent(levelTPane)
+                        .addGroup(layXP.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addComponent(xpCount)
+                                        .addComponent(XPTPane)
+                        )
+                        .addGroup(layXP.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addComponent(xpReq)
+                                        .addComponent(levelTPane)
+                        )
         );
         layXP.setVerticalGroup(
                 layXP.createSequentialGroup()
+                        .addGroup(layXP.createParallelGroup()
+                                        .addComponent(xpCount)
+                                        .addComponent(xpReq)
+
+                        )
                         .addGroup(layXP.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(XPTPane)
                                         .addComponent(levelTPane)
@@ -220,20 +242,28 @@ public class GUIXP implements ActionListener {
                 column.setPreferredWidth(100);
             }
         }
-        levelTPane = new JScrollPane(levelT);
-        levelTPane.setMaximumSize(new Dimension(500, 500));
-        baseXP.add(levelTPane);
         layXP = new GroupLayout(baseXP);
         baseXP.setLayout(layXP);
         layXP.setAutoCreateGaps(true);
         layXP.setAutoCreateContainerGaps(true);
         layXP.setHorizontalGroup(
                 layXP.createSequentialGroup()
-                        .addComponent(XPTPane)
-                        .addComponent(levelTPane)
+                        .addGroup(layXP.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addComponent(xpCount)
+                                        .addComponent(XPTPane)
+                        )
+                        .addGroup(layXP.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addComponent(xpReq)
+                                        .addComponent(levelTPane)
+                        )
         );
         layXP.setVerticalGroup(
                 layXP.createSequentialGroup()
+                        .addGroup(layXP.createParallelGroup()
+                                        .addComponent(xpCount)
+                                        .addComponent(xpReq)
+
+                        )
                         .addGroup(layXP.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(XPTPane)
                                         .addComponent(levelTPane)

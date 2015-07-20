@@ -1,9 +1,11 @@
-import org.apache.commons.io.FilenameUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,8 +53,8 @@ public class FilingCombat {
     }
 
     public static Object[][] rowDataAS() { // Gather and piece together data to display on the main table
-        EnemyComStats = new Object[][]{{0,0,0}};
-        FriendComStats = new Object[][]{{0,0,0}};
+        EnemyComStats = new Object[][]{{0, 0, 0}};
+        FriendComStats = new Object[][]{{0, 0, 0}};
         incomingSaveData = readSave();
         columnData = new Object[incomingSaveData.get("Players").size() - 1][6];
         for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {
@@ -75,7 +77,16 @@ public class FilingCombat {
             FriendComStats[0][1] = Integer.parseInt("0" + String.valueOf(FriendComStats[0][1])) + Integer.parseInt("0" + String.valueOf(columnData[i][3]));
             FriendComStats[0][2] = Integer.parseInt("0" + String.valueOf(FriendComStats[0][2])) + Integer.parseInt("0" + String.valueOf(columnData[i][4]));
         }
-        FilingParty.Dam = Integer.parseInt("0" + String.valueOf(FriendComStats[0][0]));
+        HashMap saveParty = incomingSaveData.get("Party");
+        try {
+            saveParty.remove("FriendCom");
+        } catch (Exception e) {
+        }
+        saveParty.put("FriendCom", FriendComStats);
+        incomingSaveData.remove("Party");
+        incomingSaveData.put("Party", saveParty);
+        writeFile(incomingSaveData);
+
         return columnData;
     }
 

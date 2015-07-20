@@ -2,7 +2,9 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 /**
@@ -11,10 +13,35 @@ import java.util.HashMap;
  */
 public class FilingParty {
     public static Object[][] hitPercentage, avgDamage;
-    public static int Dam = 0;
     static HashMap<String, HashMap> incomingSaveData;
     static ObjectMapper mapper = new ObjectMapper();
     static Object[][] partyStatsRowData;
+
+    public static HashMap readSave() {
+        HashMap incomingSaveData = null;
+        try {
+            FileInputStream fileIn = new FileInputStream(String.valueOf(Start.saveFilePath));
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            incomingSaveData = (HashMap<String, HashMap>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (Exception i) {
+            i.printStackTrace();
+        }
+        return incomingSaveData;
+    }
+
+    public static void writeFile(HashMap saveData) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(String.valueOf(Start.saveFilePath));
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(saveData);
+            out.close();
+            fileOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static Object[] columnDataPSTable() {
         return new Object[]{"Statistic", "Value"};
@@ -22,18 +49,7 @@ public class FilingParty {
 
     public static Object[][] rowDataPSTable() {
         mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
-        try {
-            FileInputStream fileIn = new FileInputStream(String.valueOf(Start.saveFilePath));
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            incomingSaveData = (HashMap<String, HashMap>) in.readObject();
-            in.close();
-            fileIn.close();
-
-
-            mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
-        } catch (Exception i) {
-            i.printStackTrace();
-        }
+        incomingSaveData = readSave();
         partyStatsRowData = new Object[][]{
                 {"Dice Rolled", incomingSaveData.get("Party").get("Dice")},
                 {"Weapons Swung", incomingSaveData.get("Party").get("Swords")},
@@ -45,6 +61,7 @@ public class FilingParty {
     }
 
     public static Object[][] hitPerRowData() {
+        incomingSaveData = readSave();
         int attempts = Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Swords"))) + Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Arrows"))) + Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Spells")));
         int hits = Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Hits")));
         double ratio = (double) Math.round((double) hits / ((double) attempts) * 10000) / 10000;
@@ -54,18 +71,40 @@ public class FilingParty {
         return hitPercentage;
     }
 
-    public static Object[] hitPerColumnData() {
+    public static Object[] hitPerColumnHeaders() {
         return new Object[]{"Attempts", "Hits", "Ratio"};
     }
 
     public static Object[][] avgDamRowData() {
+        HashMap saveParty = incomingSaveData.get("Party");
+        Object[][] friendCom = (Object[][]) saveParty.get("FriendCom");
+        int friendDam = (int) friendCom[0][0];
+        incomingSaveData = readSave();
         int hits = Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Hits")));
-        double ratio = (double) Math.round(((double) Dam / (double) hits) * 10000) / 10000;
-        avgDamage = new Object[][]{{hits, Dam, ratio}};
+        double ratio = (double) Math.round(((double) friendDam / (double) hits) * 10000) / 10000;
+        avgDamage = new Object[][]{{hits, friendDam, ratio}};
         return avgDamage;
     }
 
-    public static Object[] avgDamColumnData() {
+    public static Object[] avgDamColumnHeaders() {
         return new Object[]{"Hits", "Damage Done", "Ratio"};
+    }
+
+    public static Object[][] FtoERowData() {
+        incomingSaveData = readSave();
+        HashMap saveEnemy = incomingSaveData.get("Enemy");
+        int enemyDam = (int) saveEnemy.get("Damage");
+        HashMap saveParty = incomingSaveData.get("Party");
+        Object[][] friendCom = (Object[][]) saveParty.get("FriendCom");
+        int friendDam = (int) friendCom[0][0];
+        double ratio = (double) Math.round((double) friendDam / ((double) enemyDam) * 10000) / 10000;
+        Object[][] FtoEArray = new Object[][]{
+                {friendDam, enemyDam, ratio}
+        };
+        return FtoEArray;
+    }
+
+    public static Object[] FtoEColumnHeaders() {
+        return new Object[]{"Friendly Damage", "Enemy Damage", "Friend to Enemy Ratio"};
     }
 }

@@ -16,11 +16,11 @@ public class GUIParty implements ActionListener {
     public JMenuBar pStatsMenuBar;
     public JMenu aboutMenu;
     public JMenuItem about;
-    public DefaultTableModel psMain, psHits, psAvg;
-    public JTable dataPsMain, dataPSHits, dataPSAvg;
-    public JScrollPane dataPSPane, psHitsPane, psAvgPane;
+    public DefaultTableModel psMain, psHits, psAvg, psFtoE;
+    public JTable dataPsMain, dataPSHits, dataPSAvg, dataFtoE;
+    public JScrollPane dataPSPane, psHitsPane, psAvgPane, psFtoEPane;
     public GroupLayout layPS;
-    public JLabel hitPercentage, avgDam;
+    public JLabel hitPercentage, avgDam, FtoE;
     public Font PSCellContent = new Font("Franklin Gothic Medium", Font.BOLD, 30);
 
     public JMenuBar pMenuBar() {
@@ -46,6 +46,10 @@ public class GUIParty implements ActionListener {
         avgDam.setFont(PSPartyContent);
         PStats.add(avgDam);
 
+        FtoE = new JLabel("Damage Ratio:    ");
+        FtoE.setFont(PSPartyContent);
+        PStats.add(FtoE);
+
         psMain = new DefaultTableModel(FilingParty.rowDataPSTable(), FilingParty.columnDataPSTable()) {
             @Override
             public Class getColumnClass(int column) {
@@ -73,7 +77,7 @@ public class GUIParty implements ActionListener {
         PStats.add(dataPSPane);
 
 
-        psHits = new DefaultTableModel(FilingParty.hitPerRowData(), FilingParty.hitPerColumnData());
+        psHits = new DefaultTableModel(FilingParty.hitPerRowData(), FilingParty.hitPerColumnHeaders());
         dataPSHits = new JTable(psHits);
         dataPSHits.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         dataPSHits.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
@@ -85,7 +89,7 @@ public class GUIParty implements ActionListener {
         psHitsPane.setMaximumSize(new Dimension(500, 75));
         PStats.add(psHitsPane);
 
-        psAvg = new DefaultTableModel(FilingParty.avgDamRowData(), FilingParty.avgDamColumnData());
+        psAvg = new DefaultTableModel(FilingParty.avgDamRowData(), FilingParty.avgDamColumnHeaders());
         dataPSAvg = new JTable(psAvg);
         dataPSAvg.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         dataPSAvg.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
@@ -96,6 +100,18 @@ public class GUIParty implements ActionListener {
         psAvgPane = new JScrollPane(dataPSAvg);
         psAvgPane.setMaximumSize(new Dimension(500, 75));
         PStats.add(psAvgPane);
+
+        psFtoE = new DefaultTableModel(FilingParty.FtoERowData(), FilingParty.FtoEColumnHeaders());
+        dataFtoE = new JTable(psFtoE);
+        dataFtoE.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
+        dataFtoE.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
+        dataFtoE.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
+        dataFtoE.setRowHeight(50);
+        dataFtoE.setFont(PSCellContent);
+        dataFtoE.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        psFtoEPane = new JScrollPane(dataFtoE);
+        psFtoEPane.setMaximumSize(new Dimension(500, 75));
+        PStats.add(psFtoEPane);
 
 
         layPS = new GroupLayout(PStats);
@@ -112,6 +128,9 @@ public class GUIParty implements ActionListener {
                                         .addGroup(layPS.createSequentialGroup()
                                                 .addComponent(avgDam)
                                                 .addComponent(psAvgPane))
+                                        .addGroup(layPS.createSequentialGroup()
+                                                .addComponent(FtoE)
+                                                .addComponent(psFtoEPane))
                         )
 
         );
@@ -125,6 +144,9 @@ public class GUIParty implements ActionListener {
                         .addGroup(layPS.createParallelGroup(GroupLayout.Alignment.CENTER)
                                 .addComponent(avgDam)
                                 .addComponent(psAvgPane))
+                        .addGroup(layPS.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(FtoE)
+                                .addComponent(psFtoEPane))
         );
         System.out.println("Done loading Party Statistics Tab!");
         return PStats;
@@ -134,6 +156,7 @@ public class GUIParty implements ActionListener {
         PStats.remove(dataPSPane);
         PStats.remove(psHitsPane);
         PStats.remove(psAvgPane);
+        PStats.remove(psFtoEPane);
 
         psMain = new DefaultTableModel(FilingParty.rowDataPSTable(), FilingParty.columnDataPSTable()) {
             @Override
@@ -162,7 +185,7 @@ public class GUIParty implements ActionListener {
         PStats.add(dataPSPane);
 
 
-        psHits = new DefaultTableModel(FilingParty.hitPerRowData(), FilingParty.hitPerColumnData());
+        psHits = new DefaultTableModel(FilingParty.hitPerRowData(), FilingParty.hitPerColumnHeaders());
         dataPSHits = new JTable(psHits);
         dataPSHits.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         dataPSHits.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
@@ -174,7 +197,7 @@ public class GUIParty implements ActionListener {
         psHitsPane.setMaximumSize(new Dimension(500, 75));
         PStats.add(psHitsPane);
 
-        psAvg = new DefaultTableModel(FilingParty.avgDamRowData(), FilingParty.avgDamColumnData());
+        psAvg = new DefaultTableModel(FilingParty.avgDamRowData(), FilingParty.avgDamColumnHeaders());
         dataPSAvg = new JTable(psAvg);
         dataPSAvg.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         dataPSAvg.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
@@ -185,6 +208,18 @@ public class GUIParty implements ActionListener {
         psAvgPane = new JScrollPane(dataPSAvg);
         psAvgPane.setMaximumSize(new Dimension(500, 75));
         PStats.add(psAvgPane);
+
+        psFtoE = new DefaultTableModel(FilingParty.FtoERowData(), FilingParty.FtoEColumnHeaders());
+        dataFtoE = new JTable(psFtoE);
+        dataFtoE.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
+        dataFtoE.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
+        dataFtoE.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
+        dataFtoE.setRowHeight(50);
+        dataFtoE.setFont(PSCellContent);
+        dataFtoE.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        psFtoEPane = new JScrollPane(dataFtoE);
+        psFtoEPane.setMaximumSize(new Dimension(500, 75));
+        PStats.add(psFtoEPane);
 
 
         layPS = new GroupLayout(PStats);
@@ -201,6 +236,9 @@ public class GUIParty implements ActionListener {
                                         .addGroup(layPS.createSequentialGroup()
                                                 .addComponent(avgDam)
                                                 .addComponent(psAvgPane))
+                                        .addGroup(layPS.createSequentialGroup()
+                                                .addComponent(FtoE)
+                                                .addComponent(psFtoEPane))
                         )
 
         );
@@ -214,6 +252,9 @@ public class GUIParty implements ActionListener {
                         .addGroup(layPS.createParallelGroup(GroupLayout.Alignment.CENTER)
                                 .addComponent(avgDam)
                                 .addComponent(psAvgPane))
+                        .addGroup(layPS.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(FtoE)
+                                .addComponent(psFtoEPane))
         );
         PStats.revalidate();
         PStats.repaint();
@@ -222,7 +263,7 @@ public class GUIParty implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == about){
+        if (e.getSource() == about) {
             JOptionPane.showMessageDialog(PStats, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
     }
