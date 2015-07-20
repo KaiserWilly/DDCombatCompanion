@@ -277,7 +277,7 @@ public class FilingSpell {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String[] playerArray = FilingCombat.playerArrayNE;
+        String[] playerArray = FilingMain.getPlayerArrayNE();
         JPanel base = new JPanel();
         base.setBackground(Color.GREEN);
         base.setLayout(null);

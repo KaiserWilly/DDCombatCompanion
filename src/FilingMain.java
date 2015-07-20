@@ -1,11 +1,10 @@
+import org.apache.commons.io.FilenameUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -205,6 +204,26 @@ public class FilingMain implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == about) {
             JOptionPane.showMessageDialog(about, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
+        }
+    }
+    public static class AcceptFile extends javax.swing.filechooser.FileFilter {
+
+        @Override
+        public boolean accept(File f) {
+            if (f.isDirectory()) {
+                return true;
+            }
+            String extension = FilenameUtils.getExtension(f.getAbsolutePath());
+            if (extension.equals("ADDCC")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public String getDescription() {
+            return null;
         }
     }
 }

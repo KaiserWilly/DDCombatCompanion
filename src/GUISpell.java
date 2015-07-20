@@ -107,7 +107,7 @@ public class GUISpell implements ActionListener {
             }
         }
         if (e.getSource() == prepSpell) {
-            String player = (String) JOptionPane.showInputDialog(spellBase, "Enter the name of the Player:", "Prep a Spell", JOptionPane.PLAIN_MESSAGE, null, FilingCombat.playerArrayNE, null);
+            String player = (String) JOptionPane.showInputDialog(spellBase, "Enter the name of the Player:", "Prep a Spell", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArrayNE(), null);
             if (player.length() != 0) {
                 String spell = (String) JOptionPane.showInputDialog(spellBase, "Enter the name of the Spell:", "Prep a Spell", JOptionPane.PLAIN_MESSAGE, null, FilingSpell.getSpellArray(), null);
                 if (spell.length() != 0) {

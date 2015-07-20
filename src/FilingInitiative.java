@@ -46,9 +46,9 @@ public class FilingInitiative {
             Object[][] rowdata = (Object[][]) saveData.get("Party").get("Init");
             return rowdata;
         }
-        Object[][] rowData = new Object[FilingCombat.playerArray.length][2];
-        for (int i = 0; i < FilingCombat.playerArray.length; i++) {
-            rowData[i][0] = FilingCombat.playerArray[i];
+        Object[][] rowData = new Object[saveData.get("Players").size()][2];
+        for (int i = 0; i < saveData.get("Players").size(); i++) {
+            rowData[i][0] = saveData.get("Players").get(i);
             rowData[i][1] = 0;
         }
         return rowData;
@@ -90,12 +90,12 @@ public class FilingInitiative {
     }
 
     public static Object[][] getTableData(JTable table) {
-        DefaultTableModel dtm = (DefaultTableModel) table.getModel();
-        int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
+        DefaultTableModel tableDTM = (DefaultTableModel) table.getModel();
+        int nRow = tableDTM.getRowCount(), nCol = tableDTM.getColumnCount();
         Object[][] tableData = new Object[nRow][nCol];
         for (int i = 0; i < nRow; i++)
             for (int j = 0; j < nCol; j++)
-                tableData[i][j] = dtm.getValueAt(i, j);
+                tableData[i][j] = tableDTM.getValueAt(i, j);
         return tableData;
     }
 }

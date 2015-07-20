@@ -106,7 +106,7 @@ public class GUIControl implements ActionListener, ItemListener {
         newDam = new JLabel("New Damage:");
         newDam.setFont(comStatHeading);
         Stats.add(newDam);
-        playerDam = new JComboBox<>(FilingCombat.playerArray);
+        playerDam = new JComboBox<>(FilingMain.getPlayerArray());
         playerDam.setFont(new Font("Verdana", Font.PLAIN, 16));
         playerDam.setMaximumSize(new Dimension(200, 25));
         Stats.add(playerDam);
@@ -128,7 +128,7 @@ public class GUIControl implements ActionListener, ItemListener {
         newHeal = new JLabel("New Healing:");
         newHeal.setFont(comStatHeading);
         Stats.add(newHeal);
-        playerHeal = new JComboBox<>(FilingCombat.playerArray);
+        playerHeal = new JComboBox<>(FilingMain.getPlayerArray());
         playerHeal.setFont(new Font("Verdana", Font.PLAIN, 16));
         playerHeal.setMaximumSize(new Dimension(200, 25));
         Stats.add(playerHeal);
@@ -143,7 +143,7 @@ public class GUIControl implements ActionListener, ItemListener {
         HealthChange = new JLabel("Health Change:");
         HealthChange.setFont(comStatHeading);
         Stats.add(HealthChange);
-        playerHealth = new JComboBox<>(FilingCombat.playerArray);
+        playerHealth = new JComboBox<>(FilingMain.getPlayerArray());
         playerHealth.setFont(new Font("Verdana", Font.PLAIN, 16));
         playerHealth.setMaximumSize(new Dimension(200, 25));
         Stats.add(playerHealth);
@@ -321,7 +321,7 @@ public class GUIControl implements ActionListener, ItemListener {
             JOptionPane.showMessageDialog(about, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
         if (e.getSource() == removeKill) {
-            String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Kill", JOptionPane.PLAIN_MESSAGE, null, FilingCombat.playerArray, null);
+            String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Kill", JOptionPane.PLAIN_MESSAGE, null,FilingMain.getPlayerArray(), null);
             if (name.length() != 0) {
                 FilingControl.removeKill(name);
             }
@@ -401,7 +401,7 @@ public class GUIControl implements ActionListener, ItemListener {
         if (e.getSource() == addPlayer || e.getSource() == removePlayer || e.getSource() == changeName) {
             if (e.getSource() == addPlayer) {
                 String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Add a Player", JOptionPane.PLAIN_MESSAGE, null, null, null);
-                String[] nameArray = FilingCombat.playerArray;
+                String[] nameArray = FilingMain.getPlayerArray();
                 if (name.length() == 0) {
                     JOptionPane.showMessageDialog(Stats, "Names can not be blank", "Name Error", JOptionPane.WARNING_MESSAGE);
                 } else if (name.length() > 8) {
@@ -413,20 +413,20 @@ public class GUIControl implements ActionListener, ItemListener {
                 }
             }
             if (e.getSource() == removePlayer) {
-                String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Player", JOptionPane.PLAIN_MESSAGE, null, FilingCombat.playerArray, null);
+                String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Player", JOptionPane.PLAIN_MESSAGE, null,FilingMain.getPlayerArray(), null);
                 if (name.length() != 0) {
                     FilingMain.removePlayer(name);
                 }
             }
             if (e.getSource() == changeName) {
-                String namePre = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player you want to rename:", "Rename a Player", JOptionPane.PLAIN_MESSAGE, null, FilingCombat.playerArrayNE, null);
+                String namePre = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player you want to rename:", "Rename a Player", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArrayNE(), null);
                 if (namePre.length() != 0) {
                     String namePro = (String) JOptionPane.showInputDialog(Stats, "Enter the new name of the player:", "Rename a Player", JOptionPane.PLAIN_MESSAGE, null, null, null);
                     if (namePro.length() == 0) {
                         JOptionPane.showMessageDialog(Stats, "Names can not be blank", "Name Error", JOptionPane.WARNING_MESSAGE);
                     } else if (namePro.length() > 8) {
                         JOptionPane.showMessageDialog(Stats, "Names can not be more than 8 Characters", "Name Error", JOptionPane.WARNING_MESSAGE);
-                    } else if (Arrays.asList(FilingCombat.playerArray).contains(namePro)) {
+                    } else if (Arrays.asList(FilingMain.getPlayerArray()).contains(namePro)) {
                         JOptionPane.showMessageDialog(Stats, "Names can not be duplicate of an already present name", "Name Error", JOptionPane.WARNING_MESSAGE);
                     } else {
                         FilingControl.renamePlayer(namePre, namePro);
@@ -556,17 +556,17 @@ public class GUIControl implements ActionListener, ItemListener {
         dataPSPane.setMaximumSize(new Dimension(dimX, 125));
         Stats.add(dataPSPane);
 
-        playerHeal = new JComboBox<>(FilingCombat.playerArray);
+        playerHeal = new JComboBox<>(FilingMain.getPlayerArray());
         playerHeal.setFont(new Font("Verdana", Font.PLAIN, 16));
         playerHeal.setMaximumSize(new Dimension(200, 25));
         Stats.add(playerHeal);
 
-        playerHealth = new JComboBox<>(FilingCombat.playerArray);
+        playerHealth = new JComboBox<>(FilingMain.getPlayerArray());
         playerHealth.setFont(new Font("Verdana", Font.PLAIN, 16));
         playerHealth.setMaximumSize(new Dimension(200, 25));
         Stats.add(playerHealth);
 
-        playerDam = new JComboBox<>(FilingCombat.playerArray);
+        playerDam = new JComboBox<>(FilingMain.getPlayerArray());
         playerDam.setFont(new Font("Verdana", Font.PLAIN, 16));
         playerDam.setMaximumSize(new Dimension(200, 25));
         Stats.add(playerDam);

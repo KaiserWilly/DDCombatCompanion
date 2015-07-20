@@ -16,8 +16,6 @@ import java.util.List;
 public class FilingCombat {
     static Object[][] FriendComStats;
     static Object[][] EnemyComStats;
-    static String[] playerArray;
-    static String[] playerArrayNE;
     static HashMap<String, HashMap> incomingSaveData = null;
     static Object[][] columnData;
     ObjectMapper mapper = new ObjectMapper();
@@ -53,22 +51,9 @@ public class FilingCombat {
     }
 
     public static Object[][] rowDataAS() { // Gather and piece together data to display on the main table
-        EnemyComStats = new Object[][]{
-                {0, 0, 0}
-        };
-        FriendComStats = new Object[][]{
-                {0, 0, 0}
-        };
+        EnemyComStats = new Object[][]{{0,0,0}};
+        FriendComStats = new Object[][]{{0,0,0}};
         incomingSaveData = readSave();
-        playerArray = new String[incomingSaveData.get("Players").size()];
-        playerArrayNE = new String[(incomingSaveData.get("Players").size())];
-        for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {
-            playerArray[i] = String.valueOf(incomingSaveData.get("Players").get(i));
-            if (!String.valueOf(incomingSaveData.get("Players").get(i)).equals("Enemy")) {
-                playerArrayNE[i] = String.valueOf(incomingSaveData.get("Players").get(i));
-            }
-
-        }
         columnData = new Object[incomingSaveData.get("Players").size() - 1][6];
         for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {
             if (String.valueOf(incomingSaveData.get("Players").get(i)).equals("Enemy")) {
@@ -77,11 +62,12 @@ public class FilingCombat {
                 EnemyComStats[0][2] = incomingSaveData.get(incomingSaveData.get("Players").get(i)).get("Healing");
             } else {
                 columnData[i][0] = String.valueOf(incomingSaveData.get("Players").get(i));
+                columnData[i][1] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("BR");
                 columnData[i][2] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("Damage");
                 columnData[i][3] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("Kills");
                 columnData[i][4] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("Healing");
                 columnData[i][5] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("Health");
-                columnData[i][1] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("BR");
+
             }
         }
         for (int i = 0; i < columnData.length; i++) {
@@ -181,31 +167,6 @@ public class FilingCombat {
         sorter.setSortable(0, false);
         sorter.setSortKeys(sortKeys);
         return sorter;
-    }
-
-    public static class AcceptFile extends javax.swing.filechooser.FileFilter {
-
-        @Override
-        public boolean accept(File f) {
-            if (f.isDirectory()) {
-                return true;
-            }
-            String extension = FilenameUtils.getExtension(f.getAbsolutePath());
-            if (extension != null) {
-                if (extension.equals("ADDCC")) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            return false;
-        }
-
-        @Override
-        public String getDescription() {
-            return null;
-        }
     }
 }
 
