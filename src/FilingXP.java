@@ -130,7 +130,7 @@ public class FilingXP {
         return false;
     }
 
-    public static void updateLevel(String lev, int XP) {
+    public static boolean updateLevel(String lev, int XP) {
         String level = lev.replaceAll("[^0-9.]", "");
         if (checkupdateValidity(level, XP)) {
             incomingSaveData = readSave();
@@ -149,7 +149,9 @@ public class FilingXP {
             incomingSaveData.remove("XP");
             incomingSaveData.put("XP", XPData);
             writeFile(incomingSaveData);
+            return true;
         }
+        return false;
     }
 
     public static void updateXP(String player, int XP) {

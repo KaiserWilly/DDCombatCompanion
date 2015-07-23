@@ -458,8 +458,13 @@ public class GUIControl implements ActionListener, ItemListener {
                 arrow = 1;
                 FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
             } else if (e.getSource() == goSpell) {
-                spell = 1;
-                FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
+                String name = (String) JOptionPane.showInputDialog(Stats, "How many Dice are rolled through the spell cast?:", "Cast a Spell", JOptionPane.PLAIN_MESSAGE, null, new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}, null);
+                if (name.length() != 0) {
+                    spell = 1;
+                    dice = Integer.parseInt(name);
+                    FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
+
+                }
             } else if (e.getSource() == goHit) {
                 hit = 1;
                 FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);

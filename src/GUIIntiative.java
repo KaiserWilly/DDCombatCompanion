@@ -103,7 +103,7 @@ public class GUIIntiative implements ActionListener {
                                 .addComponent(resetTable))
 
         );
-        System.out.println("Done loading Initiative tab!");
+        System.out.println("Done loading Initiative Widget!");
         return base;
     }
 
@@ -177,6 +177,6 @@ public class GUIIntiative implements ActionListener {
             base.repaint();
 
         }
-        System.out.println("Done updating Init Tab!");
+        System.out.println("Done updating Initiative Widget!");
     }
 }

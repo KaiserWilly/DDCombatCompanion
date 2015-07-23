@@ -69,7 +69,6 @@ public class GUIXP implements ActionListener {
         XPT.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         XPT.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
         XPT.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        XPT.setSize(500, 500);
         XPT.setLocation(50, 50);
         XPT.setFont(XPCellContent);
         XPT.setBackground(Color.WHITE);
@@ -85,10 +84,9 @@ public class GUIXP implements ActionListener {
 //            }
 //        }
         XPTPane = new JScrollPane(XPT);
-        XPTPane.setMaximumSize(new Dimension(500, 500));
         baseXP.add(XPTPane);
 
-        XPTM = new DefaultTableModel(FilingXP.retLevelTableData(), FilingXP.retLevelColumnHeaders()) {
+        levelTM = new DefaultTableModel(FilingXP.retLevelTableData(), FilingXP.retLevelColumnHeaders()) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -103,12 +101,11 @@ public class GUIXP implements ActionListener {
                 }
             }
         };
-        levelT = new JTable(XPTM);
+        levelT = new JTable(levelTM);
         CenterRenderer.setHorizontalAlignment(JLabel.CENTER);
         levelT.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         levelT.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         levelT.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        levelT.setSize(200, dimY);
         levelT.setFont(XPCellContent);
         levelT.setBackground(Color.WHITE);
         levelT.setRowHeight(levelTRH);
@@ -122,7 +119,6 @@ public class GUIXP implements ActionListener {
             }
         }
         levelTPane = new JScrollPane(levelT);
-        levelTPane.setMaximumSize(new Dimension(500, 500));
         baseXP.add(levelTPane);
 
         xpCount = new JLabel("-XP Gained-");
@@ -191,7 +187,6 @@ public class GUIXP implements ActionListener {
         XPT.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         XPT.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
         XPT.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        XPT.setSize(500, 500);
         XPT.setLocation(50, 50);
         XPT.setFont(XPCellContent);
         XPT.setBackground(Color.WHITE);
@@ -207,9 +202,9 @@ public class GUIXP implements ActionListener {
 //            }
 //        }
         XPTPane = new JScrollPane(XPT);
-        XPTPane.setMaximumSize(new Dimension(500, 500));
+        baseXP.add(XPTPane);
 
-        XPTM = new DefaultTableModel(FilingXP.retLevelTableData(), FilingXP.retLevelColumnHeaders()) {
+        levelTM = new DefaultTableModel(FilingXP.retLevelTableData(), FilingXP.retLevelColumnHeaders()) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -224,12 +219,11 @@ public class GUIXP implements ActionListener {
                 }
             }
         };
-        levelT = new JTable(XPTM);
+        levelT = new JTable(levelTM);
         CenterRenderer.setHorizontalAlignment(JLabel.CENTER);
         levelT.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         levelT.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         levelT.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        levelT.setSize(200, dimY);
         levelT.setFont(XPCellContent);
         levelT.setBackground(Color.WHITE);
         levelT.setRowHeight(levelTRH);
@@ -242,8 +236,9 @@ public class GUIXP implements ActionListener {
                 column.setPreferredWidth(100);
             }
         }
-        layXP = new GroupLayout(baseXP);
-        baseXP.setLayout(layXP);
+        levelTPane = new JScrollPane(levelT);
+        baseXP.add(levelTPane);
+
         layXP.setAutoCreateGaps(true);
         layXP.setAutoCreateContainerGaps(true);
         layXP.setHorizontalGroup(
@@ -284,6 +279,7 @@ public class GUIXP implements ActionListener {
             String name = (String) JOptionPane.showInputDialog(baseXP, "Enter the name of the Player:", "Set Player's XP", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArrayNE(), null);
             if (name.length() != 0) {
                 String xp = (String) JOptionPane.showInputDialog(baseXP, "Enter the XP Amount:", "Set Player's XP", JOptionPane.PLAIN_MESSAGE, null, null, null);
+                xp = xp.replaceAll("[^0-9]", "");
                 int XP;
                 try {
                     XP = Integer.parseInt(xp);
@@ -298,11 +294,13 @@ public class GUIXP implements ActionListener {
             String level = (String) JOptionPane.showInputDialog(baseXP, "Enter the name of the Level:", "Set Level's Required XP", JOptionPane.PLAIN_MESSAGE, null, levels, null);
             if (level.length() != 0) {
                 String xp = (String) JOptionPane.showInputDialog(baseXP, "Enter the XP required to get to the level:", "Set Level's Required XP", JOptionPane.PLAIN_MESSAGE, null, null, null);
-                xp.replaceAll("[^0-9.]", "");
+                xp = xp.replaceAll("[^0-9]", "");
                 int XP;
                 try {
                     XP = Integer.parseInt(xp);
-                    FilingXP.updateLevel(level, XP);
+                    if (!FilingXP.updateLevel(level, XP)) {
+                        JOptionPane.showMessageDialog(baseXP, "XP Requirements must be in numerical order ( Level 2 < Level 3 < Level 4, etc.)", "Value Error", JOptionPane.WARNING_MESSAGE);
+                    }
                 } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(baseXP, "XP must be an Integer (Whole Number)", "Value Error", JOptionPane.WARNING_MESSAGE);
                 }

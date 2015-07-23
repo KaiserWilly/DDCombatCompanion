@@ -177,19 +177,19 @@ public class GUICombat implements ActionListener {
         ECS.setFont(CSPSHeading);
         CStats.add(ECS);
 
-        DamChamp = new JLabel("     Damage Champion: " + FilingCombat.comStatsDamChamp());
+        DamChamp = new JLabel("Damage Champion: " + FilingCombat.comStatsDamChamp());
         DamChamp.setFont(CSChampContent);
-        DamChamp.setMaximumSize(new Dimension(25, 200));
+        DamChamp.setMinimumSize(new Dimension(25, 200));
         CStats.add(DamChamp);
 
         KillChamp = new JLabel("     Kill Champion: " + FilingCombat.comStatsKillChamp());
         KillChamp.setFont(CSChampContent);
-        KillChamp.setMaximumSize(new Dimension(25, 200));
+        KillChamp.setMinimumSize(new Dimension(25, 200));
         CStats.add(KillChamp);
 
         HealChamp = new JLabel("     Healing Champion: " + FilingCombat.comStatsHealingChamp());
         HealChamp.setFont(CSChampContent);
-        HealChamp.setMaximumSize(new Dimension(25, 200));
+        HealChamp.setMinimumSize(new Dimension(25, 200));
         CStats.add(HealChamp);
 
         layCS = new GroupLayout(CStats);
@@ -198,7 +198,7 @@ public class GUICombat implements ActionListener {
         layCS.setAutoCreateContainerGaps(true);
         layCS.setHorizontalGroup(
                 layCS.createSequentialGroup()
-                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.CENTER)
                                         .addComponent(dataPaneDC)
                                         .addGroup(layCS.createSequentialGroup()
                                                 .addComponent(FCS)
@@ -207,27 +207,26 @@ public class GUICombat implements ActionListener {
                                         .addGroup(layCS.createSequentialGroup()
                                                 .addComponent(ECS)
                                                 .addComponent(dataPaneECS))
-                                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addGroup(layCS.createSequentialGroup()
                                                 .addComponent(DamChamp)
                                                 .addComponent(KillChamp)
                                                 .addComponent(HealChamp))
                         )
 
-
         );
         layCS.setVerticalGroup(
                 layCS.createSequentialGroup()
-
                         .addComponent(dataPaneDC)
-                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.CENTER)
                                 .addComponent(FCS)
                                 .addComponent(dataPaneFCS))
-                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.CENTER)
                                 .addComponent(ECS)
                                 .addComponent(dataPaneECS))
-                        .addComponent(DamChamp)
-                        .addComponent(KillChamp)
-                        .addComponent(HealChamp)
+                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(DamChamp)
+                                .addComponent(KillChamp)
+                                .addComponent(HealChamp))
 
         );
         System.out.println("Done loading Combat Statistics tab!");
@@ -362,7 +361,7 @@ public class GUICombat implements ActionListener {
         dataPaneECS.setMaximumSize(new Dimension(dimX, 65));
         CStats.add(dataPaneECS);
 
-        DamChamp = new JLabel("     Damage Champion: " + FilingCombat.comStatsDamChamp());
+        DamChamp = new JLabel("Damage Champion: " + FilingCombat.comStatsDamChamp());
         DamChamp.setFont(CSChampContent);
         DamChamp.setMaximumSize(new Dimension(200, 25));
         CStats.add(DamChamp);
@@ -376,13 +375,14 @@ public class GUICombat implements ActionListener {
         HealChamp.setFont(CSChampContent);
         HealChamp.setMaximumSize(new Dimension(200, 25));
         CStats.add(HealChamp);
+
         layCS = new GroupLayout(CStats);
         CStats.setLayout(layCS);
         layCS.setAutoCreateGaps(true);
         layCS.setAutoCreateContainerGaps(true);
         layCS.setHorizontalGroup(
                 layCS.createSequentialGroup()
-                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.CENTER)
                                         .addComponent(dataPaneDC)
                                         .addGroup(layCS.createSequentialGroup()
                                                 .addComponent(FCS)
@@ -391,7 +391,7 @@ public class GUICombat implements ActionListener {
                                         .addGroup(layCS.createSequentialGroup()
                                                 .addComponent(ECS)
                                                 .addComponent(dataPaneECS))
-                                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addGroup(layCS.createSequentialGroup()
                                                 .addComponent(DamChamp)
                                                 .addComponent(KillChamp)
                                                 .addComponent(HealChamp))
@@ -400,17 +400,17 @@ public class GUICombat implements ActionListener {
         );
         layCS.setVerticalGroup(
                 layCS.createSequentialGroup()
-
                         .addComponent(dataPaneDC)
-                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.CENTER)
                                 .addComponent(FCS)
                                 .addComponent(dataPaneFCS))
-                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.CENTER)
                                 .addComponent(ECS)
                                 .addComponent(dataPaneECS))
-                        .addComponent(DamChamp)
-                        .addComponent(KillChamp)
-                        .addComponent(HealChamp)
+                        .addGroup(layCS.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(DamChamp)
+                                .addComponent(KillChamp)
+                                .addComponent(HealChamp))
 
         );
         CStats.add(dataPaneDC);

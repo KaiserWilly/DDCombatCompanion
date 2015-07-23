@@ -1,7 +1,9 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -13,6 +15,8 @@ public class GUIFrame {
     public static JPanel pStatistics, cStatistics, base;
     public static JFrame mainFrame;
     public static JTabbedPane tPane;
+    public static JLabel panelIcon;
+    public static GroupLayout layFrame;
     static GUICombat comStats = new GUICombat();
     static GUIParty partyStats = new GUIParty();
     static GUIControl modStats = new GUIControl();
@@ -46,6 +50,7 @@ public class GUIFrame {
             base = new JPanel();
             base.setPreferredSize(new Dimension(dimX, dimY));
             base.setMinimumSize(new Dimension(dimX, dimY));
+            base.setBackground(new Color(161, 161, 161));
             cStatistics = comStats.DCount();
             pStatistics = partyStats.PartyStats();
             tPane = new JTabbedPane();
@@ -55,9 +60,42 @@ public class GUIFrame {
             tPane.addTab("Loot", null, loot.lootPanel(), "Track your loot!");
 //            tPane.addTab("Spells", null, fMain.showBlankPane()/*spell.SpellDisplay()*/, "Track your Spells!");
             tPane.addTab("XP", null, xp.XPpanel(), "XP and Leveling");
-            tPane.setSize(1366, 700);
             tPane.addChangeListener(this);
             base.add(tPane);
+
+            BufferedImage pb = null;
+            try {
+                pb = ImageIO.read(getClass().getResource("rsc/IsenhartCC.png"));
+                panelIcon = new JLabel(new ImageIcon(pb));
+                panelIcon.setHorizontalAlignment(SwingConstants.CENTER);
+                panelIcon.setVerticalAlignment(SwingConstants.CENTER);
+                base.add(panelIcon);
+            } catch (IOException e) {
+                System.out.println("Can't load image");
+            } catch (IllegalArgumentException u) {
+                System.out.println("We can't find the picture! C");
+            }
+            assert pb != null;
+
+
+            layFrame = new GroupLayout(base);
+            base.setLayout(layFrame);
+            layFrame.setAutoCreateGaps(true);
+            layFrame.setAutoCreateContainerGaps(true);
+            layFrame.setHorizontalGroup(
+                    layFrame.createSequentialGroup()
+                            .addGroup(layFrame.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                            .addComponent(tPane)
+                                            .addComponent(panelIcon)
+                            )
+
+            );
+            layFrame.setVerticalGroup(
+                    layFrame.createSequentialGroup()
+
+                            .addComponent(tPane)
+                            .addComponent(panelIcon)
+            );
             return base;
         }
 
