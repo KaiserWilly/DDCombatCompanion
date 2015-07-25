@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -20,7 +19,7 @@ public class Start {
             public void run() {
                 try {
                     GUIMenu.PaneFrameMain.createGUI();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -35,7 +34,7 @@ public class Start {
 
                 try {
                     GUIFrame.PaneFrameMain.createGUI();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -50,7 +50,7 @@ public class GUIFrame {
             base = new JPanel();
             base.setPreferredSize(new Dimension(dimX, dimY));
             base.setMinimumSize(new Dimension(dimX, dimY));
-            base.setBackground(new Color(161, 161, 161));
+            base.setBackground(new Color(255, 255, 255));
             cStatistics = comStats.DCount();
             pStatistics = partyStats.PartyStats();
             tPane = new JTabbedPane();
