@@ -5,17 +5,20 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Created by J.D. Isenhart on 6/8/2015
  * 1:07 AM
  */
 public class FilingParty {
-    public static Object[][] hitPercentage, avgDamage;
     static HashMap<String, HashMap> incomingSaveData;
     static ObjectMapper mapper = new ObjectMapper();
-    static Object[][] partyStatsRowData;
+    static DecimalFormat formatter = new DecimalFormat("#,###", DecimalFormatSymbols.getInstance(Locale.getDefault()));
+
 
     public static HashMap readSave() {
         HashMap incomingSaveData = null;
@@ -50,13 +53,16 @@ public class FilingParty {
     public static Object[][] rowDataPSTable() {
         mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
         incomingSaveData = readSave();
-        partyStatsRowData = new Object[][]{
+        Object[][] partyStatsRowData = new Object[][]{
                 {"Dice Rolled", incomingSaveData.get("Party").get("Dice")},
                 {"Weapons Swung", incomingSaveData.get("Party").get("Swords")},
                 {"Arrows Shot", incomingSaveData.get("Party").get("Arrows")},
                 {"Spells Cast", incomingSaveData.get("Party").get("Spells")},
                 {"Enemies Hit", incomingSaveData.get("Party").get("Hits")},
         };
+        for (int i = 0; i < partyStatsRowData.length; i++) {
+            partyStatsRowData[i][1] = formatter.format(Integer.parseInt(String.valueOf(partyStatsRowData[i][1])));
+        }
         return partyStatsRowData;
     }
 
@@ -65,9 +71,11 @@ public class FilingParty {
         int attempts = Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Swords"))) + Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Arrows"))) + Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Spells")));
         int hits = Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Hits")));
         double ratio = (double) Math.round((double) hits / ((double) attempts) * 10000) / 10000;
-        hitPercentage = new Object[][]{
+        Object[][] hitPercentage = new Object[][]{
                 {attempts, hits, ratio}
         };
+        hitPercentage[0][0] = formatter.format(Integer.parseInt(String.valueOf(hitPercentage[0][0])));
+        hitPercentage[0][1] = formatter.format(Integer.parseInt(String.valueOf(hitPercentage[0][1])));
         return hitPercentage;
     }
 
@@ -82,7 +90,9 @@ public class FilingParty {
         incomingSaveData = readSave();
         int hits = Integer.parseInt(String.valueOf(incomingSaveData.get("Party").get("Hits")));
         double ratio = (double) Math.round(((double) friendDam / (double) hits) * 10000) / 10000;
-        avgDamage = new Object[][]{{hits, friendDam, ratio}};
+        Object[][] avgDamage = new Object[][]{{hits, friendDam, ratio}};
+        avgDamage[0][0] = formatter.format(Integer.parseInt(String.valueOf(avgDamage[0][0])));
+        avgDamage[0][1] = formatter.format(Integer.parseInt(String.valueOf(avgDamage[0][1])));
         return avgDamage;
     }
 
@@ -100,7 +110,10 @@ public class FilingParty {
         double ratio = (double) Math.round((double) friendDam / ((double) enemyDam) * 10000) / 10000;
         Object[][] FtoEArray = new Object[][]{
                 {friendDam, enemyDam, ratio}
+
         };
+        FtoEArray[0][0] = formatter.format(Integer.parseInt(String.valueOf(FtoEArray[0][0])));
+        FtoEArray[0][1] = formatter.format(Integer.parseInt(String.valueOf(FtoEArray[0][1])));
         return FtoEArray;
     }
 
