@@ -1,3 +1,5 @@
+import GUIControlDialogs.FilingGUIControlDialogs;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -322,7 +324,7 @@ public class GUIControl implements ActionListener, ItemListener {
             JOptionPane.showMessageDialog(about, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
         if (e.getSource() == removeKill) {
-            String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Kill", JOptionPane.PLAIN_MESSAGE, null,FilingMain.getPlayerArray(), null);
+            String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Kill", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArray(), null);
             if (name.length() != 0) {
                 FilingControl.removeKill(name);
             }
@@ -378,23 +380,16 @@ public class GUIControl implements ActionListener, ItemListener {
             boolean healthy = false;
             try {
                 if (e.getSource() == goHeal) {
-                    healing = Integer.parseInt(healDC.getText());
-                    KillQ.setSelected(false);
-                    KillV = 0;
-                    per = playerHeal.getSelectedIndex();
-
+                    FilingGUIControlDialogs.openDialog("Healing");
                     FilingControl.writePartyUpdate(1, 0, 0, 0, 0, 0);
                 } else if (e.getSource() == updateHealth) {
                     per = playerHealth.getSelectedIndex();
                     health = Integer.parseInt(healthDC.getText());
                     healthy = true;
                 } else {
-                    damage = Integer.parseInt(damDC.getText());
+                    FilingGUIControlDialogs.openDialog("Damage");
                     FilingControl.writePartyUpdate(1, 0, 0, 0, 0, 0);
-                    per = playerDam.getSelectedIndex();
                 }
-
-                FilingControl.changeCS(per, damage, KillV, healing, health, healthy);
             } catch (NumberFormatException e1) {
                 System.out.println("Invalid Input data");
             }
@@ -414,7 +409,7 @@ public class GUIControl implements ActionListener, ItemListener {
                 }
             }
             if (e.getSource() == removePlayer) {
-                String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Player", JOptionPane.PLAIN_MESSAGE, null,FilingMain.getPlayerArray(), null);
+                String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Player", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArray(), null);
                 if (name.length() != 0) {
                     FilingMain.removePlayer(name);
                 }

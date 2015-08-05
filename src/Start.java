@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 public class Start {
 
     static Path saveFilePath = Paths.get(System.getProperty("user.home"));//Example
-    static String version = "1.5";
+    public static String version = "1.5";
     static String aboutText = "Dungeons & Dragons Combat Companion" + "\n" + "Created by JD Isenhart" + "\n" + "Larkspur, Colorado" + "\n" + "Version " + version;
 
     public static void main(String[] args) {
