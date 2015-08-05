@@ -1,4 +1,6 @@
 import org.apache.commons.io.FilenameUtils;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 
 import javax.swing.*;
 import java.awt.*;
@@ -179,6 +181,27 @@ public class FilingMain implements ActionListener {
             blankMap.put(i, names.get(i));
         }
         return blankMap;
+    }
+
+    public static void renamePlayer(String playerOld, String playerNew) {
+        FilingXP.renamePlayer(playerOld, playerNew);
+        incomingSaveData = readSave();
+        List<String> playerOrder = new ArrayList<>();
+        HashMap data = incomingSaveData.get(playerOld);
+        for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {
+            playerOrder.add(String.valueOf(incomingSaveData.get("Players").get(i)));
+        }
+        playerOrder.remove(playerOld);
+        playerOrder.remove("Enemy");
+        playerOrder.add(playerNew);
+        java.util.Collections.sort(playerOrder);
+        playerOrder.add(playerOrder.size(), "Enemy");
+        incomingSaveData.remove("Players");
+        incomingSaveData.put("Players", FilingControl.newPlayerMap(playerOrder));
+        incomingSaveData.remove(playerOld);
+        incomingSaveData.put(playerNew, data);
+        writeFile(incomingSaveData);
+        System.out.println("Done renaming player!");
     }
 
     public JPanel showBlankPane() {

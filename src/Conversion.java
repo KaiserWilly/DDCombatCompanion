@@ -47,6 +47,10 @@ public class Conversion {
                 saveData.get(player).put("BR", BR);
 
             }
+            if (!saveData.get(player).containsKey("FriendFire")) {
+                int friendFire = 0;
+                saveData.get(player).put("FriendFire", friendFire);
+            }
         }
     }
 

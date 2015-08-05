@@ -74,6 +74,7 @@ public class GUICombat implements ActionListener {
         dataDC.getColumnModel().getColumn(3).setCellRenderer(CenterRenderer);
         dataDC.getColumnModel().getColumn(4).setCellRenderer(CenterRenderer);
         dataDC.getColumnModel().getColumn(5).setCellRenderer(CenterRenderer);
+        dataDC.getColumnModel().getColumn(6).setCellRenderer(CenterRenderer);
         dataDC.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
         dataDC.setSize(dimX, dimY);
         dataDC.setLocation(50, 50);
@@ -280,6 +281,7 @@ public class GUICombat implements ActionListener {
         dataDC.getColumnModel().getColumn(3).setCellRenderer(CenterRenderer);
         dataDC.getColumnModel().getColumn(4).setCellRenderer(CenterRenderer);
         dataDC.getColumnModel().getColumn(5).setCellRenderer(CenterRenderer);
+        dataDC.getColumnModel().getColumn(6).setCellRenderer(CenterRenderer);
         dataDC.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
         dataDC.setSize(dimX, dimY);
         dataDC.setLocation(50, 50);
@@ -301,7 +303,7 @@ public class GUICombat implements ActionListener {
 
         dataPaneDC.setLocation(25, 25);
 
-        modelFCS = new DefaultTableModel(FilingCombat.FriendComStats, FilingCombat.totalStatsRowData()) {
+        modelFCS = new DefaultTableModel(FilingCombat.getFriendComStats(), FilingCombat.totalStatsRowData()) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {

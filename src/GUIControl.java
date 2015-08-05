@@ -92,6 +92,7 @@ public class GUIControl implements ActionListener, ItemListener {
         dataDC.getColumnModel().getColumn(3).setCellRenderer(CenterRenderer);
         dataDC.getColumnModel().getColumn(4).setCellRenderer(CenterRenderer);
         dataDC.getColumnModel().getColumn(5).setCellRenderer(CenterRenderer);
+        dataDC.getColumnModel().getColumn(6).setCellRenderer(CenterRenderer);
         dataDC.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
         dataDC.setMaximumSize(new Dimension(dimX, dimY));
         dataDC.setFont((new Font("SansSerif", Font.BOLD, 12)));
@@ -429,7 +430,7 @@ public class GUIControl implements ActionListener, ItemListener {
                     } else if (Arrays.asList(FilingMain.getPlayerArray()).contains(namePro)) {
                         JOptionPane.showMessageDialog(Stats, "Names can not be duplicate of an already present name", "Name Error", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        FilingControl.renamePlayer(namePre, namePro);
+                        FilingMain.renamePlayer(namePre, namePro);
                     }
                 }
             }
@@ -527,6 +528,7 @@ public class GUIControl implements ActionListener, ItemListener {
         dataDC.getColumnModel().getColumn(3).setCellRenderer(CenterRenderer);
         dataDC.getColumnModel().getColumn(4).setCellRenderer(CenterRenderer);
         dataDC.getColumnModel().getColumn(5).setCellRenderer(CenterRenderer);
+        dataDC.getColumnModel().getColumn(6).setCellRenderer(CenterRenderer);
         dataDC.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
         dataDC.setMaximumSize(new Dimension(dimX, dimY));
         dataDC.setFont((new Font("SansSerif", Font.BOLD, 12)));

@@ -6,9 +6,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by J.D. Isenhart on 4/5/2015
@@ -49,14 +52,14 @@ public class FilingCombat {
     }
 
     public static Object[] columnHeadersAS() {
-        return new Object[]{"Player", "BR", "Damage Done", "Kills", "Healing Done", "Health"};
+        return new Object[]{"Player", "BR", "Damage Done", "Kills", "Healing Done", "Friendly Fire", "Health"};
     }
 
     public static Object[][] rowDataAS() { // Gather and piece together data to display on the main table
         EnemyComStats = new Object[][]{{0, 0, 0}};
         FriendComStats = new Object[][]{{0, 0, 0}};
         incomingSaveData = readSave();
-        columnData = new Object[incomingSaveData.get("Players").size() - 1][6];
+        columnData = new Object[incomingSaveData.get("Players").size() - 1][7];
         for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {
             if (String.valueOf(incomingSaveData.get("Players").get(i)).equals("Enemy")) {
                 EnemyComStats[0][0] = incomingSaveData.get(incomingSaveData.get("Players").get(i)).get("Damage");
@@ -68,14 +71,27 @@ public class FilingCombat {
                 columnData[i][2] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("Damage");
                 columnData[i][3] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("Kills");
                 columnData[i][4] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("Healing");
-                columnData[i][5] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("Health");
+                columnData[i][5] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("FriendFire");
+                columnData[i][6] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("Health");
 
             }
         }
         for (int i = 0; i < columnData.length; i++) {
-            FriendComStats[0][0] = Integer.parseInt("0" + String.valueOf(FriendComStats[0][0])) + Integer.parseInt("0" + String.valueOf(columnData[i][2]));
-            FriendComStats[0][1] = Integer.parseInt("0" + String.valueOf(FriendComStats[0][1])) + Integer.parseInt("0" + String.valueOf(columnData[i][3]));
-            FriendComStats[0][2] = Integer.parseInt("0" + String.valueOf(FriendComStats[0][2])) + Integer.parseInt("0" + String.valueOf(columnData[i][4]));
+            if (String.valueOf(columnData[i][2]).equals(null)) {
+                FriendComStats[0][0] = Integer.parseInt(String.valueOf(FriendComStats[0][0]));
+            } else {
+                FriendComStats[0][0] = Integer.parseInt(String.valueOf(FriendComStats[0][0])) + Integer.parseInt(String.valueOf(columnData[i][2]));
+            }
+            if (String.valueOf(columnData[i][3]).equals(null)) {
+                FriendComStats[0][1] = Integer.parseInt(String.valueOf(FriendComStats[0][1]));
+            } else {
+                FriendComStats[0][1] = Integer.parseInt(String.valueOf(FriendComStats[0][1])) + Integer.parseInt(String.valueOf(columnData[i][3]));
+            }
+            if (String.valueOf(columnData[i][4]).equals(null)) {
+                FriendComStats[0][2] = Integer.parseInt(String.valueOf(FriendComStats[0][2]));
+            } else {
+                FriendComStats[0][2] = Integer.parseInt(String.valueOf(FriendComStats[0][2])) + Integer.parseInt(String.valueOf(columnData[i][4]));
+            }
         }
         HashMap saveParty = incomingSaveData.get("Party");
         try {
@@ -160,6 +176,17 @@ public class FilingCombat {
             return "Error: Kill Champ";
         }
         return Champs;
+    }
+
+    public static Object[][] getFriendComStats() {
+        incomingSaveData = readSave();
+        HashMap partyData = incomingSaveData.get("Party");
+        Object[][] friendStats = (Object[][]) partyData.get("FriendCom");
+        DecimalFormat formatter = new DecimalFormat("#,###", DecimalFormatSymbols.getInstance(Locale.getDefault()));
+        for (int i = 0; i < friendStats.length; i++) {
+            friendStats[i][0] =  formatter.format(Integer.parseInt(String.valueOf(friendStats[i][0])));
+        }
+        return friendStats;
     }
 
     public static TableRowSorter BRSorter(JTable Table) {

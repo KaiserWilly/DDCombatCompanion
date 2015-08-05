@@ -85,7 +85,7 @@ public class FilingXP {
             return 1;
         } else {
             for (int i = 1; i < playerXPdata.length; i++) {
-                if (XP > Integer.parseInt(String.valueOf(playerXPdata[i - 1][1])) && XP < Integer.parseInt(String.valueOf(playerXPdata[i][1]))) {
+                if (XP >= Integer.parseInt(String.valueOf(playerXPdata[i - 1][1])) && XP < Integer.parseInt(String.valueOf(playerXPdata[i][1]))) {
                     return i + 1;
 
                 }
@@ -226,5 +226,28 @@ public class FilingXP {
         incomingSaveData.remove("XP");
         incomingSaveData.put("XP", XPData);
         writeFile(incomingSaveData);
+    }
+
+    public static void renamePlayer(String playerOld, String playerNew) {
+        incomingSaveData = readSave();
+        HashMap XPData = incomingSaveData.get("XP");
+        Object[][] playerXPData = (Object[][]) XPData.get("XP");
+        int nameConditioner = 0;
+        for (int i = 0; i < playerXPData.length; i++) {
+            if (String.valueOf(playerXPData[i][0]).equals(playerOld)) {
+                playerXPData[i][0] = playerNew;
+            } else {
+                playerXPData[i + nameConditioner][0] = playerXPData[i + nameConditioner][0];
+            }
+            playerXPData[i + nameConditioner][1] = playerXPData[i + nameConditioner][1];
+            playerXPData[i + nameConditioner][2] = playerXPData[i + nameConditioner][2];
+
+        }
+        XPData.remove("XP");
+        XPData.put("XP", playerXPData);
+        incomingSaveData.remove("XP");
+        incomingSaveData.put("XP", XPData);
+        writeFile(incomingSaveData);
+
     }
 }

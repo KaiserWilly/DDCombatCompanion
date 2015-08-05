@@ -39,34 +39,6 @@ public class FilingControl {
         }
     }
 
-    public static void renamePlayer(String playerPre, String playerPro) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
-        incomingSaveData = readSave();
-        List<String> playerOrder = new ArrayList<>();
-        HashMap data = incomingSaveData.get(playerPre);
-        for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {
-            playerOrder.add(String.valueOf(incomingSaveData.get("Players").get(i)));
-
-        }
-        playerOrder.remove(playerPre);
-        playerOrder.remove("Enemy");
-        playerOrder.add(playerPro);
-        java.util.Collections.sort(playerOrder);
-        playerOrder.add(playerOrder.size(), "Enemy");
-        incomingSaveData.remove("Players");
-        incomingSaveData.put("Players", newPlayerMap(playerOrder));
-        try {
-            System.out.println(mapper.writeValueAsString(incomingSaveData.get("Players")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        incomingSaveData.remove(playerPre);
-        incomingSaveData.put(playerPro, data);
-        writeFile(incomingSaveData);
-        System.out.println("Done renaming player!");
-    }
-
     public static HashMap newPlayerMap(List<String> names) {
         HashMap<Integer, String> blankMap = new HashMap<>();
         for (int i = 0; i < names.size(); i++) {

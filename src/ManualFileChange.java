@@ -63,6 +63,7 @@ public class ManualFileChange { //Used to analyze and rewrite save file if corru
 //        XPdata.put("XP", playerData);
 //        XPdata.put("Levels", levels);
 //        incomingSaveData.put("XP",XPdata);
+        System.out.println(Integer.parseInt(String.valueOf("0")));
 
         //Write File
         FilingMain.writeFile(incomingSaveData);
