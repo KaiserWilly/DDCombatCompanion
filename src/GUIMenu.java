@@ -83,7 +83,7 @@ public class GUIMenu extends Component {
             try {
                 pb = ImageIO.read(getClass().getResource("rsc/swirl.png"));
                 panelIcon = new JLabel(new ImageIcon(pb));
-                panelIcon.setLocation(0, 45);
+                panelIcon.setLocation(0, 75);
                 panelIcon.setSize(400, 600);
                 panelIcon.setHorizontalAlignment(SwingConstants.CENTER);
                 panelIcon.setVerticalAlignment(SwingConstants.CENTER);
