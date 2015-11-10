@@ -70,13 +70,26 @@ public class FilingControl {
         regenBRRanking(name);
         System.out.println("Done removing " + d + " damage from the player " + name + "!");
     }
+
     public static void setMaxHealth(String name, int mHealth) {
         incomingSaveData = readSave();
         incomingSaveData.get(name).remove("MaxHealth");
         incomingSaveData.get(name).put("MaxHealth", mHealth);
         writeFile(incomingSaveData);
         regenBRRanking(name);
-        System.out.println("Done setting " + mHealth + " as the max health of the player " + name + "!");
+    }
+
+    public static void healAlltoMax() {
+        incomingSaveData = readSave();
+        for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {
+            if (!String.valueOf(incomingSaveData.get("Players").get(i)).equals("Enemy")) {
+                String name = String.valueOf(incomingSaveData.get("Players").get(i));
+                int maxHealth = (int) incomingSaveData.get(name).get("MaxHealth");
+                incomingSaveData.get(name).remove("Health");
+                incomingSaveData.get(name).put("Health", maxHealth);
+            }
+        }
+        writeFile(incomingSaveData);
     }
 
     public static void writePartyUpdate(int dice, int sword, int arrow, int spell, int hit, int XP) {
@@ -125,7 +138,6 @@ public class FilingControl {
         int totalDam;
         int totalKill;
         int totalHealing;
-        System.out.println(String.valueOf(incomingSaveData.get("Players").get(personVal)));
         incomingSaveData = readSave();
         totalDam = Integer.parseInt(String.valueOf(incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).get("Damage"))) + damage;
         totalHealing = Integer.parseInt(String.valueOf(incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).get("Healing"))) + healing;

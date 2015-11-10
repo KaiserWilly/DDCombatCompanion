@@ -45,7 +45,7 @@ public class FilingLoot {
     }
 
     public static Object[] getLootTableColumnHeaders() {
-        return new Object[]{"ITEM", "ITEM (GP)","QUANTITY"};
+        return new Object[]{"ITEM", "ITEM VALUE (GP)", "QUANTITY"};
     }
 
     public static void updateLootTable(String item, String value,int qty) {
@@ -181,9 +181,9 @@ public class FilingLoot {
         System.out.println("Done removing loot note!");
     }
 
-    public static TableRowSorter RowSorter(JTable Table) {
-        TableRowSorter sorter = new TableRowSorter(Table.getModel());
-        List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
+    public static TableRowSorter<javax.swing.table.TableModel> RowSorter(JTable Table) {
+        TableRowSorter<javax.swing.table.TableModel> sorter = new TableRowSorter<>(Table.getModel());
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
         int rowColumn = 0;
         sortKeys.add(new RowSorter.SortKey(rowColumn, SortOrder.ASCENDING));
         sorter.setSortable(1, false);

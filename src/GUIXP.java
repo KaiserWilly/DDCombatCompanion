@@ -187,6 +187,7 @@ public class GUIXP implements ActionListener {
         XPT.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         XPT.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         XPT.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
+        XPT.getColumnModel().getColumn(3).setCellRenderer(CenterRenderer);
         XPT.getTableHeader().setFont(tableHeading);
         XPT.setLocation(50, 50);
         XPT.setFont(tableData);

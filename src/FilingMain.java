@@ -58,7 +58,7 @@ public class FilingMain implements ActionListener {
     }
 
     public static String[] getPlayerArrayNE() {
-        playerArrayNE = new String[(incomingSaveData.get("Players").size())];
+        playerArrayNE = new String[(incomingSaveData.get("Players").size()) - 1];
         for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {
             if (!String.valueOf(incomingSaveData.get("Players").get(i)).equals("Enemy")) {
                 playerArrayNE[i] = String.valueOf(incomingSaveData.get("Players").get(i));

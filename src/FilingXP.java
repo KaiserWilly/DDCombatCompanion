@@ -59,19 +59,21 @@ public class FilingXP {
     }
 
     public static Object[] retXPColumnHeaders() {
-        return new Object[]{"PLAYER", "XP", "LEVEL"};
+        return new Object[]{"PLAYER", "XP", "XP TO NEXT LEVEL", "LEVEL"};
     }
 
     public static Object[][] retXPTabData() {
         incomingSaveData = readSave();
         HashMap XPData = incomingSaveData.get("XP");
         Object[][] xpTabDataRaw = (Object[][]) XPData.get("XP");
-        Object[][] xpTabData = new Object[xpTabDataRaw.length][3];
+        Object[][] xpTabData = new Object[xpTabDataRaw.length][4];
         DecimalFormat formatter = new DecimalFormat("#,###", DecimalFormatSymbols.getInstance(Locale.getDefault()));
         for (int i = 0; i < xpTabDataRaw.length; i++) {
             xpTabData[i][0] = xpTabDataRaw[i][0];
             xpTabData[i][1] = formatter.format(Integer.parseInt(String.valueOf(xpTabDataRaw[i][1])));
-            xpTabData[i][2] = calcLevelFromXP(String.valueOf(xpTabData[i][0]), Integer.parseInt(String.valueOf(xpTabDataRaw[i][1])));
+            xpTabData[i][2] = formatter.format(calcXPToNextLevel(String.valueOf(xpTabData[i][0]), calcLevelFromXP(String.valueOf(xpTabData[i][0]), Integer.parseInt(String.valueOf(xpTabDataRaw[i][1]))), Integer.parseInt(String.valueOf(xpTabDataRaw[i][1]))));
+            xpTabData[i][3] = calcLevelFromXP(String.valueOf(xpTabData[i][0]), Integer.parseInt(String.valueOf(xpTabDataRaw[i][1])));
+
         }
         return xpTabData;
     }
@@ -80,7 +82,6 @@ public class FilingXP {
         incomingSaveData = readSave();
         HashMap XPData = incomingSaveData.get("XP");
         Object[][] playerXPdata = (Object[][]) XPData.get("Levels");
-        boolean below = false, above = false;
         if (XP < Integer.parseInt(String.valueOf(playerXPdata[0][1]))) {
             return 1;
         } else {
@@ -92,6 +93,15 @@ public class FilingXP {
             }
         }
         return 0;
+    }
+
+    public static int calcXPToNextLevel(String player, int level, int XP) {
+        incomingSaveData = readSave();
+        HashMap XPData = incomingSaveData.get("XP");
+        Object[][] playerXPdata = (Object[][]) XPData.get("Levels");
+        int XPReq = (int) playerXPdata[level - 1][1];
+        return XPReq - XP;
+
     }
 
     public static boolean checkupdateValidity(String level, int XP) {
