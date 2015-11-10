@@ -35,12 +35,12 @@ public class GUIControlDialogsFrame {
         }
 
         public JPanel paneContent() throws IOException {
-            switch (Cbutton) {
-                case "Damage":
-                    base = GUIControlDialogDamage.damageDialog();
-                case "Healing":
-                    GUIControlDialogHealing.damageDialog();
-            }
+//            switch (Cbutton) {
+//                case "Damage":
+//                    base = GUIControlDialogDamage.damageDialog();
+//                case "Healing":
+//                    GUIControlDialogHealing.damageDialog();
+//            }
             return base;
         }
     }

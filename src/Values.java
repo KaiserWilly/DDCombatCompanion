@@ -3,6 +3,9 @@
  * 5:31 PM
  */
 public class Values {
+    public static String version = "0.7";
+    static String aboutText = "Dungeons & Dragons Combat Companion (3.5e)" + "\n" + "Created by JD Isenhart" + "\n"  + "\n" + "Version " + version;
+
     public Object[][] getDefaultXPLevels() {
         Object[][] levels = new Object[][]{
                 {"2", 1000},

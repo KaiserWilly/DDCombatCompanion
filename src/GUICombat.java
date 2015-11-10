@@ -20,13 +20,21 @@ public class GUICombat implements ActionListener {
     public static JLabel FCS, ECS, DamChamp, KillChamp, HealChamp;
     public static DefaultTableModel modelDC, modelFCS, modelECS;
     public static JMenuBar theMenuBar;
-    public static JMenu menuFile, aboutMenu;
-    public static JMenuItem removeKill, about;
-    public static Font CSCellContent = new Font("Franklin Gothic Medium", Font.BOLD, 30);
-    static Font CSPSHeading = new Font("Verdana", Font.ITALIC, 20);
-    static Font CSChampContent = new Font("Trebuchet MS", Font.PLAIN, 20);
-    static Font CSStatsHeading = new Font("SansSerif", Font.PLAIN, 16);
-    static int RowHeight = 35;
+    public static JMenu aboutMenu;
+    public static JMenuItem  about;
+    static int RowHeight = 30;
+    static Font CSPSHeading = new Font("Franklin Gothic Medium", Font.ITALIC, 20);
+    static Font ChampTableContent = new Font("Trebuchet MS", Font.PLAIN, 20);
+    static Font tableData = new Font("Helvetica", Font.BOLD, 12);
+    static Font tableHeading = new Font("Garamond", Font.BOLD, 14);
+
+    public void setFonts() {
+        tableHeading = FilingFonts.tableHeading;
+        tableData = FilingFonts.tableDataS24;
+    }
+
+
+
 
     public JMenuBar getTheMenuBar() {
         theMenuBar = new JMenuBar();
@@ -40,9 +48,7 @@ public class GUICombat implements ActionListener {
     }
 
     public JPanel DCount() {
-        CSPSHeading.deriveFont(20f);
-        CSChampContent.deriveFont(20f);
-        CSStatsHeading.deriveFont(16f);
+        setFonts();
         CStats = new JPanel();
         CStats.setSize(dimX, dimY);
         CStats.setBackground(Color.WHITE);
@@ -75,10 +81,11 @@ public class GUICombat implements ActionListener {
         dataDC.getColumnModel().getColumn(4).setCellRenderer(CenterRenderer);
         dataDC.getColumnModel().getColumn(5).setCellRenderer(CenterRenderer);
         dataDC.getColumnModel().getColumn(6).setCellRenderer(CenterRenderer);
-        dataDC.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        dataDC.getColumnModel().getColumn(7).setCellRenderer(CenterRenderer);
+        dataDC.getTableHeader().setFont(tableHeading);
         dataDC.setSize(dimX, dimY);
         dataDC.setLocation(50, 50);
-        dataDC.setFont(CSCellContent);
+        dataDC.setFont(tableData);
         dataDC.setBackground(Color.WHITE);
         dataDC.setRowHeight(RowHeight);
         dataDC.setRowSorter(FilingCombat.BRSorter(dataDC));
@@ -123,8 +130,8 @@ public class GUICombat implements ActionListener {
         dataFCS.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         dataFCS.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         dataFCS.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
-        dataFCS.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        dataFCS.setFont(CSCellContent);
+        dataFCS.getTableHeader().setFont(tableHeading);
+        dataFCS.setFont(tableData);
         dataFCS.setMinimumSize(new Dimension(dimX, 150));
         dataFCS.setBackground(Color.WHITE);
         dataFCS.setRowHeight(40);
@@ -157,8 +164,8 @@ public class GUICombat implements ActionListener {
         dataECS.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         dataECS.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         dataECS.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
-        dataECS.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        dataECS.setFont(CSCellContent);
+        dataECS.getTableHeader().setFont(tableHeading);
+        dataECS.setFont(tableData);
         dataECS.setMinimumSize(new Dimension(dimX, 150));
         dataECS.setBackground(Color.WHITE);
         dataECS.setRowHeight(40);
@@ -179,17 +186,17 @@ public class GUICombat implements ActionListener {
         CStats.add(ECS);
 
         DamChamp = new JLabel("Damage Champion: " + FilingCombat.comStatsDamChamp());
-        DamChamp.setFont(CSChampContent);
+        DamChamp.setFont(ChampTableContent);
         DamChamp.setMinimumSize(new Dimension(25, 200));
         CStats.add(DamChamp);
 
         KillChamp = new JLabel("     Kill Champion: " + FilingCombat.comStatsKillChamp());
-        KillChamp.setFont(CSChampContent);
+        KillChamp.setFont(ChampTableContent);
         KillChamp.setMinimumSize(new Dimension(25, 200));
         CStats.add(KillChamp);
 
         HealChamp = new JLabel("     Healing Champion: " + FilingCombat.comStatsHealingChamp());
-        HealChamp.setFont(CSChampContent);
+        HealChamp.setFont(ChampTableContent);
         HealChamp.setMinimumSize(new Dimension(25, 200));
         CStats.add(HealChamp);
 
@@ -237,7 +244,7 @@ public class GUICombat implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == about) {
-            JOptionPane.showMessageDialog(CStats, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(CStats, Values.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
     }
 
@@ -282,10 +289,11 @@ public class GUICombat implements ActionListener {
         dataDC.getColumnModel().getColumn(4).setCellRenderer(CenterRenderer);
         dataDC.getColumnModel().getColumn(5).setCellRenderer(CenterRenderer);
         dataDC.getColumnModel().getColumn(6).setCellRenderer(CenterRenderer);
-        dataDC.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        dataDC.getColumnModel().getColumn(7).setCellRenderer(CenterRenderer);
+        dataDC.getTableHeader().setFont(tableHeading);
         dataDC.setSize(dimX, dimY);
         dataDC.setLocation(50, 50);
-        dataDC.setFont(CSCellContent);
+        dataDC.setFont(tableData);
         dataDC.setBackground(Color.WHITE);
         dataDC.setRowHeight(RowHeight);
         dataDC.setRowSorter(FilingCombat.BRSorter(dataDC));
@@ -322,8 +330,8 @@ public class GUICombat implements ActionListener {
         dataFCS.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         dataFCS.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         dataFCS.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
-        dataFCS.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        dataFCS.setFont(CSCellContent);
+        dataFCS.getTableHeader().setFont(tableHeading);
+        dataFCS.setFont(tableData);
         dataFCS.setMinimumSize(new Dimension(dimX, 150));
         dataFCS.setBackground(Color.WHITE);
         dataFCS.setRowHeight(40);
@@ -352,8 +360,8 @@ public class GUICombat implements ActionListener {
         dataECS.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         dataECS.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         dataECS.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
-        dataECS.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        dataECS.setFont(CSCellContent);
+        dataECS.getTableHeader().setFont(tableHeading);
+        dataECS.setFont(tableData);
         dataECS.setMinimumSize(new Dimension(dimX, 150));
         dataECS.setBackground(Color.WHITE);
         dataECS.setRowHeight(40);
@@ -364,17 +372,17 @@ public class GUICombat implements ActionListener {
         CStats.add(dataPaneECS);
 
         DamChamp = new JLabel("Damage Champion: " + FilingCombat.comStatsDamChamp());
-        DamChamp.setFont(CSChampContent);
+        DamChamp.setFont(ChampTableContent);
         DamChamp.setMaximumSize(new Dimension(200, 25));
         CStats.add(DamChamp);
 
         KillChamp = new JLabel("     Kill Champion: " + FilingCombat.comStatsKillChamp());
-        KillChamp.setFont(CSChampContent);
+        KillChamp.setFont(ChampTableContent);
         KillChamp.setMaximumSize(new Dimension(200, 25));
         CStats.add(KillChamp);
 
         HealChamp = new JLabel("     Healing Champion: " + FilingCombat.comStatsHealingChamp());
-        HealChamp.setFont(CSChampContent);
+        HealChamp.setFont(ChampTableContent);
         HealChamp.setMaximumSize(new Dimension(200, 25));
         CStats.add(HealChamp);
 

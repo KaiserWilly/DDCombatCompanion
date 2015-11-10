@@ -52,14 +52,19 @@ public class FilingCombat {
     }
 
     public static Object[] columnHeadersAS() {
-        return new Object[]{"Player", "BR", "Damage Done", "Kills", "Healing Done", "Friendly Fire", "Health"};
+        return new Object[]{"PLAYER", "BR", "DAMAGE DONE", "KILLS", "HEALING DONE", "FRIENDLY FIRE", "HEALTH", "MAX HEALTH"};
     }
 
     public static Object[][] rowDataAS() { // Gather and piece together data to display on the main table
+        incomingSaveData = readSave();
+        for (int i = 0; i < FilingMain.getPlayerArrayNE().length; i++) {
+            FilingControl.regenBRRanking(String.valueOf(incomingSaveData.get("Players").get(i)));
+        }
         EnemyComStats = new Object[][]{{0, 0, 0}};
         FriendComStats = new Object[][]{{0, 0, 0}};
         incomingSaveData = readSave();
-        columnData = new Object[incomingSaveData.get("Players").size() - 1][7];
+        columnData = new Object[incomingSaveData.get("Players").size() - 1][8];
+
         for (int i = 0; i < incomingSaveData.get("Players").size(); i++) {
             if (String.valueOf(incomingSaveData.get("Players").get(i)).equals("Enemy")) {
                 EnemyComStats[0][0] = incomingSaveData.get(incomingSaveData.get("Players").get(i)).get("Damage");
@@ -73,6 +78,7 @@ public class FilingCombat {
                 columnData[i][4] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("Healing");
                 columnData[i][5] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("FriendFire");
                 columnData[i][6] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("Health");
+                columnData[i][7] = incomingSaveData.get(String.valueOf(columnData[i][0])).get("MaxHealth");
 
             }
         }
@@ -94,10 +100,7 @@ public class FilingCombat {
             }
         }
         HashMap saveParty = incomingSaveData.get("Party");
-        try {
-            saveParty.remove("FriendCom");
-        } catch (Exception e) {
-        }
+        saveParty.remove("FriendCom");
         saveParty.put("FriendCom", FriendComStats);
         incomingSaveData.remove("Party");
         incomingSaveData.put("Party", saveParty);
@@ -107,7 +110,7 @@ public class FilingCombat {
     }
 
     public static Object[] totalStatsRowData() {
-        return new Object[]{"Damage Done", "Kills", "Healing Done"};
+        return new Object[]{"DAMAGE DONE", "KILLS", "HEALING DONE"};
     }
 
     //Computes the Scoring Champions for each category
@@ -184,7 +187,7 @@ public class FilingCombat {
         Object[][] friendStats = (Object[][]) partyData.get("FriendCom");
         DecimalFormat formatter = new DecimalFormat("#,###", DecimalFormatSymbols.getInstance(Locale.getDefault()));
         for (int i = 0; i < friendStats.length; i++) {
-            friendStats[i][0] =  formatter.format(Integer.parseInt(String.valueOf(friendStats[i][0])));
+            friendStats[i][0] = formatter.format(Integer.parseInt(String.valueOf(friendStats[i][0])));
         }
         return friendStats;
     }

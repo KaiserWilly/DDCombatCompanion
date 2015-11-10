@@ -15,7 +15,7 @@ public class GUIFrame {
     public static JPanel pStatistics, cStatistics, base;
     public static JFrame mainFrame;
     public static JTabbedPane tPane;
-    public static JLabel panelIcon;
+    public static JLabel panelIcon, lineR, lineL;
     public static GroupLayout layFrame;
     static GUICombat comStats = new GUICombat();
     static GUIParty partyStats = new GUIParty();
@@ -31,7 +31,7 @@ public class GUIFrame {
 
         public static void createGUI() throws IOException {
             GUIMenu icon = new GUIMenu();
-            mainFrame = new JFrame("Isenhart D&D Combat Companion v" + Start.version);
+            mainFrame = new JFrame("Isenhart D&D Combat Companion v" + Values.version);
             mainFrame.setJMenuBar(modStats.getStatsMenuBar());
             mainFrame.setMaximumSize(new Dimension(1366, 700));
             JFrame.setDefaultLookAndFeelDecorated(false);
@@ -50,11 +50,11 @@ public class GUIFrame {
             base = new JPanel();
             base.setPreferredSize(new Dimension(dimX, dimY));
             base.setMinimumSize(new Dimension(dimX, dimY));
-            base.setBackground(new Color(255, 255, 255));
+            base.setBackground(new Color(245, 243, 238));
             cStatistics = comStats.DCount();
             pStatistics = partyStats.PartyStats();
             tPane = new JTabbedPane();
-            tPane.addTab("Combat Control", null, modStats.ModStatistics(), "Use this table to control stats during Combat");
+            tPane.addTab("Combat Control", null, modStats.controlPanel(), "Use this table to control stats during Combat");
             tPane.addTab("Combat Statistics", null, cStatistics, "Combat Statistics");
             tPane.addTab("Party Statistics", null, pStatistics, "Party Statistics");
             tPane.addTab("Loot", null, loot.lootPanel(), "Track your loot!");
@@ -73,7 +73,33 @@ public class GUIFrame {
             } catch (IOException e) {
                 System.out.println("Can't load image");
             } catch (IllegalArgumentException u) {
-                System.out.println("We can't find the picture! C");
+                System.out.println("We can't find the picture! Icon");
+            }
+            assert pb != null;
+
+            try {
+                pb = ImageIO.read(getClass().getResource("rsc/lineR.png"));
+                lineR = new JLabel(new ImageIcon(pb));
+                lineR.setHorizontalAlignment(SwingConstants.CENTER);
+                lineR.setVerticalAlignment(SwingConstants.CENTER);
+                base.add(lineR);
+            } catch (IOException e) {
+                System.out.println("Can't load image");
+            } catch (IllegalArgumentException u) {
+                System.out.println("We can't find the picture! LineR");
+            }
+            assert pb != null;
+
+            try {
+                pb = ImageIO.read(getClass().getResource("rsc/lineL.png"));
+                lineL = new JLabel(new ImageIcon(pb));
+                lineL.setHorizontalAlignment(SwingConstants.CENTER);
+                lineL.setVerticalAlignment(SwingConstants.CENTER);
+                base.add(lineL);
+            } catch (IOException e) {
+                System.out.println("Can't load image");
+            } catch (IllegalArgumentException u) {
+                System.out.println("We can't find the picture! LineL");
             }
             assert pb != null;
 
@@ -86,7 +112,11 @@ public class GUIFrame {
                     layFrame.createSequentialGroup()
                             .addGroup(layFrame.createParallelGroup(GroupLayout.Alignment.CENTER)
                                             .addComponent(tPane)
-                                            .addComponent(panelIcon)
+                                            .addGroup(layFrame.createSequentialGroup()
+                                                            .addComponent(lineL)
+                                                            .addComponent(panelIcon)
+                                                            .addComponent(lineR)
+                                            )
                             )
 
             );
@@ -94,7 +124,11 @@ public class GUIFrame {
                     layFrame.createSequentialGroup()
 
                             .addComponent(tPane)
-                            .addComponent(panelIcon)
+                            .addGroup(layFrame.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                            .addComponent(panelIcon)
+                                            .addComponent(lineR)
+                                            .addComponent(lineL)
+                            )
             );
             return base;
         }

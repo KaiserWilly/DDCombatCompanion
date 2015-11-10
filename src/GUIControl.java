@@ -1,5 +1,3 @@
-import GUIControlDialogs.FilingGUIControlDialogs;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -13,27 +11,44 @@ import java.util.Arrays;
  */
 public class GUIControl implements ActionListener, ItemListener {
     public static int dimX = 1366, dimY = 700;
-    public static int KillV = 0;
-    public static JPanel Stats, initiative;
-    public static JTextField damDC, healDC, healthDC;
-    public static JComboBox playerDam, playerHeal, playerHealth;
-    public static JButton goDC, goHeal, updateHealth, goDice, goSword, goArrow, goSpell, goHit, goXP;
-    public static JCheckBox KillQ;
-    public static JLabel newDam, newHeal, HealthChange, Cstats, Pstats, init;
-    public static JMenuBar statsMenuB;
-    public static JMenu statsFile, aboutMenu;
-    public static JMenuItem addPlayer, removePlayer, changeName, removeKill, setStat, about;
-    public static GroupLayout layStats;
-    public static DefaultTableModel modelDC, psMain;
-    public static JTable dataDC, dataPsMain;
+    public static boolean killCondition = false;
+    public static JPanel statisticsModule, initiativeModule;
+    public static JTextField damageInput, healInput, healthInput;
+    public static JComboBox<String> playerDamSel;
+    public static JComboBox<String> playerHealSel;
+    public static JComboBox<String> playerHealthSel;
+    public static JButton
+            damAction, healAction, healthAction,
+            diceAction, swordAction, arrowAction,
+            spellAction, hitAction, xpAction, setMaxHealth;
+    public static JCheckBox killAction;
+    public static JLabel damageLab, healingLab, healthLab, comStatsLab, parStatsLab, InitiativeLab;
+    public static JMenuBar menuBar;
+    public static JMenu fileMenu, aboutMenu, friendFire;
+    public static JMenuItem addPlayer, removePlayer, changeName, removeKill, removeDamage, setStat, removeFF, addFF, about;
+    public static GroupLayout controlLayout;
+    public static DefaultTableModel statisticsTableModel, partyStatsTableModel;
+    public static JTable mainStatsTable, parStatsTable;
     public static JScrollPane dataPaneDC, dataPSPane;
-    static Font CSStatsHeading = new Font("SansSerif", Font.PLAIN, 16);
-    static Font sHeading = new Font("Trebuchet MS", Font.PLAIN, 20);
-    static Font comStatHeading = new Font("Trebuchet MS", Font.PLAIN, 16);
+    static Font inputField = new Font("SansSerif", Font.PLAIN, 16);
+    static Font moduleHeading = new Font("Trebuchet MS", Font.PLAIN, 20);
+    static Font inputHeading = new Font("Trebuchet MS", Font.PLAIN, 16);
+    static Font playerSelection = new Font("Verdana", Font.PLAIN, 16);
+    static Font tableData = new Font("Helvetica", Font.BOLD, 12);
+    static Font tableHeading = new Font("Garamond", Font.BOLD, 14);
+
+    public void setFonts() {
+        tableHeading = FilingFonts.tableHeading;
+        tableData = FilingFonts.tableDataS12;
+        inputField = FilingFonts.inputField;
+        playerSelection = FilingFonts.playerSelection;
+        moduleHeading = FilingFonts.moduleHeading;
+        inputHeading = FilingFonts.inputHeading;
+    }
 
     public JMenuBar getStatsMenuBar() {
-        statsMenuB = new JMenuBar();
-        statsFile = new JMenu("File");
+        menuBar = new JMenuBar();
+        fileMenu = new JMenu("File");
         aboutMenu = new JMenu("About");
         about = new JMenuItem("About the Program");
         about.addActionListener(this);
@@ -46,25 +61,37 @@ public class GUIControl implements ActionListener, ItemListener {
         changeName.addActionListener(this);
         removeKill = new JMenuItem("Remove Kill");
         removeKill.addActionListener(this);
+        removeDamage = new JMenuItem("Remove Damage");
+        removeDamage.addActionListener(this);
+        friendFire = new JMenu("Friendly Fire");
+        removeFF = new JMenuItem("Remove Friendly Fire");
+        removeFF.addActionListener(this);
+        addFF = new JMenuItem("Add Friendly Fire");
+        addFF.addActionListener(this);
         setStat = new JMenuItem("Set Party Stat");
         setStat.addActionListener(this);
-        statsFile.add(addPlayer);
-        statsFile.add(removePlayer);
-        statsFile.add(changeName);
-        statsFile.add(removeKill);
-        statsFile.add(setStat);
-        statsMenuB.add(statsFile);
-        statsMenuB.add(aboutMenu);
-        return statsMenuB;
+        fileMenu.add(addPlayer);
+        fileMenu.add(removePlayer);
+        fileMenu.add(changeName);
+        fileMenu.add(removeKill);
+        fileMenu.add(removeDamage);
+        friendFire.add(removeFF);
+        friendFire.add(addFF);
+        fileMenu.add(friendFire);
+        fileMenu.add(setStat);
+        menuBar.add(fileMenu);
+        menuBar.add(aboutMenu);
+        return menuBar;
     }
 
-    public JPanel ModStatistics() {
-        Stats = new JPanel();
-        Stats.setBackground(Color.WHITE);
-        Stats.setSize(dimX, 900);
+    public JPanel controlPanel() {
+        setFonts();
+        statisticsModule = new JPanel();
+        statisticsModule.setBackground(Color.WHITE);
+        statisticsModule.setSize(dimX, 900);
 
 
-        modelDC = new DefaultTableModel(FilingCombat.rowDataAS(), FilingCombat.columnHeadersAS()) {
+        statisticsTableModel = new DefaultTableModel(FilingCombat.rowDataAS(), FilingCombat.columnHeadersAS()) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -85,80 +112,85 @@ public class GUIControl implements ActionListener, ItemListener {
                 }
             }
         };
-        dataDC = new JTable(modelDC);
+        mainStatsTable = new JTable(statisticsTableModel);
         DefaultTableCellRenderer CenterRenderer = new DefaultTableCellRenderer();
         CenterRenderer.setHorizontalAlignment(JLabel.CENTER);
-        dataDC.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
-        dataDC.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
-        dataDC.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
-        dataDC.getColumnModel().getColumn(3).setCellRenderer(CenterRenderer);
-        dataDC.getColumnModel().getColumn(4).setCellRenderer(CenterRenderer);
-        dataDC.getColumnModel().getColumn(5).setCellRenderer(CenterRenderer);
-        dataDC.getColumnModel().getColumn(6).setCellRenderer(CenterRenderer);
-        dataDC.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        dataDC.setMaximumSize(new Dimension(dimX, dimY));
-        dataDC.setFont((new Font("SansSerif", Font.BOLD, 12)));
-        dataDC.setBackground(Color.WHITE);
-        dataDC.setRowHeight(15);
-        dataDC.setRowSorter(FilingCombat.BRSorter(dataDC));
-        dataPaneDC = new JScrollPane(dataDC);
+        mainStatsTable.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(3).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(4).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(5).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(6).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(7).setCellRenderer(CenterRenderer);
+        mainStatsTable.getTableHeader().setFont(tableHeading);
+        mainStatsTable.setMaximumSize(new Dimension(dimX, dimY));
+        mainStatsTable.setFont(tableData);
+        mainStatsTable.setBackground(Color.WHITE);
+        mainStatsTable.setRowHeight(15);
+        mainStatsTable.setRowSorter(FilingCombat.BRSorter(mainStatsTable));
+        dataPaneDC = new JScrollPane(mainStatsTable);
         dataPaneDC.setMaximumSize(new Dimension(dimX, 175));
         dataPaneDC.setLocation(25, 25);
-        Stats.add(dataPaneDC);
+        statisticsModule.add(dataPaneDC);
 
-        newDam = new JLabel("New Damage:");
-        newDam.setFont(comStatHeading);
-        Stats.add(newDam);
-        playerDam = new JComboBox<>(FilingMain.getPlayerArray());
-        playerDam.setFont(new Font("Verdana", Font.PLAIN, 16));
-        playerDam.setMaximumSize(new Dimension(200, 25));
-        Stats.add(playerDam);
-        damDC = new JTextField();
-        damDC.setMaximumSize(new Dimension(100, 25));
-        damDC.setFont(CSStatsHeading);
-        Stats.add(damDC);
-        KillQ = new JCheckBox("Kill?");
-        KillQ.setMnemonic(KeyEvent.VK_C);
-        KillQ.setSelected(false);
-        KillQ.setPreferredSize(new Dimension(75, 25));
-        KillQ.setBackground(Color.WHITE);
-        KillQ.addItemListener(this);
-        Stats.add(KillQ);
-        goDC = new JButton("Add Damage");
-        goDC.addActionListener(this);
-        Stats.add(goDC);
+        damageLab = new JLabel("New Damage:");
+        damageLab.setFont(inputHeading);
+        statisticsModule.add(damageLab);
+        playerDamSel = new JComboBox<>(FilingMain.getPlayerArray());
+        playerDamSel.setFont(playerSelection);
+        playerDamSel.setMaximumSize(new Dimension(200, 25));
+        statisticsModule.add(playerDamSel);
+        damageInput = new JTextField();
+        damageInput.setMaximumSize(new Dimension(100, 25));
+        damageInput.setFont(inputField);
+        statisticsModule.add(damageInput);
+        killAction = new JCheckBox("Kill?");
+        killAction.setMnemonic(KeyEvent.VK_C);
+        killAction.setSelected(false);
+        killAction.setPreferredSize(new Dimension(75, 25));
+        killAction.setBackground(Color.WHITE);
+        killAction.addItemListener(this);
+        statisticsModule.add(killAction);
+        damAction = new JButton("Add Damage");
+        damAction.addActionListener(this);
+        statisticsModule.add(damAction);
 
-        newHeal = new JLabel("New Healing:");
-        newHeal.setFont(comStatHeading);
-        Stats.add(newHeal);
-        playerHeal = new JComboBox<>(FilingMain.getPlayerArray());
-        playerHeal.setFont(new Font("Verdana", Font.PLAIN, 16));
-        playerHeal.setMaximumSize(new Dimension(200, 25));
-        Stats.add(playerHeal);
-        healDC = new JTextField();
-        healDC.setFont(CSStatsHeading);
-        healDC.setMaximumSize(new Dimension(100, 25));
-        Stats.add(healDC);
-        goHeal = new JButton("Add Healing");
-        goHeal.addActionListener(this);
-        Stats.add(healDC);
+        healingLab = new JLabel("New Healing:");
+        healingLab.setFont(inputHeading);
+        statisticsModule.add(healingLab);
+        playerHealSel = new JComboBox<>(FilingMain.getPlayerArray());
+        playerHealSel.setFont(playerSelection);
+        playerHealSel.setMaximumSize(new Dimension(200, 25));
+        statisticsModule.add(playerHealSel);
+        healInput = new JTextField();
+        healInput.setFont(inputField);
+        healInput.setMaximumSize(new Dimension(100, 25));
+        statisticsModule.add(healInput);
+        healAction = new JButton("Add Healing");
+        healAction.addActionListener(this);
+        statisticsModule.add(healInput);
 
-        HealthChange = new JLabel("Health Change:");
-        HealthChange.setFont(comStatHeading);
-        Stats.add(HealthChange);
-        playerHealth = new JComboBox<>(FilingMain.getPlayerArray());
-        playerHealth.setFont(new Font("Verdana", Font.PLAIN, 16));
-        playerHealth.setMaximumSize(new Dimension(200, 25));
-        Stats.add(playerHealth);
-        healthDC = new JTextField();
-        healthDC.setFont(CSStatsHeading);
-        healthDC.setMaximumSize(new Dimension(100, 25));
-        Stats.add(healthDC);
-        updateHealth = new JButton("Change Health");
-        updateHealth.addActionListener(this);
-        Stats.add(updateHealth);
+        healthLab = new JLabel("Change Health:");
+        healthLab.setFont(inputHeading);
+        statisticsModule.add(healthLab);
+        playerHealthSel = new JComboBox<>(FilingMain.getPlayerArray());
+        playerHealthSel.setFont(playerSelection);
+        playerHealthSel.setMaximumSize(new Dimension(200, 25));
+        statisticsModule.add(playerHealthSel);
+        healthInput = new JTextField();
+        healthInput.setFont(inputField);
+        healthInput.setMaximumSize(new Dimension(100, 25));
+        statisticsModule.add(healthInput);
+        healthAction = new JButton("Change Health");
+        healthAction.addActionListener(this);
+        statisticsModule.add(healthAction);
 
-        psMain = new DefaultTableModel(FilingParty.rowDataPSTable(), FilingParty.columnDataPSTable()) {
+        setMaxHealth = new JButton("Set Max Health");
+        setMaxHealth.addActionListener(this);
+        statisticsModule.add(setMaxHealth);
+
+        partyStatsTableModel = new DefaultTableModel(FilingParty.rowDataPSTable(), FilingParty.columnDataPSTable()) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -179,159 +211,224 @@ public class GUIControl implements ActionListener, ItemListener {
                 }
             }
         };
-        dataPsMain = new JTable(psMain);
-        dataPsMain.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
-        dataPsMain.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
-        dataPsMain.setRowHeight(15);
-        dataPsMain.setFont((new Font("SansSerif", Font.BOLD, 12)));
-        dataPsMain.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        dataPSPane = new JScrollPane(dataPsMain);
+        parStatsTable = new JTable(partyStatsTableModel);
+        parStatsTable.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
+        parStatsTable.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
+        parStatsTable.setRowHeight(15);
+        parStatsTable.setFont(tableData);
+        parStatsTable.getTableHeader().setFont(tableHeading);
+        dataPSPane = new JScrollPane(parStatsTable);
         dataPSPane.setMaximumSize(new Dimension(dimX, 125));
-        Stats.add(dataPSPane);
+        statisticsModule.add(dataPSPane);
 
 
-        goDice = new JButton("Add Dice Roll");
-        goDice.addActionListener(this);
-        Stats.add(goDice);
+        diceAction = new JButton("Add Dice Roll");
+        diceAction.addActionListener(this);
+        statisticsModule.add(diceAction);
 
-        goSword = new JButton("Add Weapon Swing");
-        goSword.addActionListener(this);
-        Stats.add(goSword);
+        swordAction = new JButton("Add Weapon Swing");
+        swordAction.addActionListener(this);
+        statisticsModule.add(swordAction);
 
-        goArrow = new JButton("Add Arrow Shot");
-        goArrow.addActionListener(this);
-        Stats.add(goArrow);
+        arrowAction = new JButton("Add Arrow Shot");
+        arrowAction.addActionListener(this);
+        statisticsModule.add(arrowAction);
 
-        goSpell = new JButton("Add Spell Cast");
-        goSpell.addActionListener(this);
-        Stats.add(goSpell);
+        spellAction = new JButton("Add Spell Cast");
+        spellAction.addActionListener(this);
+        statisticsModule.add(spellAction);
 
-        goHit = new JButton("Add Hit");
-        goHit.addActionListener(this);
-        Stats.add(goHit);
+        hitAction = new JButton("Add Hit");
+        hitAction.addActionListener(this);
+        statisticsModule.add(hitAction);
 
-        goXP = new JButton("Add XP");
-        goXP.addActionListener(this);
-        Stats.add(goXP);
+        xpAction = new JButton("Add XP");
+        xpAction.addActionListener(this);
+        statisticsModule.add(xpAction);
 
-        Cstats = new JLabel("-Combat Statistics-");
-        Cstats.setFont(sHeading);
-        Stats.add(Cstats);
+        comStatsLab = new JLabel("-Combat Statistics-");
+        comStatsLab.setFont(moduleHeading);
+        statisticsModule.add(comStatsLab);
 
-        Pstats = new JLabel("-Party Statistics-");
-        Pstats.setFont(sHeading);
-        Stats.add(Pstats);
+        parStatsLab = new JLabel("-Party Statistics-");
+        parStatsLab.setFont(moduleHeading);
+        statisticsModule.add(parStatsLab);
 
-        initiative = new GUIIntiative().InitiativePanel();
-        Stats.add(initiative);
+        initiativeModule = new GUIIntiative().InitiativePanel();
+        statisticsModule.add(initiativeModule);
 
-        init = new JLabel("-Initiative-");
-        init.setFont(sHeading);
-        Stats.add(init);
+        InitiativeLab = new JLabel("-Initiative-");
+        InitiativeLab.setFont(moduleHeading);
+        statisticsModule.add(InitiativeLab);
 
-        layStats = new GroupLayout(Stats);
-        Stats.setLayout(layStats);
-        layStats.setAutoCreateGaps(true);
-        layStats.setAutoCreateContainerGaps(true);
-        layStats.setHorizontalGroup(
-                layStats.createSequentialGroup()
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                        .addComponent(Cstats)
+        controlLayout = new GroupLayout(statisticsModule);
+        statisticsModule.setLayout(controlLayout);
+        controlLayout.setAutoCreateGaps(true);
+        controlLayout.setAutoCreateContainerGaps(true);
+        controlLayout.setHorizontalGroup(
+                controlLayout.createSequentialGroup()
+                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addComponent(comStatsLab)
                                         .addComponent(dataPaneDC)
-                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                        .addGroup(layStats.createSequentialGroup()
-                                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                                .addComponent(newDam)
-                                                                                .addComponent(playerDam)
-                                                                                .addGroup(layStats.createSequentialGroup()
-                                                                                        .addComponent(damDC)
-                                                                                        .addComponent(KillQ))
-                                                                                .addComponent(goDC))
-                                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                                .addComponent(newHeal)
-                                                                                .addComponent(playerHeal)
-                                                                                .addComponent(healDC)
-                                                                                .addComponent(goHeal))
-                                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                                .addComponent(HealthChange)
-                                                                                .addComponent(playerHealth)
-                                                                                .addComponent(healthDC)
-                                                                                .addComponent(updateHealth))
+                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                        .addGroup(controlLayout.createSequentialGroup()
+                                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                                                .addComponent(damageLab)
+                                                                                .addComponent(playerDamSel)
+                                                                                .addGroup(controlLayout.createSequentialGroup()
+                                                                                                .addComponent(damageInput)
+                                                                                                .addComponent(killAction)
+                                                                                )
+                                                                                .addComponent(damAction))
+                                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                                                .addComponent(healingLab)
+                                                                                .addComponent(playerHealSel)
+                                                                                .addComponent(healInput)
+                                                                                .addComponent(healAction))
+                                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                                                .addComponent(healthLab)
+                                                                                .addComponent(playerHealthSel)
+                                                                                .addComponent(healthInput)
+                                                                                .addComponent(healthAction))
+                                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                                                        .addComponent(setMaxHealth)
+                                                                        )
                                                         )
-                                                        .addComponent(Pstats)
+                                                        .addComponent(parStatsLab)
                                                         .addComponent(dataPSPane)
-                                                        .addGroup(layStats.createSequentialGroup()
-                                                                .addComponent(goDice)
-                                                                .addComponent(goSword)
-                                                                .addComponent(goArrow)
-                                                                .addComponent(goSpell)
-                                                                .addComponent(goHit)
-                                                                .addComponent(goXP))
+                                                        .addGroup(controlLayout.createSequentialGroup()
+                                                                .addComponent(diceAction)
+                                                                .addComponent(swordAction)
+                                                                .addComponent(arrowAction)
+                                                                .addComponent(spellAction)
+                                                                .addComponent(hitAction)
+                                                                .addComponent(xpAction))
                                         )
                         )
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                .addComponent(init)
-                                .addComponent(initiative))
+                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(InitiativeLab)
+                                .addComponent(initiativeModule))
 
         );
-        layStats.setVerticalGroup(
-                layStats.createSequentialGroup()
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                        .addComponent(Cstats)
-                                        .addComponent(init)
+        controlLayout.setVerticalGroup(
+                controlLayout.createSequentialGroup()
+                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addComponent(comStatsLab)
+                                        .addComponent(InitiativeLab)
                         )
-                        .addGroup(layStats.createParallelGroup()
-                                        .addGroup(layStats.createSequentialGroup()
+                        .addGroup(controlLayout.createParallelGroup()
+                                        .addGroup(controlLayout.createSequentialGroup()
                                                         .addComponent(dataPaneDC)
-                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                                .addComponent(newDam)
-                                                                .addComponent(newHeal)
-                                                                .addComponent(HealthChange))
-                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                                .addComponent(playerDam)
-                                                                .addComponent(playerHeal)
-                                                                .addComponent(playerHealth))
-                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                                .addComponent(damDC)
-                                                                .addComponent(KillQ)
-                                                                .addComponent(healDC)
-                                                                .addComponent(healthDC))
-
-                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                                .addComponent(goDC)
-                                                                .addComponent(goHeal)
-                                                                .addComponent(updateHealth))
-                                                        .addComponent(Pstats)
+                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(damageLab)
+                                                                        .addComponent(healingLab)
+                                                                        .addComponent(healthLab)
+                                                        )
+                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(playerDamSel)
+                                                                        .addComponent(playerHealSel)
+                                                                        .addComponent(playerHealthSel)
+                                                                        .addComponent(setMaxHealth)
+                                                        )
+                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(damageInput)
+                                                                        .addComponent(killAction)
+                                                                        .addComponent(healInput)
+                                                                        .addComponent(healthInput)
+                                                        )
+                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(damAction)
+                                                                        .addComponent(healAction)
+                                                                        .addComponent(healthAction)
+                                                        )
+                                                        .addComponent(parStatsLab)
                                                         .addComponent(dataPSPane)
-                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                                .addComponent(goDice)
-                                                                .addComponent(goSword)
-                                                                .addComponent(goArrow)
-                                                                .addComponent(goSpell)
-                                                                .addComponent(goHit)
-                                                                .addComponent(goXP))
+                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                .addComponent(diceAction)
+                                                                .addComponent(swordAction)
+                                                                .addComponent(arrowAction)
+                                                                .addComponent(spellAction)
+                                                                .addComponent(hitAction)
+                                                                .addComponent(xpAction))
                                         )
-                                        .addComponent(initiative)
+                                        .addComponent(initiativeModule)
                         )
         );
         System.out.println("Done loading Combat Control tab!");
-        return Stats;
+        return statisticsModule;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == about) {
-            JOptionPane.showMessageDialog(about, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(about, Values.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
-        if (e.getSource() == removeKill) {
-            String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Kill", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArray(), null);
-            if (name.length() != 0) {
-                FilingControl.removeKill(name);
+        if (e.getSource() == addFF || e.getSource() == removeFF) {
+            if (e.getSource() == addFF) {
+                String name = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the name of the Player:", "Add Friendly Fire", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArrayNE(), null);
+                if (name.length() != 0) {
+                    String numInt = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the damage to add:", "Add Friendly Fire", JOptionPane.PLAIN_MESSAGE, null, null, null);
+                    int value = 0;
+                    try {
+                        value = Integer.parseInt(numInt);
+                        if (value <= 0) {
+                            JOptionPane.showMessageDialog(statisticsModule, "Must ADD Friendly Fire", "Value Error", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
+                    } catch (NumberFormatException e1) {
+                        JOptionPane.showMessageDialog(statisticsModule, "Statistic must be an Integer (Whole Number)", "Value Error", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    FilingControl.friendFire(name, value, true);
+                }
+            } else {
+                String name = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the name of the Player:", "Remove Friendly Fire", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArrayNE(), null);
+                if (name.length() != 0) {
+                    String numInt = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the damage to remove:", "Remove Friendly Fire", JOptionPane.PLAIN_MESSAGE, null, null, null);
+                    int value;
+                    try {
+                        value = Integer.parseInt(numInt);
+                        if (value <= 0) {
+                            JOptionPane.showMessageDialog(statisticsModule, "Must REMOVE Friendly Fire", "Value Error", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
+                    } catch (NumberFormatException e1) {
+                        JOptionPane.showMessageDialog(statisticsModule, "Statistic must be an Integer (Whole Number)", "Value Error", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    FilingControl.friendFire(name, value, false);
+                }
+            }
+        }
+        if (e.getSource() == removeKill || e.getSource() == removeDamage) {
+            if (e.getSource() == removeKill) {
+                String name = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the name of the Player:", "Remove a Kill", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArray(), null);
+                if (name.length() != 0) {
+                    FilingControl.removeKill(name);
+                }
+            }
+            if (e.getSource() == removeDamage) {
+                String name = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the name of the Player:", "Remove Damage", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArray(), null);
+                if (name.length() != 0) {
+                    String numInt = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the damage to remove:", "Remove Damage", JOptionPane.PLAIN_MESSAGE, null, null, null);
+                    int value = 0;
+                    try {
+                        value = Integer.parseInt(numInt);
+                        if (value <= 0) {
+                            JOptionPane.showMessageDialog(statisticsModule, "Must REMOVE damage", "Value Error", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
+                    } catch (NumberFormatException e1) {
+                        JOptionPane.showMessageDialog(statisticsModule, "Statistic must be an Integer (Whole Number)", "Value Error", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    FilingControl.removeDamage(name, value);
+                }
             }
         }
         if (e.getSource() == setStat) {
             String[] statsToSet = new String[]{"Dice Rolled", "Weapons Swung", "Arrows Shot", "Spells Cast", "Enemies Hit", "XP Gained"};
-            String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Statistic to Set:", "Set a Statistic", JOptionPane.PLAIN_MESSAGE, null, statsToSet, null);
+            String name = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the name of the Statistic to Set:", "Set a Statistic", JOptionPane.PLAIN_MESSAGE, null, statsToSet, null);
             switch (name) {
                 case "Dice Rolled":
                     name = "Dice";
@@ -355,15 +452,15 @@ public class GUIControl implements ActionListener, ItemListener {
                     name = null;
             }
             if (name != null) {
-                String nameInt = (String) JOptionPane.showInputDialog(Stats, "Enter the value of the Statistic:", "Set a Statistic", JOptionPane.PLAIN_MESSAGE, null, null, null);
+                String nameInt = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the value of the Statistic:", "Set a Statistic", JOptionPane.PLAIN_MESSAGE, null, null, null);
                 int value = -1;
                 try {
                     value = Integer.parseInt(nameInt);
                     if (value <= -1) {
-                        JOptionPane.showMessageDialog(Stats, "Statistic must be 0 or greater", "Value Error", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(statisticsModule, "Statistic must be 0 or greater", "Value Error", JOptionPane.WARNING_MESSAGE);
                     }
                 } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(Stats, "Statistic must be an Integer (Whole Number)", "Value Error", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(statisticsModule, "Statistic must be an Integer (Whole Number)", "Value Error", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
                 if (nameInt.length() != 0 && value > -1) {
@@ -371,7 +468,25 @@ public class GUIControl implements ActionListener, ItemListener {
                 }
             }
         }
-        if (e.getSource() == goHeal || e.getSource() == updateHealth || e.getSource() == goDC) {
+        if (e.getSource() == setMaxHealth) {
+            String name = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the name of the Player:", "Set Max Health", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArrayNE(), null);
+            if (name.length() != 0) {
+                String numInt = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the player's maximum health:", "Set Max Health", JOptionPane.PLAIN_MESSAGE, null, null, null);
+                int value;
+                try {
+                    value = Integer.parseInt(numInt);
+                    if (value <= 0) {
+                        JOptionPane.showMessageDialog(statisticsModule, "Must have positive max health", "Value Error", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                } catch (NumberFormatException e1) {
+                    JOptionPane.showMessageDialog(statisticsModule, "Health must be an Integer (Whole Number)", "Value Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                FilingControl.setMaxHealth(name, value);
+            }
+        }
+        if (e.getSource() == healAction || e.getSource() == healthAction || e.getSource() == damAction) {
             System.out.println("Updating Data");
             int damage = 0;
             int healing = 0;
@@ -379,89 +494,97 @@ public class GUIControl implements ActionListener, ItemListener {
             int per;
             boolean healthy = false;
             try {
-                if (e.getSource() == goHeal) {
-                    FilingGUIControlDialogs.openDialog("Healing");
+                if (e.getSource() == healAction) {
+//                    FilingGUIControlDialogs.openDialog("Healing");
+                    healing = Integer.parseInt(healInput.getText());
+                    killAction.setSelected(false);
+                    killCondition = false;
+                    per = playerHealSel.getSelectedIndex();
+
                     FilingControl.writePartyUpdate(1, 0, 0, 0, 0, 0);
-                } else if (e.getSource() == updateHealth) {
-                    per = playerHealth.getSelectedIndex();
-                    health = Integer.parseInt(healthDC.getText());
+                } else if (e.getSource() == healthAction) {
+                    per = playerHealthSel.getSelectedIndex();
+                    health = Integer.parseInt(healthInput.getText());
                     healthy = true;
                 } else {
-                    FilingGUIControlDialogs.openDialog("Damage");
+//                    FilingGUIControlDialogs.openDialog("Damage");
+                    damage = Integer.parseInt(damageInput.getText());
                     FilingControl.writePartyUpdate(1, 0, 0, 0, 0, 0);
+                    per = playerDamSel.getSelectedIndex();
                 }
+                FilingControl.changeCS(per, damage, killCondition, healing, health, healthy);
             } catch (NumberFormatException e1) {
                 System.out.println("Invalid Input data");
             }
         }
         if (e.getSource() == addPlayer || e.getSource() == removePlayer || e.getSource() == changeName) {
             if (e.getSource() == addPlayer) {
-                String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Add a Player", JOptionPane.PLAIN_MESSAGE, null, null, null);
+                String name = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the name of the Player:", "Add a Player", JOptionPane.PLAIN_MESSAGE, null, null, null);
                 String[] nameArray = FilingMain.getPlayerArray();
                 if (name.length() == 0) {
-                    JOptionPane.showMessageDialog(Stats, "Names can not be blank", "Name Error", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(statisticsModule, "Names can not be blank", "Name Error", JOptionPane.WARNING_MESSAGE);
                 } else if (name.length() > 8) {
-                    JOptionPane.showMessageDialog(Stats, "Names can not be more than 8 Characters", "Name Error", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(statisticsModule, "Names can not be more than 8 Characters", "Name Error", JOptionPane.WARNING_MESSAGE);
                 } else if (Arrays.asList(nameArray).contains(name)) {
-                    JOptionPane.showMessageDialog(Stats, "Names can not be duplicate of an already present name", "Name Error", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(statisticsModule, "Names can not be duplicate of an already present name", "Name Error", JOptionPane.WARNING_MESSAGE);
                 } else {
                     FilingMain.addPlayer(name);
                 }
             }
             if (e.getSource() == removePlayer) {
-                String name = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player:", "Remove a Player", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArray(), null);
+                String name = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the name of the Player:", "Remove a Player", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArray(), null);
                 if (name.length() != 0) {
                     FilingMain.removePlayer(name);
                 }
             }
             if (e.getSource() == changeName) {
-                String namePre = (String) JOptionPane.showInputDialog(Stats, "Enter the name of the Player you want to rename:", "Rename a Player", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArrayNE(), null);
+                String namePre = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the name of the Player you want to rename:", "Rename a Player", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArrayNE(), null);
                 if (namePre.length() != 0) {
-                    String namePro = (String) JOptionPane.showInputDialog(Stats, "Enter the new name of the player:", "Rename a Player", JOptionPane.PLAIN_MESSAGE, null, null, null);
+                    String namePro = (String) JOptionPane.showInputDialog(statisticsModule, "Enter the new name of the player:", "Rename a Player", JOptionPane.PLAIN_MESSAGE, null, null, null);
                     if (namePro.length() == 0) {
-                        JOptionPane.showMessageDialog(Stats, "Names can not be blank", "Name Error", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(statisticsModule, "Names can not be blank", "Name Error", JOptionPane.WARNING_MESSAGE);
                     } else if (namePro.length() > 8) {
-                        JOptionPane.showMessageDialog(Stats, "Names can not be more than 8 Characters", "Name Error", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(statisticsModule, "Names can not be more than 8 Characters", "Name Error", JOptionPane.WARNING_MESSAGE);
                     } else if (Arrays.asList(FilingMain.getPlayerArray()).contains(namePro)) {
-                        JOptionPane.showMessageDialog(Stats, "Names can not be duplicate of an already present name", "Name Error", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(statisticsModule, "Names can not be duplicate of an already present name", "Name Error", JOptionPane.WARNING_MESSAGE);
                     } else {
                         FilingMain.renamePlayer(namePre, namePro);
                     }
                 }
             }
         }
-        if (e.getSource() == goDice || e.getSource() == goSword || e.getSource() == goArrow || e.getSource() == goSpell || e.getSource() == goHit || e.getSource() == goXP) {
+        if (e.getSource() == diceAction || e.getSource() == swordAction || e.getSource() == arrowAction || e.getSource() == spellAction || e.getSource() == hitAction || e.getSource() == xpAction) {
             int dice = 0, sword = 0, arrow = 0, spell = 0, hit = 0, xp = 0;
-            if (e.getSource() == goXP) {
-                String name = (String) JOptionPane.showInputDialog(Stats, "Enter XP to be added:", "Add XP", JOptionPane.PLAIN_MESSAGE, null, null, null);
+            if (e.getSource() == xpAction) {
+                String name = (String) JOptionPane.showInputDialog(statisticsModule, "Enter XP to be added:", "Add XP", JOptionPane.PLAIN_MESSAGE, null, null, null);
                 if (name.length() != 0) {
                     try {
                         xp = Integer.parseInt(name);
                         FilingXP.addXPAll(xp);
                     } catch (Exception e1) {
-                        JOptionPane.showMessageDialog(Stats, "Invalid XP Amount", "XP Error", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(statisticsModule, "Invalid XP Amount", "XP Error", JOptionPane.WARNING_MESSAGE);
                     }
                 }
-            } else if (e.getSource() == goDice) {
+            } else if (e.getSource() == diceAction) {
                 dice = 1;
                 FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
-            } else if (e.getSource() == goSword) {
+            } else if (e.getSource() == swordAction) {
                 dice = 1;
                 sword = 1;
                 FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
-            } else if (e.getSource() == goArrow) {
+            } else if (e.getSource() == arrowAction) {
                 dice = 1;
                 arrow = 1;
                 FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
-            } else if (e.getSource() == goSpell) {
-                String name = (String) JOptionPane.showInputDialog(Stats, "How many Dice are rolled through the spell cast?:", "Cast a Spell", JOptionPane.PLAIN_MESSAGE, null, new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}, null);
+            } else if (e.getSource() == spellAction) {
+                String name = (String) JOptionPane.showInputDialog(statisticsModule, "How many Dice are rolled through the spell cast?:", "Cast a Spell", JOptionPane.PLAIN_MESSAGE, null, new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}, null);
                 if (name.length() != 0) {
                     spell = 1;
                     dice = Integer.parseInt(name);
                     FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
 
                 }
-            } else if (e.getSource() == goHit) {
+            } else if (e.getSource() == hitAction) {
                 hit = 1;
                 FilingControl.writePartyUpdate(dice, sword, arrow, spell, hit, xp);
             }
@@ -472,28 +595,24 @@ public class GUIControl implements ActionListener, ItemListener {
 
     @Override
     public void itemStateChanged(ItemEvent e) {
-        if (e.getSource() == KillQ) {
-            if (e.getStateChange() == ItemEvent.DESELECTED) {
-                KillV = 0;
-            } else {
-                KillV = 1;
-            }
+        if (e.getSource() == killAction) {
+            killCondition = e.getStateChange() != ItemEvent.DESELECTED;
         }
     }
 
     public void updateStats() {
-        Stats.remove(dataPaneDC);
-        Stats.remove(dataPSPane);
-        Stats.remove(playerDam);
-        Stats.remove(playerHeal);
-        Stats.remove(playerHealth);
-        Stats.remove(initiative);
-        damDC.setText("");
-        healDC.setText("");
-        healthDC.setText("");
-        KillQ.setSelected(false);
-        KillV = 0;
-        modelDC = new DefaultTableModel(FilingCombat.rowDataAS(), FilingCombat.columnHeadersAS()) {
+        statisticsModule.remove(dataPaneDC);
+        statisticsModule.remove(dataPSPane);
+        statisticsModule.remove(playerDamSel);
+        statisticsModule.remove(playerHealSel);
+        statisticsModule.remove(playerHealthSel);
+        statisticsModule.remove(initiativeModule);
+        damageInput.setText("");
+        healInput.setText("");
+        healthInput.setText("");
+        killAction.setSelected(false);
+        killCondition = false;
+        statisticsTableModel = new DefaultTableModel(FilingCombat.rowDataAS(), FilingCombat.columnHeadersAS()) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -514,28 +633,29 @@ public class GUIControl implements ActionListener, ItemListener {
                 }
             }
         };
-        dataDC = new JTable(modelDC);
+        mainStatsTable = new JTable(statisticsTableModel);
         DefaultTableCellRenderer CenterRenderer = new DefaultTableCellRenderer();
         CenterRenderer.setHorizontalAlignment(JLabel.CENTER);
-        dataDC.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
-        dataDC.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
-        dataDC.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
-        dataDC.getColumnModel().getColumn(3).setCellRenderer(CenterRenderer);
-        dataDC.getColumnModel().getColumn(4).setCellRenderer(CenterRenderer);
-        dataDC.getColumnModel().getColumn(5).setCellRenderer(CenterRenderer);
-        dataDC.getColumnModel().getColumn(6).setCellRenderer(CenterRenderer);
-        dataDC.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        dataDC.setMaximumSize(new Dimension(dimX, dimY));
-        dataDC.setFont((new Font("SansSerif", Font.BOLD, 12)));
-        dataDC.setBackground(Color.WHITE);
-        dataDC.setRowHeight(15);
-        dataDC.setRowSorter(FilingCombat.BRSorter(dataDC));
-        dataPaneDC = new JScrollPane(dataDC);
+        mainStatsTable.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(3).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(4).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(5).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(6).setCellRenderer(CenterRenderer);
+        mainStatsTable.getColumnModel().getColumn(7).setCellRenderer(CenterRenderer);
+        mainStatsTable.getTableHeader().setFont(tableHeading);
+        mainStatsTable.setMaximumSize(new Dimension(dimX, dimY));
+        mainStatsTable.setFont(tableData);
+        mainStatsTable.setBackground(Color.WHITE);
+        mainStatsTable.setRowHeight(15);
+        mainStatsTable.setRowSorter(FilingCombat.BRSorter(mainStatsTable));
+        dataPaneDC = new JScrollPane(mainStatsTable);
         dataPaneDC.setMaximumSize(new Dimension(dimX, 175));
         dataPaneDC.setLocation(25, 25);
-        Stats.add(dataPaneDC);
+        statisticsModule.add(dataPaneDC);
 
-        psMain = new DefaultTableModel(FilingParty.rowDataPSTable(), FilingParty.columnDataPSTable()) {
+        partyStatsTableModel = new DefaultTableModel(FilingParty.rowDataPSTable(), FilingParty.columnDataPSTable()) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -548,121 +668,129 @@ public class GUIControl implements ActionListener, ItemListener {
                 }
             }
         };
-        dataPsMain = new JTable(psMain);
-        dataPsMain.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
-        dataPsMain.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
-        dataPsMain.setRowHeight(15);
-        dataPsMain.setFont((new Font("SansSerif", Font.BOLD, 12)));
-        dataPsMain.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        dataPSPane = new JScrollPane(dataPsMain);
+        parStatsTable = new JTable(partyStatsTableModel);
+        parStatsTable.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
+        parStatsTable.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
+        parStatsTable.setRowHeight(15);
+        parStatsTable.setFont(tableData);
+        parStatsTable.getTableHeader().setFont(tableHeading);
+        dataPSPane = new JScrollPane(parStatsTable);
         dataPSPane.setMaximumSize(new Dimension(dimX, 125));
-        Stats.add(dataPSPane);
+        statisticsModule.add(dataPSPane);
 
-        playerHeal = new JComboBox<>(FilingMain.getPlayerArray());
-        playerHeal.setFont(new Font("Verdana", Font.PLAIN, 16));
-        playerHeal.setMaximumSize(new Dimension(200, 25));
-        Stats.add(playerHeal);
+        playerHealSel = new JComboBox<>(FilingMain.getPlayerArray());
+        playerHealSel.setFont(playerSelection);
+        playerHealSel.setMaximumSize(new Dimension(200, 25));
+        statisticsModule.add(playerHealSel);
 
-        playerHealth = new JComboBox<>(FilingMain.getPlayerArray());
-        playerHealth.setFont(new Font("Verdana", Font.PLAIN, 16));
-        playerHealth.setMaximumSize(new Dimension(200, 25));
-        Stats.add(playerHealth);
+        playerHealthSel = new JComboBox<>(FilingMain.getPlayerArray());
+        playerHealthSel.setFont(playerSelection);
+        playerHealthSel.setMaximumSize(new Dimension(200, 25));
+        statisticsModule.add(playerHealthSel);
 
-        playerDam = new JComboBox<>(FilingMain.getPlayerArray());
-        playerDam.setFont(new Font("Verdana", Font.PLAIN, 16));
-        playerDam.setMaximumSize(new Dimension(200, 25));
-        Stats.add(playerDam);
+        playerDamSel = new JComboBox<>(FilingMain.getPlayerArray());
+        playerDamSel.setFont(playerSelection);
+        playerDamSel.setMaximumSize(new Dimension(200, 25));
+        statisticsModule.add(playerDamSel);
 
-        initiative = new GUIIntiative().InitiativePanel();
-        Stats.add(initiative);
+        initiativeModule = new GUIIntiative().InitiativePanel();
+        statisticsModule.add(initiativeModule);
 
-        layStats = new GroupLayout(Stats);
-        Stats.setLayout(layStats);
-        layStats.setAutoCreateGaps(true);
-        layStats.setAutoCreateContainerGaps(true);
-        layStats.setHorizontalGroup(
-                layStats.createSequentialGroup()
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                        .addComponent(Cstats)
+        controlLayout = new GroupLayout(statisticsModule);
+        statisticsModule.setLayout(controlLayout);
+        controlLayout.setAutoCreateGaps(true);
+        controlLayout.setAutoCreateContainerGaps(true);
+        controlLayout.setHorizontalGroup(
+                controlLayout.createSequentialGroup()
+                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addComponent(comStatsLab)
                                         .addComponent(dataPaneDC)
-                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                        .addGroup(layStats.createSequentialGroup()
-                                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                                .addComponent(newDam)
-                                                                                .addComponent(playerDam)
-                                                                                .addGroup(layStats.createSequentialGroup()
-                                                                                        .addComponent(damDC)
-                                                                                        .addComponent(KillQ))
-                                                                                .addComponent(goDC))
-                                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                                .addComponent(newHeal)
-                                                                                .addComponent(playerHeal)
-                                                                                .addComponent(healDC)
-                                                                                .addComponent(goHeal))
-                                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                                .addComponent(HealthChange)
-                                                                                .addComponent(playerHealth)
-                                                                                .addComponent(healthDC)
-                                                                                .addComponent(updateHealth))
+                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                        .addGroup(controlLayout.createSequentialGroup()
+                                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                                                .addComponent(damageLab)
+                                                                                .addComponent(playerDamSel)
+                                                                                .addGroup(controlLayout.createSequentialGroup()
+                                                                                        .addComponent(damageInput)
+                                                                                        .addComponent(killAction))
+                                                                                .addComponent(damAction))
+                                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                                                .addComponent(healingLab)
+                                                                                .addComponent(playerHealSel)
+                                                                                .addComponent(healInput)
+                                                                                .addComponent(healAction))
+                                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                                                .addComponent(healthLab)
+                                                                                .addComponent(playerHealthSel)
+                                                                                .addComponent(healthInput)
+                                                                                .addComponent(healthAction))
+                                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                                                                        .addComponent(setMaxHealth)
+                                                                        )
                                                         )
-                                                        .addComponent(Pstats)
+                                                        .addComponent(parStatsLab)
                                                         .addComponent(dataPSPane)
-                                                        .addGroup(layStats.createSequentialGroup()
-                                                                .addComponent(goDice)
-                                                                .addComponent(goSword)
-                                                                .addComponent(goArrow)
-                                                                .addComponent(goSpell)
-                                                                .addComponent(goHit)
-                                                                .addComponent(goXP))
+                                                        .addGroup(controlLayout.createSequentialGroup()
+                                                                .addComponent(diceAction)
+                                                                .addComponent(swordAction)
+                                                                .addComponent(arrowAction)
+                                                                .addComponent(spellAction)
+                                                                .addComponent(hitAction)
+                                                                .addComponent(xpAction))
                                         )
                         )
-                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                .addComponent(init)
-                                .addComponent(initiative))
+                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(InitiativeLab)
+                                .addComponent(initiativeModule))
 
         );
-        layStats.setVerticalGroup(
-                layStats.createSequentialGroup()
-                        .addGroup(layStats.createParallelGroup()
-                                        .addGroup(layStats.createSequentialGroup()
-                                                        .addComponent(Cstats)
+        controlLayout.setVerticalGroup(
+                controlLayout.createSequentialGroup()
+                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addComponent(comStatsLab)
+                                        .addComponent(InitiativeLab)
+                        )
+                        .addGroup(controlLayout.createParallelGroup()
+                                        .addGroup(controlLayout.createSequentialGroup()
                                                         .addComponent(dataPaneDC)
-                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                                .addComponent(newDam)
-                                                                .addComponent(newHeal)
-                                                                .addComponent(HealthChange))
-                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                                .addComponent(playerDam)
-                                                                .addComponent(playerHeal)
-                                                                .addComponent(playerHealth))
-                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                                .addComponent(damDC)
-                                                                .addComponent(KillQ)
-                                                                .addComponent(healDC)
-                                                                .addComponent(healthDC))
-
-                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                                .addComponent(goDC)
-                                                                .addComponent(goHeal)
-                                                                .addComponent(updateHealth))
-                                                        .addComponent(Pstats)
+                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(damageLab)
+                                                                        .addComponent(healingLab)
+                                                                        .addComponent(healthLab)
+                                                        )
+                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(playerDamSel)
+                                                                        .addComponent(playerHealSel)
+                                                                        .addComponent(playerHealthSel)
+                                                                        .addComponent(setMaxHealth)
+                                                        )
+                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(damageInput)
+                                                                        .addComponent(killAction)
+                                                                        .addComponent(healInput)
+                                                                        .addComponent(healthInput)
+                                                        )
+                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(damAction)
+                                                                        .addComponent(healAction)
+                                                                        .addComponent(healthAction)
+                                                        )
+                                                        .addComponent(parStatsLab)
                                                         .addComponent(dataPSPane)
-                                                        .addGroup(layStats.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                                .addComponent(goDice)
-                                                                .addComponent(goSword)
-                                                                .addComponent(goArrow)
-                                                                .addComponent(goSpell)
-                                                                .addComponent(goHit)
-                                                                .addComponent(goXP))
+                                                        .addGroup(controlLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                .addComponent(diceAction)
+                                                                .addComponent(swordAction)
+                                                                .addComponent(arrowAction)
+                                                                .addComponent(spellAction)
+                                                                .addComponent(hitAction)
+                                                                .addComponent(xpAction))
                                         )
-                                        .addGroup(layStats.createSequentialGroup()
-                                                .addComponent(init)
-                                                .addComponent(initiative))
+                                        .addComponent(initiativeModule)
                         )
         );
 
-        Stats.revalidate();
-        Stats.repaint();
+        statisticsModule.revalidate();
+        statisticsModule.repaint();
         System.out.println("Done updating the Combat Control Tab!");
     }
 }

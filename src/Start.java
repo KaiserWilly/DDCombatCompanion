@@ -9,11 +9,10 @@ import java.nio.file.Paths;
 public class Start {
 
     static Path saveFilePath = Paths.get(System.getProperty("user.home"));//Example
-    public static String version = "1.5";
-    static String aboutText = "Dungeons & Dragons Combat Companion" + "\n" + "Created by JD Isenhart" + "\n" + "Larkspur, Colorado" + "\n" + "Version " + version;
 
     public static void main(String[] args) {
-        System.out.println("Isenhart D&D Combat Companion v" + version);
+        FilingFonts.loadFonts();
+        System.out.println("Isenhart D&D Combat Companion v" + Values.version);
         System.out.println(saveFilePath);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -29,6 +28,7 @@ public class Start {
     public static void startMain() {
         System.out.println(String.valueOf(saveFilePath));
         FilingMain.runConversion();
+
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
 

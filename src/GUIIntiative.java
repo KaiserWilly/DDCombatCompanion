@@ -10,7 +10,8 @@ import java.awt.event.ActionListener;
  * 12:48 AM
  */
 public class GUIIntiative implements ActionListener {
-    public static Font initCellContent = new Font("Franklin Gothic Medium", Font.BOLD, 20);
+    static Font tableData = new Font("Helvetica", Font.BOLD, 12);
+    static Font tableHeading = new Font("Garamond", Font.BOLD, 14);
     public int dimX = 1366, dimY = 700;
     public JPanel base;
     public JButton genInitiative, resetTable;
@@ -22,19 +23,13 @@ public class GUIIntiative implements ActionListener {
     public JMenuBar initMenu;
     public JMenu aboutMenu;
 
-    public JMenuBar initMenuBar() {
-
-        initMenu = new JMenuBar();
-        aboutMenu = new JMenu("About");
-        aboutMenu.addActionListener(this);
-        about = new JMenuItem("About the Program");
-        about.addActionListener(this);
-        aboutMenu.add(about);
-        initMenu.add(aboutMenu);
-        return initMenu;
+    public void setFonts() {
+        tableHeading = FilingFonts.tableHeading;
+        tableData = FilingFonts.tableDataS24;
     }
 
     public JPanel InitiativePanel() {
+        setFonts();
         base = new JPanel();
         base.setBackground(Color.WHITE);
         base.setMaximumSize(new Dimension(200, 800));
@@ -57,8 +52,8 @@ public class GUIIntiative implements ActionListener {
         CenterRenderer.setHorizontalAlignment(JLabel.CENTER);
         initTable.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         initTable.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
-        initTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        initTable.setFont(initCellContent);
+        initTable.getTableHeader().setFont(tableHeading);
+        initTable.setFont(tableData);
         initTable.setMinimumSize(new Dimension(dimX, 50));
         initTable.setRowHeight(30);
         initTable.setAutoCreateRowSorter(false);
@@ -110,7 +105,7 @@ public class GUIIntiative implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == about) {
-            JOptionPane.showMessageDialog(base, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(base, Values.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
         if (e.getSource() == genInitiative || e.getSource() == resetTable) {
             if (e.getSource() == resetTable) {
@@ -137,8 +132,8 @@ public class GUIIntiative implements ActionListener {
             CenterRenderer.setHorizontalAlignment(JLabel.CENTER);
             initTable.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
             initTable.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
-            initTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-            initTable.setFont(initCellContent);
+            initTable.getTableHeader().setFont(tableHeading);
+            initTable.setFont(tableData);
             initTable.setMinimumSize(new Dimension(dimX, 50));
             initTable.setRowHeight(30);
             initTable.setAutoCreateRowSorter(false);

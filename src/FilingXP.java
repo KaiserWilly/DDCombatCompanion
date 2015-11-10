@@ -55,11 +55,11 @@ public class FilingXP {
     }
 
     public static Object[] retLevelColumnHeaders() {
-        return new Object[]{"Level", "XP Required"};
+        return new Object[]{"LEVEL", "XP REQUIRED"};
     }
 
     public static Object[] retXPColumnHeaders() {
-        return new Object[]{"Player", "XP", "Level"};
+        return new Object[]{"PLAYER", "XP", "LEVEL"};
     }
 
     public static Object[][] retXPTabData() {
@@ -119,11 +119,7 @@ public class FilingXP {
                         above = true;
                     }
                 }
-                if (below && above) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return below && above;
             }
         }
 

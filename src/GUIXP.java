@@ -12,17 +12,25 @@ import java.awt.event.ActionListener;
  */
 public class GUIXP implements ActionListener {
     public static int dimX = 1366, dimY = 700, XPTRH = 35, levelTRH = 25;
-    public static Font XPCellContent = new Font("Franklin Gothic Medium", Font.BOLD, 25);
+
     static JPanel baseXP;
     static DefaultTableModel levelTM, XPTM;
     static JTable levelT, XPT;
     static JScrollPane levelTPane, XPTPane;
     static GroupLayout layXP;
+    static Font tableData = new Font("Helvetica", Font.BOLD, 12);
+    static Font tableHeading = new Font("Garamond", Font.BOLD, 14);
+    static Font moduleHeading = new Font("Trebuchet MS", Font.PLAIN, 20);
     public JMenuBar XPmenuB;
     public JMenu xpFile, xpAbout;
     public JMenuItem setXP, setLevel, about;
     public JLabel xpCount, xpReq;
-    public Font heading = new Font("Trebuchet MS", Font.PLAIN, 20);
+
+    public void setFonts() {
+        tableHeading = FilingFonts.tableHeading;
+        tableData = FilingFonts.tableDataS22;
+        moduleHeading = FilingFonts.moduleHeading;
+    }
 
     public JMenuBar XPMenuBar() {
         XPmenuB = new JMenuBar();
@@ -43,6 +51,7 @@ public class GUIXP implements ActionListener {
     }
 
     public JPanel XPpanel() {
+        setFonts();
         baseXP = new JPanel();
         baseXP.setSize(dimX, dimY);
         baseXP.setBackground(Color.WHITE);
@@ -68,21 +77,13 @@ public class GUIXP implements ActionListener {
         XPT.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         XPT.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         XPT.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
-        XPT.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        XPT.getTableHeader().setFont(tableHeading);
         XPT.setLocation(50, 50);
-        XPT.setFont(XPCellContent);
+        XPT.setFont(tableData);
         XPT.setBackground(Color.WHITE);
         XPT.setRowHeight(XPTRH);
         XPT.setAutoCreateRowSorter(true);
         TableColumn column;
-//        for (int i = 0; i < XPT.getColumnCount(); i++) {
-//            column = XPT.getColumnModel().getColumn(i);
-//            if (i == 1) {
-//                column.setPreferredWidth(300); //third column is bigger
-//            } else {
-//                column.setPreferredWidth(100);
-//            }
-//        }
         XPTPane = new JScrollPane(XPT);
         baseXP.add(XPTPane);
 
@@ -105,8 +106,8 @@ public class GUIXP implements ActionListener {
         CenterRenderer.setHorizontalAlignment(JLabel.CENTER);
         levelT.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         levelT.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
-        levelT.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        levelT.setFont(XPCellContent);
+        levelT.getTableHeader().setFont(tableHeading);
+        levelT.setFont(tableData);
         levelT.setBackground(Color.WHITE);
         levelT.setRowHeight(levelTRH);
         levelT.setAutoCreateRowSorter(true);
@@ -122,11 +123,11 @@ public class GUIXP implements ActionListener {
         baseXP.add(levelTPane);
 
         xpCount = new JLabel("-XP Gained-");
-        xpCount.setFont(heading);
+        xpCount.setFont(moduleHeading);
         baseXP.add(xpCount);
 
         xpReq = new JLabel("-XP Required-");
-        xpReq.setFont(heading);
+        xpReq.setFont(moduleHeading);
         baseXP.add(xpReq);
 
 
@@ -186,9 +187,9 @@ public class GUIXP implements ActionListener {
         XPT.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         XPT.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         XPT.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
-        XPT.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        XPT.getTableHeader().setFont(tableHeading);
         XPT.setLocation(50, 50);
-        XPT.setFont(XPCellContent);
+        XPT.setFont(tableData);
         XPT.setBackground(Color.WHITE);
         XPT.setRowHeight(XPTRH);
         XPT.setAutoCreateRowSorter(true);
@@ -223,8 +224,8 @@ public class GUIXP implements ActionListener {
         CenterRenderer.setHorizontalAlignment(JLabel.CENTER);
         levelT.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         levelT.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
-        levelT.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        levelT.setFont(XPCellContent);
+        levelT.getTableHeader().setFont(tableHeading);
+        levelT.setFont(tableData);
         levelT.setBackground(Color.WHITE);
         levelT.setRowHeight(levelTRH);
         levelT.setAutoCreateRowSorter(true);
@@ -273,7 +274,7 @@ public class GUIXP implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == about) {
-            JOptionPane.showMessageDialog(about, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(about, Values.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
         if (e.getSource() == setXP) {
             String name = (String) JOptionPane.showInputDialog(baseXP, "Enter the name of the Player:", "Set Player's XP", JOptionPane.PLAIN_MESSAGE, null, FilingMain.getPlayerArrayNE(), null);

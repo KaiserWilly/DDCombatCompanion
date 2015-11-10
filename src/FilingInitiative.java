@@ -55,7 +55,7 @@ public class FilingInitiative {
     }
 
     public static Object[] InitColumnHeaders() {
-        return new Object[]{"Player", "Initiative Roll"};
+        return new Object[]{"PLAYER", "INITIATIVE ROLL"};
     }
 
     public static TableRowSorter RowSorter(JTable Table) {

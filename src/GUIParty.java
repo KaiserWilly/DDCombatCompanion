@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 public class GUIParty implements ActionListener {
     public static int dimX = 1366, dimY = 700;
     static Font PSPartyContent = new Font("Trebuchet MS", Font.PLAIN, 20);
+    static Font tableData = new Font("Helvetica", Font.BOLD, 12);
+    static Font tableHeading = new Font("Garamond", Font.BOLD, 14);
     public JPanel PStats;
     public JMenuBar pStatsMenuBar;
     public JMenu aboutMenu;
@@ -21,7 +23,11 @@ public class GUIParty implements ActionListener {
     public JScrollPane dataPSPane, psHitsPane, psAvgPane, psFtoEPane;
     public GroupLayout layPS;
     public JLabel hitPercentage, avgDam, FtoE;
-    public Font PSCellContent = new Font("Franklin Gothic Medium", Font.BOLD, 30);
+
+    public void setFonts() {
+        tableHeading = FilingFonts.tableHeading;
+        tableData = FilingFonts.tableDataS24;
+    }
 
     public JMenuBar pMenuBar() {
         pStatsMenuBar = new JMenuBar();
@@ -34,6 +40,7 @@ public class GUIParty implements ActionListener {
     }
 
     public JPanel PartyStats() {
+        setFonts();
         PStats = new JPanel();
         PStats.setSize(dimX, dimY);
         PStats.setBackground(Color.WHITE);
@@ -69,8 +76,8 @@ public class GUIParty implements ActionListener {
         dataPsMain.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         dataPsMain.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         dataPsMain.setRowHeight(35);
-        dataPsMain.setFont(PSCellContent);
-        dataPsMain.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        dataPsMain.setFont(tableData);
+        dataPsMain.getTableHeader().setFont(tableHeading);
 
         dataPSPane = new JScrollPane(dataPsMain);
         dataPSPane.setMaximumSize(new Dimension(dimX, 250));
@@ -83,8 +90,8 @@ public class GUIParty implements ActionListener {
         dataPSHits.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         dataPSHits.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
         dataPSHits.setRowHeight(50);
-        dataPSHits.setFont(PSCellContent);
-        dataPSHits.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        dataPSHits.setFont(tableData);
+        dataPSHits.getTableHeader().setFont(tableHeading);
         psHitsPane = new JScrollPane(dataPSHits);
         psHitsPane.setMaximumSize(new Dimension(500, 75));
         PStats.add(psHitsPane);
@@ -95,8 +102,8 @@ public class GUIParty implements ActionListener {
         dataPSAvg.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         dataPSAvg.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
         dataPSAvg.setRowHeight(50);
-        dataPSAvg.setFont(PSCellContent);
-        dataPSAvg.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        dataPSAvg.setFont(tableData);
+        dataPSAvg.getTableHeader().setFont(tableHeading);
         psAvgPane = new JScrollPane(dataPSAvg);
         psAvgPane.setMaximumSize(new Dimension(500, 75));
         PStats.add(psAvgPane);
@@ -107,8 +114,8 @@ public class GUIParty implements ActionListener {
         dataFtoE.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         dataFtoE.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
         dataFtoE.setRowHeight(50);
-        dataFtoE.setFont(PSCellContent);
-        dataFtoE.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        dataFtoE.setFont(tableData);
+        dataFtoE.getTableHeader().setFont(tableHeading);
         psFtoEPane = new JScrollPane(dataFtoE);
         psFtoEPane.setMaximumSize(new Dimension(500, 75));
         PStats.add(psFtoEPane);
@@ -177,8 +184,8 @@ public class GUIParty implements ActionListener {
         dataPsMain.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         dataPsMain.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         dataPsMain.setRowHeight(35);
-        dataPsMain.setFont(PSCellContent);
-        dataPsMain.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        dataPsMain.setFont(tableData);
+        dataPsMain.getTableHeader().setFont(tableHeading);
 
         dataPSPane = new JScrollPane(dataPsMain);
         dataPSPane.setMaximumSize(new Dimension(dimX, 250));
@@ -191,8 +198,8 @@ public class GUIParty implements ActionListener {
         dataPSHits.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         dataPSHits.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
         dataPSHits.setRowHeight(50);
-        dataPSHits.setFont(PSCellContent);
-        dataPSHits.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        dataPSHits.setFont(tableData);
+        dataPSHits.getTableHeader().setFont(tableHeading);
         psHitsPane = new JScrollPane(dataPSHits);
         psHitsPane.setMaximumSize(new Dimension(500, 75));
         PStats.add(psHitsPane);
@@ -203,8 +210,8 @@ public class GUIParty implements ActionListener {
         dataPSAvg.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         dataPSAvg.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
         dataPSAvg.setRowHeight(50);
-        dataPSAvg.setFont(PSCellContent);
-        dataPSAvg.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        dataPSAvg.setFont(tableData);
+        dataPSAvg.getTableHeader().setFont(tableHeading);
         psAvgPane = new JScrollPane(dataPSAvg);
         psAvgPane.setMaximumSize(new Dimension(500, 75));
         PStats.add(psAvgPane);
@@ -215,8 +222,8 @@ public class GUIParty implements ActionListener {
         dataFtoE.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         dataFtoE.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
         dataFtoE.setRowHeight(50);
-        dataFtoE.setFont(PSCellContent);
-        dataFtoE.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        dataFtoE.setFont(tableData);
+        dataFtoE.getTableHeader().setFont(tableHeading);
         psFtoEPane = new JScrollPane(dataFtoE);
         psFtoEPane.setMaximumSize(new Dimension(500, 75));
         PStats.add(psFtoEPane);
@@ -264,7 +271,7 @@ public class GUIParty implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == about) {
-            JOptionPane.showMessageDialog(PStats, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(PStats, Values.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
     }
 }

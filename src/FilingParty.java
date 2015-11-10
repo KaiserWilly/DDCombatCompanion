@@ -47,7 +47,7 @@ public class FilingParty {
     }
 
     public static Object[] columnDataPSTable() {
-        return new Object[]{"Statistic", "Value"};
+        return new Object[]{"STATISTIC", "VALUE"};
     }
 
     public static Object[][] rowDataPSTable() {
@@ -80,7 +80,7 @@ public class FilingParty {
     }
 
     public static Object[] hitPerColumnHeaders() {
-        return new Object[]{"Attempts", "Hits", "Ratio"};
+        return new Object[]{"ATTEMPTS", "HITS", "RATIO"};
     }
 
     public static Object[][] avgDamRowData() {
@@ -97,7 +97,7 @@ public class FilingParty {
     }
 
     public static Object[] avgDamColumnHeaders() {
-        return new Object[]{"Hits", "Damage Done", "Ratio"};
+        return new Object[]{"HITS", "DAMAGE DONE", "RATIO"};
     }
 
     public static Object[][] FtoERowData() {
@@ -118,6 +118,6 @@ public class FilingParty {
     }
 
     public static Object[] FtoEColumnHeaders() {
-        return new Object[]{"Friendly Damage", "Enemy Damage", "Friend to Enemy Ratio"};
+        return new Object[]{"FRIENDLY DAMAGE", "ENEMY DAMAGE", "FRIEND v ENEMY"};
     }
 }

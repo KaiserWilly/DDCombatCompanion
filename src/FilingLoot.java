@@ -45,7 +45,7 @@ public class FilingLoot {
     }
 
     public static Object[] getLootTableColumnHeaders() {
-        return new Object[]{"Item", "Value (GP)","Qty."};
+        return new Object[]{"ITEM", "ITEM (GP)","QUANTITY"};
     }
 
     public static void updateLootTable(String item, String value,int qty) {

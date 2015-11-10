@@ -2,7 +2,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,14 +10,14 @@ import java.util.List;
  * 9:54 AM
  */
 public class FilingControl {
-    static HashMap<String, HashMap> incomingSaveData = null;
+    static HashMap<String, HashMap<String, Object>> incomingSaveData = null;
 
-    public static HashMap readSave() {
-        HashMap SaveData = null;
+    public static HashMap<String, HashMap<String, Object>> readSave() {
+        HashMap<String, HashMap<String, Object>> SaveData = null;
         try {
             FileInputStream fileIn = new FileInputStream(String.valueOf(Start.saveFilePath));
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            SaveData = (HashMap<String, HashMap>) in.readObject();
+            SaveData = (HashMap<String, HashMap<String, Object>>) in.readObject();
             in.close();
             fileIn.close();
         } catch (Exception i) {
@@ -27,7 +26,7 @@ public class FilingControl {
         return SaveData;
     }
 
-    public static void writeFile(HashMap saveData) {
+    public static void writeFile(HashMap<String, HashMap<String, Object>> saveData) {
         try {
             FileOutputStream fileOut = new FileOutputStream(String.valueOf(Start.saveFilePath));
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -39,7 +38,7 @@ public class FilingControl {
         }
     }
 
-    public static HashMap newPlayerMap(List<String> names) {
+    public static HashMap<Integer, String> newPlayerMap(List<String> names) {
         HashMap<Integer, String> blankMap = new HashMap<>();
         for (int i = 0; i < names.size(); i++) {
             blankMap.put(i, names.get(i));
@@ -54,7 +53,30 @@ public class FilingControl {
         incomingSaveData.get(name).remove("Kills");
         incomingSaveData.get(name).put("Kills", totalKill);
         writeFile(incomingSaveData);
+        regenBRRanking(name);
         System.out.println("Done removing a kill from the player " + name + "!");
+    }
+
+    public static void removeDamage(String name, int d) {
+        incomingSaveData = readSave();
+        int newDamage;
+        newDamage = Integer.parseInt(String.valueOf(FilingCombat.incomingSaveData.get(name).get("Damage"))) - d;
+        if (newDamage < 0) {
+            newDamage = 0;
+        }
+        incomingSaveData.get(name).remove("Damage");
+        incomingSaveData.get(name).put("Damage", newDamage);
+        writeFile(incomingSaveData);
+        regenBRRanking(name);
+        System.out.println("Done removing " + d + " damage from the player " + name + "!");
+    }
+    public static void setMaxHealth(String name, int mHealth) {
+        incomingSaveData = readSave();
+        incomingSaveData.get(name).remove("MaxHealth");
+        incomingSaveData.get(name).put("MaxHealth", mHealth);
+        writeFile(incomingSaveData);
+        regenBRRanking(name);
+        System.out.println("Done setting " + mHealth + " as the max health of the player " + name + "!");
     }
 
     public static void writePartyUpdate(int dice, int sword, int arrow, int spell, int hit, int XP) {
@@ -99,31 +121,65 @@ public class FilingControl {
         System.out.println("Done setting party Statistic!");
     }
 
-    public static void changeCS(int Person, int Dam, int Kill, int Healing, int health, boolean healthy) {
-        HashMap<String, HashMap> saveData = readSave();
+    public static void changeCS(int personVal, int damage, boolean killCondition, int healing, int health, boolean healthy) {
         int totalDam;
         int totalKill;
-        int totalHealing, totalBR;
-        System.out.println(String.valueOf(saveData.get("Players").get(Person)));
+        int totalHealing;
+        System.out.println(String.valueOf(incomingSaveData.get("Players").get(personVal)));
         incomingSaveData = readSave();
-        totalDam = Integer.parseInt(String.valueOf(incomingSaveData.get(saveData.get("Players").get(Person)).get("Damage"))) + Dam;
-        totalKill = Integer.parseInt(String.valueOf(incomingSaveData.get(saveData.get("Players").get(Person)).get("Kills"))) + Kill;
-        totalHealing = Integer.parseInt(String.valueOf(incomingSaveData.get(saveData.get("Players").get(Person)).get("Healing"))) + Healing;
-        totalBR = (int) (Integer.parseInt(String.valueOf(incomingSaveData.get(saveData.get("Players").get(Person)).get("BR"))) + (Dam * 2) + ((double) Healing * 2.1) + (Kill * 6)) + 0;
-        incomingSaveData.get(saveData.get("Players").get(Person)).remove("Damage");
-        incomingSaveData.get(saveData.get("Players").get(Person)).put("Damage", totalDam);
-        incomingSaveData.get(saveData.get("Players").get(Person)).remove("Kills");
-        incomingSaveData.get(saveData.get("Players").get(Person)).put("Kills", totalKill);
-        incomingSaveData.get(saveData.get("Players").get(Person)).remove("Healing");
-        incomingSaveData.get(saveData.get("Players").get(Person)).put("Healing", totalHealing);
-        incomingSaveData.get(saveData.get("Players").get(Person)).remove("BR");
-        incomingSaveData.get(saveData.get("Players").get(Person)).put("BR", totalBR);
+        totalDam = Integer.parseInt(String.valueOf(incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).get("Damage"))) + damage;
+        totalHealing = Integer.parseInt(String.valueOf(incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).get("Healing"))) + healing;
+        if (killCondition) {
+            totalKill = Integer.parseInt(String.valueOf(incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).get("Kills"))) + 1;
+        } else {
+            totalKill = Integer.parseInt(String.valueOf(incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).get("Kills")));
+        }
+        incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).remove("Damage");
+        incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).put("Damage", totalDam);
+        incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).remove("Kills");
+        incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).put("Kills", totalKill);
+        incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).remove("Healing");
+        incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).put("Healing", totalHealing);
 
         if (healthy) {
-            incomingSaveData.get(incomingSaveData.get("Players").get(Person)).remove("Health");
-            incomingSaveData.get(incomingSaveData.get("Players").get(Person)).put("Health", health);
+            incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).remove("Health");
+            incomingSaveData.get(incomingSaveData.get("Players").get(personVal)).put("Health", health);
         }
         writeFile(incomingSaveData);
+        for (int i = 0; i < FilingMain.getPlayerArrayNE().length; i++) {
+            regenBRRanking(String.valueOf(incomingSaveData.get("Players").get(i)));
+        }
         System.out.println("Done updating Combat Statistics table!");
+    }
+
+    public static void regenBRRanking(String name) {
+        incomingSaveData = readSave();
+        int totalDam = Integer.parseInt(String.valueOf(incomingSaveData.get(name).get("Damage")));
+        int totalKill = Integer.parseInt(String.valueOf(incomingSaveData.get(name).get("Kills")));
+        int totalHealing = Integer.parseInt(String.valueOf(incomingSaveData.get(name).get("Healing")));
+        int totalFF = Integer.parseInt(String.valueOf(incomingSaveData.get(name).get("FriendFire")));
+        int totalBR = (int) (((double) totalDam * 2.25) + ((double) totalHealing * 2.5) + ((double) totalKill * 4.5) + ((double) totalFF * -3.25));
+        incomingSaveData.get(name).remove("BR");
+        incomingSaveData.get(name).put("BR", totalBR);
+        writeFile(incomingSaveData);
+    }
+
+    public static void friendFire(String name, int statValue, boolean add) {
+        incomingSaveData = readSave();
+        int newFF;
+
+        int totalFF = Integer.parseInt(String.valueOf(incomingSaveData.get(name).get("FriendFire")));
+        if (add) {
+            newFF = totalFF + statValue;
+        } else {
+            newFF = totalFF - statValue;
+        }
+        if (newFF < 0) {
+            newFF = 0;
+        }
+        incomingSaveData.get(name).remove("FriendFire");
+        incomingSaveData.get(name).put("FriendFire", newFF);
+        writeFile(incomingSaveData);
+        regenBRRanking(name);
     }
 }

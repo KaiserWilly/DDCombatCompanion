@@ -14,7 +14,8 @@ import java.awt.event.ActionListener;
  */
 public class GUILoot implements ActionListener, DocumentListener {
     public static int dimX = 1366, dimY = 700;
-    public static Font lootCellContent = new Font("Franklin Gothic Medium", Font.BOLD, 20);
+    static Font tableData = new Font("Helvetica", Font.BOLD, 12);
+    static Font tableHeading = new Font("Garamond", Font.BOLD, 14);
     public JPanel lootNote;
     public DefaultTableModel dataLoot;
     public JTable lootTable;
@@ -27,6 +28,11 @@ public class GUILoot implements ActionListener, DocumentListener {
     public JMenuBar lootMenuBar;
     public JMenu lootFile, aboutMenu;
     public JMenuItem lootRemoveI, lootChangeV, noteRemove, lootChangeQ, about;
+
+    public void setFonts() {
+        tableHeading = FilingFonts.tableHeading;
+        tableData = FilingFonts.tableDataS22;
+    }
 
     public JMenuBar lootMenuBar() {
         lootMenuBar = new JMenuBar();
@@ -54,6 +60,7 @@ public class GUILoot implements ActionListener, DocumentListener {
     }
 
     public JPanel lootPanel() {
+        setFonts();
         lootNote = new JPanel();
         lootNote.setSize(new Dimension(dimX, dimY));
         lootNote.setBackground(Color.WHITE);
@@ -77,8 +84,8 @@ public class GUILoot implements ActionListener, DocumentListener {
         CenterRenderer.setHorizontalAlignment(JLabel.CENTER);
         lootTable.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         lootTable.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
-        lootTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        lootTable.setFont(lootCellContent);
+        lootTable.getTableHeader().setFont(tableHeading);
+        lootTable.setFont(tableData);
         lootTable.setBackground(Color.WHITE);
         lootTable.setRowHeight(22);
         lootTable.setMaximumSize(new Dimension(dimX, 200));
@@ -190,7 +197,7 @@ public class GUILoot implements ActionListener, DocumentListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == about) {
-            JOptionPane.showMessageDialog(lootNote, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(lootNote, Values.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
         if (e.getSource() == lootRemoveI) {
             String name = (String) JOptionPane.showInputDialog(lootNote, "Enter the name of the Item to Remove:", "Remove an Item", JOptionPane.PLAIN_MESSAGE, null, FilingLoot.getLootItemArray(), null);
@@ -301,8 +308,8 @@ public class GUILoot implements ActionListener, DocumentListener {
         lootTable.getColumnModel().getColumn(0).setCellRenderer(CenterRenderer);
         lootTable.getColumnModel().getColumn(1).setCellRenderer(CenterRenderer);
         lootTable.getColumnModel().getColumn(2).setCellRenderer(CenterRenderer);
-        lootTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-        lootTable.setFont(lootCellContent);
+        lootTable.getTableHeader().setFont(tableHeading);
+        lootTable.setFont(tableData);
         lootTable.setBackground(Color.WHITE);
         lootTable.setRowHeight(22);
         lootTable.setAutoCreateRowSorter(false);

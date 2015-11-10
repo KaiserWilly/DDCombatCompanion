@@ -1,6 +1,4 @@
 import org.apache.commons.io.FilenameUtils;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 
 import javax.swing.*;
 import java.awt.*;
@@ -138,6 +136,8 @@ public class FilingMain implements ActionListener {
         incomingSaveData.get(player).put("Healing", 0);
         incomingSaveData.get(player).put("Health", 0);
         incomingSaveData.get(player).put("BR", 0);
+        incomingSaveData.get(player).put("FriendFire", 0);
+        incomingSaveData.get(player).put("MaxHealth", 1);
         HashMap casters = (HashMap) incomingSaveData.get("Spells").get("Casters");
         casters.put(player, new Object[][]{});
         incomingSaveData.get("Spells").remove("Casters");
@@ -227,7 +227,7 @@ public class FilingMain implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == about) {
-            JOptionPane.showMessageDialog(about, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(about, Values.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
     }
 
@@ -239,11 +239,7 @@ public class FilingMain implements ActionListener {
                 return true;
             }
             String extension = FilenameUtils.getExtension(f.getAbsolutePath());
-            if (extension.equals("ADDCC")) {
-                return true;
-            } else {
-                return false;
-            }
+            return extension.equals("ADDCC");
         }
 
         @Override

@@ -51,21 +51,22 @@ public class Conversion {
                 int friendFire = 0;
                 saveData.get(player).put("FriendFire", friendFire);
             }
+            if (!saveData.get(player).containsKey("MaxHealth")) {
+                saveData.get(player).put("MaxHealth", 1);
+            }
         }
     }
 
     public static void checkParty() {
         if (!saveData.containsKey("Party")) {
             HashMap partyStats = new HashMap();
-            partyStats.put("Dice", 1365);
-            partyStats.put("Swords", 365);
-            partyStats.put("Arrows", 146);
-            partyStats.put("Spells", 97);
-            partyStats.put("XP", 1575);
-            partyStats.put("Hits", 130);
+            partyStats.put("Dice", 0);
+            partyStats.put("Swords", 0);
+            partyStats.put("Arrows", 0);
+            partyStats.put("Spells", 0);
+            partyStats.put("XP", 0);
+            partyStats.put("Hits", 0);
             saveData.put("Party", partyStats);
-        } else if (!saveData.get("Party").containsKey("Hits")) {
-            saveData.get("Party").put("Hits", 130);
         }
     }
 

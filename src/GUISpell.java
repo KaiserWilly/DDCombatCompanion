@@ -98,7 +98,7 @@ public class GUISpell implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == about) {
-            JOptionPane.showMessageDialog(about, Start.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(about, Values.aboutText, "About", JOptionPane.PLAIN_MESSAGE);
         }
         if (e.getSource() == addSpell) {
             String name = (String) JOptionPane.showInputDialog(spellBase, "Enter the name of the Spell:", "Add a Spell", JOptionPane.PLAIN_MESSAGE, null, null, null);
