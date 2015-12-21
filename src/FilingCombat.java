@@ -51,10 +51,6 @@ public class FilingCombat {
         }
     }
 
-    public static Object[] columnHeadersAS() {
-        return new Object[]{"PLAYER", "BR", "DAMAGE DONE", "KILLS", "HEALING DONE", "FRIENDLY FIRE", "HEALTH", "MAX HEALTH"};
-    }
-
     public static Object[][] rowDataAS() { // Gather and piece together data to display on the main table
         incomingSaveData = readSave();
         for (int i = 0; i < FilingMain.getPlayerArrayNE().length; i++) {
@@ -107,10 +103,6 @@ public class FilingCombat {
         writeFile(incomingSaveData);
 
         return columnData;
-    }
-
-    public static Object[] totalStatsRowData() {
-        return new Object[]{"DAMAGE DONE", "KILLS", "HEALING DONE"};
     }
 
     //Computes the Scoring Champions for each category

@@ -21,13 +21,13 @@ public class GUILoot implements ActionListener, DocumentListener {
     public JTable lootTable;
     public JScrollPane lootTablePane, notesPane;
     public JTextField lootItem, lootValue, lootQuantity, noteInput;
-    public JTextArea noteField;
     public JButton updateLoot;
-    public JLabel lootTab, lItem, lValue, lQty, noteF;
+    public JLabel lootTab, lItem, lValue, lQty, estVal;
     public GroupLayout layLoot;
     public JMenuBar lootMenuBar;
     public JMenu lootFile, aboutMenu;
     public JMenuItem lootRemoveI, lootChangeV, noteRemove, lootChangeQ, about;
+    public JSeparator vertJSeparator;
 
     public void setFonts() {
         tableHeading = FilingFonts.tableHeading;
@@ -66,7 +66,7 @@ public class GUILoot implements ActionListener, DocumentListener {
         lootNote.setBackground(Color.WHITE);
 
 
-        dataLoot = new DefaultTableModel(FilingLoot.getLootTableData(), FilingLoot.getLootTableColumnHeaders()) {
+        dataLoot = new DefaultTableModel(FilingLoot.getLootTableData(), Values.lootTableHeader) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -88,7 +88,7 @@ public class GUILoot implements ActionListener, DocumentListener {
         lootTable.setFont(tableData);
         lootTable.setBackground(Color.WHITE);
         lootTable.setRowHeight(22);
-        lootTable.setMaximumSize(new Dimension(dimX, 200));
+        lootTable.setMaximumSize(new Dimension(dimX, 300));
         lootTablePane = new JScrollPane(lootTable);
         lootTablePane.setSize(new Dimension(dimX, 200));
         lootNote.add(lootTablePane);
@@ -109,20 +109,6 @@ public class GUILoot implements ActionListener, DocumentListener {
         updateLoot.addActionListener(this);
         lootNote.add(updateLoot);
 
-        noteInput = new JTextField();
-        noteInput.getDocument().addDocumentListener(this);
-        noteInput.setColumns(50);
-        noteInput.addActionListener(this);
-        noteInput.setMaximumSize(new Dimension(dimX, 25));
-        lootNote.add(noteInput);
-
-        noteField = new JTextArea(25, 25);
-        noteField.setText(FilingLoot.getLootNotes());
-        noteField.setEditable(false);
-        notesPane = new JScrollPane(noteField);
-        notesPane.setSize(new Dimension(dimX, 125));
-        lootNote.add(notesPane);
-
         lootTab = new JLabel("Party Loot:");
         lootNote.add(lootTab);
 
@@ -135,8 +121,13 @@ public class GUILoot implements ActionListener, DocumentListener {
         lQty = new JLabel("Qty:");
         lootNote.add(lQty);
 
-        noteF = new JLabel("Notes on Loot:");
-        lootNote.add(noteF);
+        estVal = new JLabel("ESTIMATED LOOT VALUE: " + FilingLoot.getLootValue() + " GP");
+        estVal.setFont(FilingFonts.tableHeading);
+        lootNote.add(estVal);
+
+
+        vertJSeparator = new JSeparator(JSeparator.VERTICAL);
+        lootNote.add(vertJSeparator);
 
         layLoot = new GroupLayout(lootNote);
         lootNote.setLayout(layLoot);
@@ -145,48 +136,50 @@ public class GUILoot implements ActionListener, DocumentListener {
         layLoot.setHorizontalGroup(
                 layLoot.createSequentialGroup()
                         .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(lootTab)
-                                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                        .addComponent(lootTablePane)
-                                                        .addGroup(layLoot.createSequentialGroup()
-                                                                .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                        .addComponent(lItem)
-                                                                        .addComponent(lootItem))
-                                                                .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                        .addComponent(lValue)
-                                                                        .addComponent(lootValue))
-                                                                .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                        .addComponent(lQty)
-                                                                        .addComponent(lootQuantity))
-                                                                .addComponent(updateLoot))
+                                .addComponent(lootTab)
+                                .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addComponent(lootTablePane)
+                                        .addGroup(layLoot.createSequentialGroup()
+                                                .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                        .addComponent(lItem)
+                                                        .addComponent(lootItem))
+                                                .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                        .addComponent(lValue)
+                                                        .addComponent(lootValue))
+                                                .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                        .addComponent(lQty)
+                                                        .addComponent(lootQuantity))
+                                                .addComponent(updateLoot)
+                                                .addGap(10)
+                                                .addComponent(vertJSeparator)
+                                                .addGap(10)
+                                                .addComponent(estVal)
                                         )
-                                        .addComponent(noteF)
-                                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                        .addComponent(noteInput)
-                                                        .addComponent(notesPane)
-
-                                        )
+                                )
                         )
         );
         layLoot.setVerticalGroup(
                 layLoot.createSequentialGroup()
                         .addComponent(lootTab)
                         .addComponent(lootTablePane)
-                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(lItem)
-                                .addComponent(lValue)
-                                .addComponent(lQty))
-                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(lootItem)
-                                        .addComponent(lootValue)
-                                        .addComponent(lootQuantity)
-                                        .addComponent(updateLoot)
+                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(vertJSeparator)
+                                .addComponent(estVal)
+                                .addGroup(layLoot.createSequentialGroup()
+                                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                                .addComponent(lItem)
+                                                .addComponent(lValue)
+                                                .addComponent(lQty))
+                                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                                .addComponent(lootItem)
+                                                .addComponent(lootValue)
+                                                .addComponent(lootQuantity)
+                                                .addComponent(updateLoot)
+                                        )
+                                )
                         )
-                        .addComponent(noteF)
-                        .addComponent(noteInput)
-                        .addComponent(notesPane)
-
         );
+
 
         System.out.println("Done loading loot Tab!");
         return lootNote;
@@ -284,8 +277,14 @@ public class GUILoot implements ActionListener, DocumentListener {
 
     public void updateStats() {
         lootNote.remove(lootTablePane);
-        lootNote.remove(notesPane);
-        dataLoot = new DefaultTableModel(FilingLoot.getLootTableData(), FilingLoot.getLootTableColumnHeaders()) {
+        lootNote.remove(estVal);
+
+        estVal = new JLabel("ESTIMATED LOOT VALUE: " + FilingLoot.getLootValue() + " GP");
+        estVal.setFont(FilingFonts.tableHeading);
+        lootNote.add(estVal);
+
+
+        dataLoot = new DefaultTableModel(FilingLoot.getLootTableData(), Values.lootTableHeader) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -324,15 +323,8 @@ public class GUILoot implements ActionListener, DocumentListener {
             }
         }
         lootTablePane = new JScrollPane(lootTable);
-        lootTablePane.setMaximumSize(new Dimension(dimX, 200));
+        lootTablePane.setMaximumSize(new Dimension(dimX, 700));
         lootNote.add(lootTablePane);
-
-        noteField = new JTextArea(25, 25);
-        noteField.setText(FilingLoot.getLootNotes());
-        noteField.setEditable(false);
-        notesPane = new JScrollPane(noteField);
-        notesPane.setMaximumSize(new Dimension(dimX, 200));
-        lootNote.add(notesPane);
 
         layLoot = new GroupLayout(lootNote);
         lootNote.setLayout(layLoot);
@@ -341,47 +333,49 @@ public class GUILoot implements ActionListener, DocumentListener {
         layLoot.setHorizontalGroup(
                 layLoot.createSequentialGroup()
                         .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(lootTab)
+                                .addComponent(lootTab)
+                                .addComponent(lootTablePane)
+                                .addGroup(layLoot.createSequentialGroup()
                                         .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                        .addComponent(lootTablePane)
-                                                        .addGroup(layLoot.createSequentialGroup()
-                                                                .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                        .addComponent(lItem)
-                                                                        .addComponent(lootItem))
-                                                                .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                        .addComponent(lValue)
-                                                                        .addComponent(lootValue))
-                                                                .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                                        .addComponent(lQty)
-                                                                        .addComponent(lootQuantity))
-                                                                .addComponent(updateLoot))
+                                                .addComponent(lItem)
+                                                .addComponent(lootItem)
                                         )
-                                        .addComponent(noteF)
                                         .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                                        .addComponent(noteInput)
-                                                        .addComponent(notesPane)
-
+                                                .addComponent(lValue)
+                                                .addComponent(lootValue)
                                         )
+                                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                                .addComponent(lQty)
+                                                .addComponent(lootQuantity)
+                                        )
+                                        .addComponent(updateLoot)
+                                        .addGap(10)
+                                        .addComponent(vertJSeparator)
+                                        .addGap(10)
+                                        .addComponent(estVal)
+                                )
                         )
         );
         layLoot.setVerticalGroup(
                 layLoot.createSequentialGroup()
                         .addComponent(lootTab)
                         .addComponent(lootTablePane)
-                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(lItem)
-                                .addComponent(lValue)
-                                .addComponent(lQty))
-                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(lootItem)
-                                        .addComponent(lootValue)
-                                        .addComponent(lootQuantity)
-                                        .addComponent(updateLoot)
+                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(vertJSeparator)
+                                .addComponent(estVal)
+                                .addGroup(layLoot.createSequentialGroup()
+                                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                                .addComponent(lItem)
+                                                .addComponent(lValue)
+                                                .addComponent(lQty))
+                                        .addGroup(layLoot.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                                .addComponent(lootItem)
+                                                .addComponent(lootValue)
+                                                .addComponent(lootQuantity)
+                                                .addComponent(updateLoot)
+                                        )
+                                )
                         )
-                        .addComponent(noteF)
-                        .addComponent(noteInput)
-                        .addComponent(notesPane)
-
         );
 
         lootNote.revalidate();

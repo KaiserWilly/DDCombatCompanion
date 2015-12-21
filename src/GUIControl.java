@@ -91,7 +91,7 @@ public class GUIControl implements ActionListener, ItemListener {
         statisticsModule.setSize(dimX, 900);
 
 
-        statisticsTableModel = new DefaultTableModel(FilingCombat.rowDataAS(), FilingCombat.columnHeadersAS()) {
+        statisticsTableModel = new DefaultTableModel(FilingCombat.rowDataAS(), Values.overviewMainTableHeader) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -626,7 +626,7 @@ public class GUIControl implements ActionListener, ItemListener {
         healthInput.setText("");
         killAction.setSelected(false);
         killCondition = false;
-        statisticsTableModel = new DefaultTableModel(FilingCombat.rowDataAS(), FilingCombat.columnHeadersAS()) {
+        statisticsTableModel = new DefaultTableModel(FilingCombat.rowDataAS(), Values.overviewMainTableHeader) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {

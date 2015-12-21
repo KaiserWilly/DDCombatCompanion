@@ -66,7 +66,7 @@ public class GUIMenu extends Component {
             BufferedImage pb = null;
 
             try {
-                pb = ImageIO.read(getClass().getResource("rsc/IsenhartCC.png"));
+                pb = ImageIO.read(getClass().getResource("rsc/IsenhartCCMenu.png"));
                 swirl = new JLabel(new ImageIcon(pb));
                 swirl.setLocation(100, 0);
                 swirl.setSize(200, 150);

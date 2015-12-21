@@ -44,11 +44,7 @@ public class FilingLoot {
         return (Object[][]) saveData.get("Loot").get("Data");
     }
 
-    public static Object[] getLootTableColumnHeaders() {
-        return new Object[]{"ITEM", "ITEM VALUE (GP)", "QUANTITY"};
-    }
-
-    public static void updateLootTable(String item, String value,int qty) {
+    public static void updateLootTable(String item, String value, int qty) {
         HashMap<String, HashMap> saveData = readSave();
         Object[][] savedTable = (Object[][]) saveData.get("Loot").get("Data");
         Object[][] newTable = new Object[savedTable.length + 1][3];
@@ -81,6 +77,7 @@ public class FilingLoot {
         writeFile(saveData);
         System.out.println("Done updating loot item value!");
     }
+
     public static void updateLootItemQuantity(String item, int value) {
         HashMap<String, HashMap> saveData = readSave();
         Object[][] savedTable = (Object[][]) saveData.get("Loot").get("Data");
@@ -135,12 +132,6 @@ public class FilingLoot {
         System.out.println("Done removing loot item!");
     }
 
-
-    public static String getLootNotes() {
-        HashMap<String, HashMap> saveData = readSave();
-        return (String) saveData.get("Loot").get("Notes");
-    }
-
     public static void updateLootNotes(String newNote) {
         HashMap<String, HashMap> saveData = readSave();
         String notes = (String) saveData.get("Loot").get("Notes");
@@ -166,9 +157,9 @@ public class FilingLoot {
         int index = noteList.indexOf(note);
         System.out.println(index);
         noteList.remove(index);
-        Object[] newObjArray =  noteList.toArray();
+        Object[] newObjArray = noteList.toArray();
         String[] newNoteArray = new String[newObjArray.length];
-        for (int i=0;i<newObjArray.length;i++){
+        for (int i = 0; i < newObjArray.length; i++) {
             newNoteArray[i] = String.valueOf(newObjArray[i]);
         }
         String newNotes = "";
@@ -189,5 +180,19 @@ public class FilingLoot {
         sorter.setSortable(1, false);
         sorter.setSortKeys(sortKeys);
         return sorter;
+    }
+
+    public static double getLootValue() {
+        HashMap<String, HashMap> saveData = readSave();
+        Object[][] savedTable = (Object[][]) saveData.get("Loot").get("Data");
+        double netVal = 0, val, qty;
+        for (int i = 0; i < savedTable.length; i++) {
+            if (!String.valueOf(savedTable[i][1]).equals("?")) {
+                val = Double.parseDouble(String.valueOf(savedTable[i][1]));
+                qty = Double.parseDouble(String.valueOf(savedTable[i][2]));
+                netVal = netVal + (val * qty);
+            }
+        }
+        return netVal;
     }
 }

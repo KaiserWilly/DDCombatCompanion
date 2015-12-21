@@ -52,7 +52,7 @@ public class GUICombat implements ActionListener {
         CStats = new JPanel();
         CStats.setSize(dimX, dimY);
         CStats.setBackground(Color.WHITE);
-        modelDC = new DefaultTableModel(FilingCombat.rowDataAS(), FilingCombat.columnHeadersAS()) {
+        modelDC = new DefaultTableModel(FilingCombat.rowDataAS(), Values.overviewMainTableHeader) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -105,7 +105,7 @@ public class GUICombat implements ActionListener {
         CStats.add(dataPaneDC);
 
 
-        modelFCS = new DefaultTableModel(FilingCombat.FriendComStats, FilingCombat.totalStatsRowData()) {
+        modelFCS = new DefaultTableModel(FilingCombat.FriendComStats, Values.comStatsTableHeader) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -141,7 +141,7 @@ public class GUICombat implements ActionListener {
         dataPaneFCS.setMaximumSize(new Dimension(dimX, 65));
         CStats.add(dataPaneFCS);
 
-        modelECS = new DefaultTableModel((Object[][]) FilingCombat.EnemyComStats, FilingCombat.totalStatsRowData()) {
+        modelECS = new DefaultTableModel((Object[][]) FilingCombat.EnemyComStats, Values.comStatsTableHeader) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -258,7 +258,7 @@ public class GUICombat implements ActionListener {
         CStats.remove(HealChamp);
         CStats.setSize(dimX, dimY);
         CStats.setBackground(Color.WHITE);
-        modelDC = new DefaultTableModel(FilingCombat.rowDataAS(), FilingCombat.columnHeadersAS()) {
+        modelDC = new DefaultTableModel(FilingCombat.rowDataAS(), Values.overviewMainTableHeader) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -311,7 +311,7 @@ public class GUICombat implements ActionListener {
 
         dataPaneDC.setLocation(25, 25);
 
-        modelFCS = new DefaultTableModel(FilingCombat.getFriendComStats(), FilingCombat.totalStatsRowData()) {
+        modelFCS = new DefaultTableModel(FilingCombat.getFriendComStats(), Values.comStatsTableHeader) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -341,7 +341,7 @@ public class GUICombat implements ActionListener {
         dataPaneFCS.setMaximumSize(new Dimension(dimX, 65));
         CStats.add(dataPaneFCS);
 
-        modelECS = new DefaultTableModel((Object[][]) FilingCombat.EnemyComStats, FilingCombat.totalStatsRowData()) {
+        modelECS = new DefaultTableModel((Object[][]) FilingCombat.EnemyComStats, Values.comStatsTableHeader) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {

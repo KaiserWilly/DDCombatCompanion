@@ -34,7 +34,7 @@ public class GUIIntiative implements ActionListener {
         base.setBackground(Color.WHITE);
         base.setMaximumSize(new Dimension(200, 800));
 
-        initData = new DefaultTableModel(FilingInitiative.InitRowData(), FilingInitiative.InitColumnHeaders()) {
+        initData = new DefaultTableModel(FilingInitiative.InitRowData(), Values.initTableHeader) {
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -114,7 +114,7 @@ public class GUIIntiative implements ActionListener {
                 FilingInitiative.genInit(initTable);
             }
             base.remove(initPane);
-            initData = new DefaultTableModel(FilingInitiative.InitRowData(), FilingInitiative.InitColumnHeaders()) {
+            initData = new DefaultTableModel(FilingInitiative.InitRowData(), Values.initTableHeader) {
                 @Override
                 public Class getColumnClass(int column) {
                     switch (column) {

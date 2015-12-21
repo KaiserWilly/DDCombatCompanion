@@ -105,7 +105,6 @@ public class FilingMain implements ActionListener {
         newMap.put("Party", partyStats);
         HashMap loot = new HashMap();
         loot.put("Data", new Object[][]{});
-        loot.put("Notes", new String());
         newMap.put("Loot", loot);
         HashMap xp = new HashMap();
         xp.put("XP", new Object[][]{});

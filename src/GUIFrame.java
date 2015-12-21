@@ -54,10 +54,11 @@ public class GUIFrame {
             cStatistics = comStats.DCount();
             pStatistics = partyStats.PartyStats();
             tPane = new JTabbedPane();
-            tPane.addTab("Combat Control", null, modStats.controlPanel(), "Use this table to control stats during Combat");
+            tPane.addTab("Overview", null, modStats.controlPanel(), "Use this table to control stats during Combat");
             tPane.addTab("Combat Statistics", null, cStatistics, "Combat Statistics");
             tPane.addTab("Party Statistics", null, pStatistics, "Party Statistics");
-            tPane.addTab("Loot", null, loot.lootPanel(), "Track your loot!");
+            tPane.addTab("Loot", null, loot.lootPanel(), "Track your booty");
+            tPane.addTab("Investments", null, new JPanel(), "Track Investments, property, and off-quest items");
 //            tPane.addTab("Spells", null, fMain.showBlankPane()/*spell.SpellDisplay()*/, "Track your Spells!");
             tPane.addTab("XP", null, xp.XPpanel(), "XP and Leveling");
             tPane.addChangeListener(this);
@@ -146,7 +147,7 @@ public class GUIFrame {
                     modStats.updateStats();
                     break;
                 case 1:
-                    System.out.println(" (Combat Statistics)");
+                    System.out.println(" (Overview)");
                     mainFrame.setJMenuBar(comStats.getTheMenuBar());
                     mainFrame.revalidate();
                     mainFrame.repaint();
@@ -166,14 +167,14 @@ public class GUIFrame {
                     mainFrame.repaint();
                     loot.updateStats();
                     break;
-//                case 4:
-//                    System.out.println(" (Spells)");
+                case 4:
+                    System.out.println(" (Investments)");
 //                    mainFrame.setJMenuBar(spell.getTheMenuBar());
 //                    mainFrame.revalidate();
 //                    mainFrame.repaint();
-////                    spell.updateStats();
-//                    break;
-                case 4:
+//                    spell.updateStats();
+                    break;
+                case 5:
                     System.out.println(" (XP)");
                     mainFrame.setJMenuBar(xp.XPMenuBar());
                     mainFrame.revalidate();

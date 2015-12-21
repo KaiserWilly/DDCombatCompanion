@@ -74,7 +74,6 @@ public class Conversion {
         if (!saveData.containsKey("Loot")) {
             HashMap lootStats = new HashMap();
             lootStats.put("Data", new Object[][]{});
-            lootStats.put("Notes", new String());
             saveData.put("Loot", lootStats);
         }
     }

@@ -54,10 +54,6 @@ public class FilingInitiative {
         return rowData;
     }
 
-    public static Object[] InitColumnHeaders() {
-        return new Object[]{"PLAYER", "INITIATIVE ROLL"};
-    }
-
     public static TableRowSorter RowSorter(JTable Table) {
         TableRowSorter sorter = new TableRowSorter(Table.getModel());
         List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
